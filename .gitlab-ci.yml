@@ -3,11 +3,12 @@ stages:
   - test
   - deploy
 
-testing-progect:
+check-commit:
   stage: test
   tags:
-    - test
+    - docker
   image: ubuntu:20.04
   script:
-    - echo "$CI_COMMIT_AUTHOR pushed new commit  \ 
-    $CI_COMMIT_SHORT_SHA, message - $CI_COMMIT_MESSAGE"
+    - echo "$CI_COMMIT_AUTHOR pushed new commit $CI_COMMIT_SHORT_SHA, message - $CI_COMMIT_MESSAGE"
+  only:
+    - dev
