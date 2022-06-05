@@ -67,11 +67,17 @@ export default {
     };
   },
   methods: {
-    resetError() {
+    resetForm() {
       this.name = "";
       this.email = "";
       this.service = "";
       this.comments = "";
+    },
+    resetError() {
+      this.nameError = false;
+      this.emailError = false;
+      this.serviceError = false;
+      this.commentsError = false;
     },
     serviceHandler(serviceSelected) {
       this.serviceError = false;
@@ -96,7 +102,7 @@ export default {
           service: this.service,
           comments: this.comments,
         });
-        this.resetError();
+        this.resetForm();
       }
     },
   },

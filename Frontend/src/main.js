@@ -3,6 +3,7 @@ import App from "./App.vue";
 import components from "@/components/UI";
 import router from "@/router/router";
 import store from "@/store";
+import VueScrollTo from "vue-scrollto";
 
 const app = createApp(App);
 
@@ -10,4 +11,20 @@ components.forEach((component) => {
   app.component(component.name, component);
 });
 
-app.use(router).use(store).mount("#app");
+app
+  .use(router)
+  .use(store)
+  .use(VueScrollTo, {
+    container: "body",
+    duration: 500,
+    easing: "ease",
+    offset: 0,
+    force: true,
+    cancelable: true,
+    onStart: false,
+    onDone: false,
+    onCancel: false,
+    x: false,
+    y: true,
+  })
+  .mount("#app");

@@ -16,6 +16,7 @@
       <div
         class="select-placeholder"
         :class="{ 'select-placeholder_active': value.length > 0 }"
+        @click="() => this.setOpenSelect(true)"
       >
         {{ placeholderText }}
       </div>
@@ -245,6 +246,7 @@ export default {
   top: 14px;
   left: 14px;
   transition: all 0.3s;
+  cursor: pointer;
 }
 
 .select-placeholder_active {

@@ -4,9 +4,9 @@
       <h1>Тут пару строк или строчка о том, что мы делаем</h1>
       <MyButton>Заказать сайт</MyButton>
     </div>
-    <div class="main-about-arrow">
+    <a href="#" v-scroll-to="'#services'" class="main-about-arrow">
       <img src="@/assets/icons/arrow.svg" alt="arrow" />
-    </div>
+    </a>
     <div class="circle-main-about"></div>
   </section>
   <section id="services" class="main-services">

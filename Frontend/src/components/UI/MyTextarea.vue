@@ -6,12 +6,14 @@
       @input="updateInput"
       @focus="focused = true"
       @blur="focused = false"
+      :ref="'select_' + modelValue"
     />
     <div
       class="placeholder"
       :class="{
         placeholder_active: focused || modelValue.length > 0,
       }"
+      @click="this.$refs['select_' + modelValue].focus()"
     >
       {{ placeholderText }}
     </div>

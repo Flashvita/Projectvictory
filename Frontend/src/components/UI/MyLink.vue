@@ -1,12 +1,20 @@
 <template>
-  <router-link class="my-link" to="to">
+  <a v-scroll-to="to" class="my-link" href="#">
     <slot></slot>
-  </router-link>
+  </a>
 </template>
 
 <script>
 export default {
   name: "MyLink",
+  props: {
+    to: {
+      type: String,
+      default() {
+        return "";
+      },
+    },
+  },
 };
 </script>
 

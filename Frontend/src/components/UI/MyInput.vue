@@ -7,18 +7,19 @@
       @input="updateInput"
       @focus="focused = true"
       @blur="focused = false"
+      :ref="'input_item_' + modelValue"
     />
     <div
       class="my-input-placeholder"
       :class="{
         'my-input-placeholder_active': focused || modelValue.length > 0,
       }"
+      @click="this.focusInput(this.$refs, modelValue)"
     >
       {{ placeholderText }}
     </div>
   </div>
 </template>
-
 <script>
 export default {
   name: "MyInput",
@@ -36,6 +37,9 @@ export default {
   methods: {
     updateInput(event) {
       this.$emit("update:modelValue", event.target.value);
+    },
+    focusInput(ref, input) {
+      ref["input_item_" + input].focus();
     },
   },
 };
@@ -109,6 +113,7 @@ export default {
   left: 14px;
   transition: all 0.3s;
   color: var(--color-text-black);
+  cursor: pointer;
 }
 
 .my-input-placeholder_active {
