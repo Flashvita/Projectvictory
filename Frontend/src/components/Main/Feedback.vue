@@ -138,7 +138,6 @@ export default {
       margin-bottom: 64px;
 
       .form-right {
-        height: 100%;
         color: var(--color-bacground-black);
       }
     }

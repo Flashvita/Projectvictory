@@ -94,7 +94,8 @@ export default {
     color: var(--color-text-black);
 
     &:focus-visible {
-      outline: 2px solid var(--color-accent);
+      outline: none;
+      box-shadow: 0 0 0 2px var(--color-accent);
     }
   }
 

@@ -170,6 +170,17 @@ export const authModule = {
         }
       }
     },
+    logout({ commit }) {
+      localStorage.removeItem("isAuth");
+      localStorage.removeItem("token");
+      commit("setIsAuth", true);
+      commit("setToken", "");
+    },
+  },
+  getters: {
+    isAuth(state) {
+      return state.isAuth;
+    },
   },
   namespaced: true,
 };

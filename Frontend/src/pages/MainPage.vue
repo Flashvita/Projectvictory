@@ -134,6 +134,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
+  z-index: 1;
 
   h1 {
     font-size: 19px;
@@ -144,15 +145,19 @@ export default {
 
 .circle-main-about {
   position: absolute;
-  width: 274px;
-  height: 274px;
+  width: 500px;
+  height: 500px;
   left: 0;
   top: 0;
   bottom: 0;
   right: 0;
   margin: auto;
-  background: #ff0a7f;
-  filter: blur(200px);
+  background-color: var(--color-accent);
+  -webkit-box-shadow: 0 0 180px 124px var(--color-bacground-black) inset;
+  -moz-box-shadow: 0 0 180px 124px var(--color-bacground-black) inset;
+  box-shadow: 0 0 180px 124px var(--color-bacground-black) inset;
+  opacity: 0.3;
+  border-radius: 50%;
 }
 
 .main-about-arrow {

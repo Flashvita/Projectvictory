@@ -150,7 +150,7 @@ export default {
 }
 
 .select-textTitle-error {
-  outline: 2px solid var(--color-accent);
+  box-shadow: 0 0 0 2px var(--color-accent);
 }
 
 .select {

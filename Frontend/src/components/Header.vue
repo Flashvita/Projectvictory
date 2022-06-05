@@ -4,7 +4,12 @@
       <div class="header-wrapper">
         <div>Logo</div>
         <NavbarComponent />
-        <MyButton_link @click="$router.push('/auth')">Войти</MyButton_link>
+        <MyButton_link v-if="!isAuth" @click="$router.push('/auth')">
+          Войти
+        </MyButton_link>
+        <MyButton_link v-if="isAuth" @click="this.logout">
+          Выйти
+        </MyButton_link>
       </div>
     </div>
   </header>
@@ -12,10 +17,17 @@
 
 <script>
 import NavbarComponent from "@/components/Navbar";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "HeaderComponent",
   components: { NavbarComponent },
+  methods: {
+    ...mapActions({ logout: "auth/logout" }),
+  },
+  computed: {
+    ...mapGetters({ isAuth: "auth/isAuth" }),
+  },
 };
 </script>
 
