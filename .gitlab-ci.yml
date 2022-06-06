@@ -8,10 +8,11 @@ building server:
   tags:
     - shell
   before_script:
-    - cp -r Backend/victory /test
+    - who am i
+    #- cp -r Backend/victory /test
     # - docker build -t server:$CI_COMMIT_SHORT_SHA Backend/victory
   script:
-    - ls -l /test
+    - ls
   # after_script:
     # - docker system prune -a
   only:
