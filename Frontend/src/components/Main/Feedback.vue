@@ -147,6 +147,10 @@ export default {
       color: var(--color-bacground-black);
       margin-bottom: 23px;
     }
+
+    button:hover {
+      background-color: var(--color-accent);
+    }
   }
 }
 </style>

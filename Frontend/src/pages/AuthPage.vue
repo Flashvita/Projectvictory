@@ -4,21 +4,19 @@
       <form @submit.prevent class="auth-form">
         <div class="auth-form-wrapper" v-if="isSignIn">
           <h1>Вход в аккаунт</h1>
-          <div class="error-text" v-if="$store.state.auth.errorAuth">
+          <div class="error-text" v-if="errorAuth">
             Не верно указаны имя пользователя или пароль
           </div>
           <MyInput
             :model-value="email"
-            :error="$store.state.auth.errorAuth || $store.state.auth.emailError"
+            :error="errorAuth || emailError"
             @update:model-value="setEmail"
             type="text"
             placeholderText="Email"
           />
           <MyInput
             :model-value="password"
-            :error="
-              $store.state.auth.errorAuth || $store.state.auth.passwordError
-            "
+            :error="errorAuth || passwordError"
             @update:model-value="setPassword"
             type="password"
             placeholderText="Пароль"
@@ -32,44 +30,39 @@
           v-if="!isSignIn"
         >
           <h1>Создание аккаунта</h1>
-          <div class="error-text" v-if="$store.state.auth.errorAuth">
-            Какое-то сообщение
-          </div>
+          <div class="error-text" v-if="errorAuth">{{ messageErrorAuth }}</div>
           <MyInput
             :model-value="name"
-            :error="$store.state.auth.errorAuth || $store.state.auth.nameError"
+            :error="errorAuth || nameError"
             @update:model-value="setName"
             type="text"
             placeholderText="Имя"
           />
           <MyInput
             :model-value="email"
-            :error="$store.state.auth.errorAuth || $store.state.auth.emailError"
+            :error="errorAuth || emailError"
             @update:model-value="setEmail"
             type="text"
             placeholderText="Email"
           />
           <MyInput
             :model-value="password"
-            :error="
-              $store.state.auth.errorAuth || $store.state.auth.passwordError
-            "
+            :error="errorAuth || passwordError"
             @update:model-value="setPassword"
             type="password"
             placeholderText="Пароль"
           />
           <MyInput
             :model-value="confirmPassword"
-            :error="
-              $store.state.auth.errorAuth ||
-              $store.state.auth.errorConfirmPassword
-            "
+            :error="errorAuth || confirmPasswordError"
             @update:model-value="setConfirmPassword"
             type="password"
             placeholderText="Подтверждение пароля"
           />
           <div class="auth-form-btn">
-            <MyButton @click="this.signUp">Зарегистрироваться</MyButton>
+            <MyButton @click="this.signUp" :isLoad="isLoading">
+              Зарегистрироваться
+            </MyButton>
           </div>
         </div>
       </form>
@@ -87,13 +80,11 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from "vuex";
+import { mapActions, mapMutations, mapState, mapGetters } from "vuex";
 import router from "@/router/router";
 
 export default {
   name: "AuthPage",
-  components: {},
-
   data() {
     return {
       isSignIn: true,
@@ -102,6 +93,7 @@ export default {
   methods: {
     ...mapState({
       errorAuth: "auth/errorAuth",
+      loading: "auth/loading",
     }),
     ...mapActions({
       signIn: "auth/signIn",
@@ -133,6 +125,15 @@ export default {
       password: (state) => state.auth.password,
       confirmPassword: (state) => state.auth.confirmPassword,
       errorConfirmPassword: (state) => state.auth.errorConfirmPassword,
+    }),
+    ...mapGetters({
+      isLoading: "auth/isLoading",
+      nameError: "auth/nameError",
+      emailError: "auth/emailError",
+      passwordError: "auth/passwordError",
+      confirmPasswordError: "auth/confirmPasswordError",
+      errorAuth: "auth/errorAuth",
+      messageErrorAuth: "auth/setMessageErrorAuth",
     }),
   },
   mounted() {

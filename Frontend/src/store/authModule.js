@@ -12,9 +12,10 @@ export const authModule = {
     password: "",
     passwordError: false,
     confirmPassword: "",
-    errorConfirmPassword: false,
+    confirmPasswordError: false,
     loading: false,
     errorAuth: false,
+    messageErrorAuth: "",
   }),
   mutations: {
     setLoading(state, loading) {
@@ -32,7 +33,7 @@ export const authModule = {
       state.nameError = false;
       state.emailError = false;
       state.passwordError = false;
-      state.errorConfirmPassword = false;
+      state.confirmPasswordError = false;
     },
     setEmail(state, email) {
       state.email = email;
@@ -40,7 +41,7 @@ export const authModule = {
       state.nameError = false;
       state.emailError = false;
       state.passwordError = false;
-      state.errorConfirmPassword = false;
+      state.confirmPasswordError = false;
     },
     setPassword(state, password) {
       state.password = password;
@@ -49,7 +50,7 @@ export const authModule = {
       state.emailError = false;
       state.passwordError = false;
       state.passwordError = false;
-      state.errorConfirmPassword = false;
+      state.confirmPasswordError = false;
     },
     setNameError(state, nameError) {
       state.nameError = nameError;
@@ -67,20 +68,24 @@ export const authModule = {
       state.emailError = false;
       state.passwordError = false;
       state.passwordError = false;
-      state.errorConfirmPassword = false;
+      state.confirmPasswordError = false;
     },
     setErrorAuth(state, errorAuth) {
       state.errorAuth = errorAuth;
     },
     setErrorConfirmPassword(state, errorConfirmPassword) {
-      state.errorConfirmPassword = errorConfirmPassword;
+      state.confirmPasswordError = errorConfirmPassword;
     },
     resetError(state) {
       state.errorAuth = false;
       state.nameError = false;
       state.emailError = false;
       state.passwordError = false;
-      state.errorConfirmPassword = false;
+      state.confirmPasswordError = false;
+      state.messageErrorAuth = "";
+    },
+    setMessageErrorAuth(state, message) {
+      state.messageErrorAuth = message;
     },
   },
   actions: {
@@ -92,7 +97,7 @@ export const authModule = {
         commit("setLoading", true);
         try {
           const response = await axios.post(
-            "https://jsonplaceholder.typicode.com/posts",
+            "http://45.8.248.219:5000/api-auth/login",
             {
               email: state.email,
               password: state.password,
@@ -112,7 +117,11 @@ export const authModule = {
         } catch (e) {
           if (e.response.status === 404) {
             commit("setErrorAuth", true);
+            commit("setMessageErrorAuth", e.message);
+            console.log(e);
           } else {
+            commit("setErrorAuth", true);
+            commit("setMessageErrorAuth", e.message);
             console.log(e);
           }
         } finally {
@@ -140,9 +149,9 @@ export const authModule = {
         commit("setLoading", true);
         try {
           const response = await axios.post(
-            "https://jsonplaceholder.typicode.com/posts",
+            "http://45.8.248.219:5000/auth/users",
             {
-              name: state.name,
+              user: state.name,
               email: state.email,
               password: state.password,
             }
@@ -161,9 +170,13 @@ export const authModule = {
           }
         } catch (e) {
           if (e.response.status === 404) {
+            console.log(e);
             commit("setErrorAuth", true);
+            commit("setMessageErrorAuth", e.message);
           } else {
             console.log(e);
+            commit("setErrorAuth", true);
+            commit("setMessageErrorAuth", e.message);
           }
         } finally {
           commit("setLoading", false);
@@ -180,6 +193,27 @@ export const authModule = {
   getters: {
     isAuth(state) {
       return state.isAuth;
+    },
+    isLoading(state) {
+      return state.loading;
+    },
+    nameError(state) {
+      return state.nameError;
+    },
+    emailError(state) {
+      return state.emailError;
+    },
+    passwordError(state) {
+      return state.passwordError;
+    },
+    confirmPasswordError(state) {
+      return state.confirmPasswordError;
+    },
+    errorAuth(state) {
+      return state.errorAuth;
+    },
+    setMessageErrorAuth(state) {
+      return state.messageErrorAuth;
     },
   },
   namespaced: true,
