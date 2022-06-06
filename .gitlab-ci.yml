@@ -3,7 +3,7 @@ stages:
   - test
   - deploy
 
-check-commit:
+building project:
   stage: test
   tags:
     - shell
