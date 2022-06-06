@@ -6,9 +6,12 @@ stages:
 check-commit:
   stage: test
   tags:
-    - docker
-  image: ubuntu:20.04
+    - shell
+  before_script:
+    - docker build -t server:$CI_COMMIT_SHORT_SHA Backend/victory
   script:
-    - echo "$CI_COMMIT_AUTHOR pushed new commit $CI_COMMIT_SHORT_SHA, message - $CI_COMMIT_MESSAGE"
+    - docker run --rm -it --name django -p 5000:8000 server:$CI_COMMIT_SHORT_SHA
+  after_script:
+    - docker system prune -a
   only:
     - dev
