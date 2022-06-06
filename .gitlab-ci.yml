@@ -13,11 +13,11 @@ building_server:
   tags:
     - shell
   before_script:
-    - sudo cp -r Backend/victory $PROJECT_DIR/backend
-    - docker build -t server:$CI_COMMIT_SHORT_SHA $PROJECT_DIR/backend
+    - sudo cp -r Backend/victory ~/projectvictory-test/backend/
+    - docker build -t server:$CI_COMMIT_SHORT_SHA ~/projectvictory-test/backend/
   script:
     - ls -l ~/projectvictory-test/
-  after_script:
-    - docker version
+  # after_script:
+  #   - docker version
   only:
     - dev
