@@ -96,13 +96,10 @@ export const authModule = {
       if (state.email.length > 0 && state.password.length > 0) {
         commit("setLoading", true);
         try {
-          const response = await axios.post(
-            "http://45.8.248.219:5000/api-auth/login",
-            {
-              email: state.email,
-              password: state.password,
-            }
-          );
+          const response = await axios.post("/api-auth/login", {
+            email: state.email,
+            password: state.password,
+          });
           console.log(response);
           const token = "здесь будет токен";
           if (token) {
@@ -148,14 +145,11 @@ export const authModule = {
       ) {
         commit("setLoading", true);
         try {
-          const response = await axios.post(
-            "http://45.8.248.219:5000/auth/users",
-            {
-              user: state.name,
-              email: state.email,
-              password: state.password,
-            }
-          );
+          const response = await axios.post("/auth/users", {
+            user: state.name,
+            email: state.email,
+            password: state.password,
+          });
           console.log(response);
           const token = "здесь будет токен";
           if (token) {

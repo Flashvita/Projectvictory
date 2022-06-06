@@ -4,6 +4,7 @@ import components from "@/components/UI";
 import router from "@/router/router";
 import store from "@/store";
 import VueScrollTo from "vue-scrollto";
+import "@/axios";
 
 const app = createApp(App);
 

@@ -4,9 +4,7 @@
       <form @submit.prevent class="auth-form">
         <div class="auth-form-wrapper" v-if="isSignIn">
           <h1>Вход в аккаунт</h1>
-          <div class="error-text" v-if="errorAuth">
-            Не верно указаны имя пользователя или пароль
-          </div>
+          <div class="error-text" v-if="errorAuth">{{ messageErrorAuth }}</div>
           <MyInput
             :model-value="email"
             :error="errorAuth || emailError"
