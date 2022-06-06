@@ -13,10 +13,6 @@ building_server_app:
   script:
     - sudo cp -r Backend/victory ~/projectvictory-test/backend/
     - docker build -t server:$CI_COMMIT_SHORT_SHA ~/projectvictory-test/backend/victory/
-  after_script: sudo cp cheker.sh ~
-  rules:
-    changes:
-      - cheker.sh
   only:
     - dev
 
@@ -25,6 +21,7 @@ run_server_app:
   tags:
     - shell
   before_script:
+    - sudo cp cheker.sh ~
     - bash cheker.sh $BACKEND_NAME
   script:
     - docker run --rm --name $BACKEND_NAME -d -p 5000:8000 server:$CI_COMMIT_SHORT_SHA
