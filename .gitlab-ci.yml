@@ -9,10 +9,10 @@ building server:
     - shell
   before_script:
     - who am i
-    #- cp -r Backend/victory /test
+    - sudo cp -r Backend/victory /test
     # - docker build -t server:$CI_COMMIT_SHORT_SHA Backend/victory
   script:
-    - ls
+    - ls -l /test
   # after_script:
     # - docker system prune -a
   only:
