@@ -6,7 +6,7 @@ stages:
   - deploy
 
 variables:
-  PROJECT_DIR: ~/projectvictory-test
+  PROJECT_DIR: /projectvictory-test
 
 building_server:
   stage: test
