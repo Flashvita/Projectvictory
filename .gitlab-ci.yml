@@ -6,15 +6,15 @@ stages:
   - deploy
 
 variables:
-  PROJECT_DIR: /projectvictory-test
+  PROJECT_DIR: ~/projectvictory-test
 
 building_server:
   stage: test
   tags:
     - shell
   before_script:
-    - sudo cp -r Backend/victory $PROJECT_DIR/backend/
-    - docker build -t server:$CI_COMMIT_SHORT_SHA $PROJECT_DIR/backend/victory/
+    - sudo cp -r Backend/victory ~/projectvictory-test/backend/
+    - docker build -t server:$CI_COMMIT_SHORT_SHA ~/projectvictory-test/backend/victory/
   script:
     - docker run --rm --name django -d -p 5000:8000 server:$CI_COMMIT_SHORT_SHA
   after_script:
