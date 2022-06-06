@@ -5,17 +5,16 @@ stages:
   - test
   - deploy
 
-building server:
+building_server:
   stage: test
   tags:
     - shell
   before_script:
-    - who am i
-    - cp -r Backend/victory /test
+    - sudo cp -r Backend/victory ~/projectvictory-test/
     # - docker build -t server:$CI_COMMIT_SHORT_SHA Backend/victory
   script:
-    - ls -l /test
-  # after_script:
-    # - docker system prune -a
+    - ls -l ~/projectvictory-test/
+  after_script:
+    - docker -version
   only:
     - dev
