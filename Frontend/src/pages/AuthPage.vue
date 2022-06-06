@@ -69,11 +69,11 @@
           this.isSignIn ? "У меня ещё нет аккаунта" : "У меня уже есть аккаунта"
         }}
       </MyButton_link>
+      <div class="auth-circle_1"></div>
+      <div class="auth-circle_2"></div>
+      <div class="auth-circle_3"></div>
+      <div class="auth-circle_4"></div>
     </div>
-    <div class="auth-circle_1"></div>
-    <div class="auth-circle_2"></div>
-    <div class="auth-circle_3"></div>
-    <div class="auth-circle_4"></div>
   </div>
 </template>
 
@@ -155,45 +155,58 @@ export default {
 
 .auth-circle_1 {
   position: absolute;
-  width: 274px;
-  height: 274px;
+  width: 0;
+  height: 0;
   left: 60px;
-  top: 400px;
-  background: #ff0a7f;
-  filter: blur(140px);
+  top: 476px;
+  -webkit-box-shadow: 0 0 143px 129px var(--color-accent);
+  -moz-box-shadow: 0 0 143px 129px var(--color-accent);
+  box-shadow: 0 0 143px 129px var(--color-accent);
+  border-radius: 50%;
+  opacity: 0.6;
 }
 
 .auth-circle_2 {
   position: absolute;
-  width: 135px;
-  height: 135px;
-  left: 334px;
-  top: 48px;
-  background: rgba(10, 255, 137, 0.7);
-  filter: blur(200px);
+  width: 0;
+  height: 0;
+  left: 285px;
+  top: 93px;
+  -webkit-box-shadow: 0 0 143px 92px rgba(10, 255, 137, 0.7);
+  -moz-box-shadow: 0 0 143px 92px rgba(10, 255, 137, 0.7);
+  box-shadow: 0 0 143px 92px rgba(10, 255, 137, 0.7);
+  border-radius: 50%;
+  opacity: 0.3;
 }
 
 .auth-circle_3 {
   position: absolute;
-  width: 216px;
-  height: 216px;
+  width: 0;
+  height: 0;
   left: 1023px;
   top: 493px;
-  background: rgba(10, 255, 137, 0.7);
-  filter: blur(200px);
+  -webkit-box-shadow: 0 0 143px 92px rgba(10, 255, 137, 0.7);
+  -moz-box-shadow: 0 0 143px 92px rgba(10, 255, 137, 0.7);
+  box-shadow: 0 0 143px 92px rgba(10, 255, 137, 0.7);
+  border-radius: 50%;
+  opacity: 0.5;
 }
 
 .auth-circle_4 {
   position: absolute;
-  width: 216px;
-  height: 216px;
+  width: 0;
+  height: 0;
   left: 1016px;
   top: 38px;
-  background: rgba(255, 10, 127, 0.7);
-  filter: blur(200px);
+  -webkit-box-shadow: 0 0 143px 92px var(--color-accent);
+  -moz-box-shadow: 0 0 143px 92px var(--color-accent);
+  box-shadow: 0 0 143px 92px var(--color-accent);
+  border-radius: 50%;
+  opacity: 0.3;
 }
 
 .auth-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
