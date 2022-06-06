@@ -13,11 +13,10 @@ building_server:
   tags:
     - shell
   before_script:
-    - docker stop django
-    - sudo cp -r Backend/victory ~/projectvictory-test/backend/
-    - docker build -t server:$CI_COMMIT_SHORT_SHA ~/projectvictory-test/backend/victory/
+    - sudo cp -r Backend/victory $PROJECT_DIR/backend/
+    - docker build -t server:$CI_COMMIT_SHORT_SHA $PROJECT_DIR/backend/victory/
   script:
-    - ls -l ~/projectvictory-test/backend/
+    - docker run --rm --name django -d -p 5000:8000 server:$CI_COMMIT_SHORT_SHA
   after_script:
     - docker system prune -af
   only:
