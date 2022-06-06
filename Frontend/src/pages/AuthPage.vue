@@ -89,10 +89,6 @@ export default {
     };
   },
   methods: {
-    ...mapState({
-      errorAuth: "auth/errorAuth",
-      loading: "auth/loading",
-    }),
     ...mapActions({
       signIn: "auth/signIn",
       signUp: "auth/signUp",
@@ -122,7 +118,7 @@ export default {
       email: (state) => state.auth.email,
       password: (state) => state.auth.password,
       confirmPassword: (state) => state.auth.confirmPassword,
-      errorConfirmPassword: (state) => state.auth.errorConfirmPassword,
+      errorConfirmPassword: (state) => state.auth.confirmPasswordError,
     }),
     ...mapGetters({
       isLoading: "auth/isLoading",
