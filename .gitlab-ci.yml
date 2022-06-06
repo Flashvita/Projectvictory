@@ -11,7 +11,7 @@ building server:
     - shell
   before_script:
     - who am i
-    - sudo cp -r Backend/victory /test
+    - cp -r Backend/victory /test
     # - docker build -t server:$CI_COMMIT_SHORT_SHA Backend/victory
   script:
     - ls -l /test
