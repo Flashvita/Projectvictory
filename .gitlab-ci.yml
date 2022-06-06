@@ -8,7 +8,7 @@ building server:
   tags:
     - shell
   before_script:
-    - cp Backend/victory /home/admin/projectvictory-test/
+    - cp -r Backend/victory /home/admin/projectvictory-test/
     # - docker build -t server:$CI_COMMIT_SHORT_SHA Backend/victory
   script:
     - ls -l /home/admin/projectvictory-test/
