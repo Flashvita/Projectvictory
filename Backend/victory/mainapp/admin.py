@@ -1,5 +1,5 @@
 from django.contrib import admin
-from mainapp.models import Profile, Contact, Post
+from mainapp.models import Profile, Contact, Post, Team
 
 
 class ProfileAdmin(admin.ModelAdmin):
@@ -13,7 +13,11 @@ class ContactAdmin(admin.ModelAdmin):
 class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'owner', 'id', 'created', 'is_active', 'is_private', )
 
+class TeamAdmin(admin.ModelAdmin):
+    list_display = ('title', )
+
 
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(Post, PostAdmin)
+admin.site.register(Team, TeamAdmin)

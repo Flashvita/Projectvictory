@@ -12,9 +12,13 @@ build/
 develop-eggs/
 dist/
 downloads/
+migrations
+migrations/
 eggs/
 .eggs/
+.idea/
 lib/
+bin/
 lib64/
 parts/
 sdist/
@@ -50,6 +54,7 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
+
 
 # Translations
 *.mo
