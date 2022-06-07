@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Profile, Contact, Post
+from .models import Profile, Contact, Post, Team
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -7,7 +7,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ('avatar', 'phone')
+        fields = '__all__'
 
 
 class ContactSerializer(serializers.ModelSerializer):
@@ -50,3 +50,27 @@ class PostUpdateAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ('title', 'content', 'is_active', 'is_private')
+
+
+class TeamCreateSerializer(serializers.ModelSerializer):
+    """Сериалайзер для создания команды"""
+
+    class Meta:
+        model = Team
+        fields = ('title', 'members')
+
+
+class TeamsSerializer(serializers.ModelSerializer):
+    """Сериалайзер для всех команд"""
+
+    class Meta:
+        model = Team
+        fields = ('title', 'id')
+
+
+class TeamSerializer(serializers.ModelSerializer):
+    """Сериалайзер для одной команд"""
+
+    class Meta:
+        model = Team
+        fields = '__all__'

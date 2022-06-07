@@ -9,6 +9,9 @@ from .views import (
     PostListView,
     PostDetailAdminView,
     PostDetailView,
+    TeamCreateView,
+    TeamsView,
+    TeamDetailView,
 )
 
 urlpatterns = [
@@ -16,6 +19,9 @@ urlpatterns = [
     path('post/create/', PostCreateView.as_view()),
     path('posts/', PostListView.as_view()),
     path('posts/detail/<int:pk>/', PostDetailView.as_view()),
+    path('team/create/', TeamCreateView.as_view()),
+    path('teams/', TeamsView.as_view()),
+    path('team/detail/<int:pk>/', TeamDetailView.as_view()),
     path('posts/detail_admin/<int:pk>/', PostDetailAdminView.as_view()),
     path('all-profiles/', ProfileListCreateView.as_view(), name="all-profiles"),
     path('profile/<int:pk>/', ProfileDetailView.as_view(), name="profile"),

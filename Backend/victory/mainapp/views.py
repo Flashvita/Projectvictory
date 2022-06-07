@@ -1,6 +1,6 @@
 from rest_framework.generics import (ListCreateAPIView, RetrieveUpdateDestroyAPIView,)
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
-from .models import Profile, Contact, Post
+from .models import Profile, Contact, Post, Team
 from .permissions import IsOwnerProfileOrReadOnly, IsOwnerPostOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -12,7 +12,10 @@ from .serializers import (
     PostSerializer,
     PostListSerializer,
     PostUpdateAdminSerializer,
-    PostUserUpdateSerializer
+    PostUserUpdateSerializer,
+    TeamCreateSerializer,
+    TeamSerializer,
+    TeamsSerializer
 )
 
 
@@ -79,6 +82,23 @@ class PostDetailView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, IsOwnerPostOrReadOnly]
 
 
+class TeamCreateView(CreateAPIView):
+    """Создание команды(только админ)"""
+    serializer_class = TeamCreateSerializer
+    permission_classes = [IsAdminUser]
 
+
+class TeamsView(ListCreateAPIView):
+    """Команды"""
+    queryset = Team.objects.all()
+    serializer_class = TeamsSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class TeamDetailView(RetrieveUpdateDestroyAPIView):
+    """Комада"""
+    queryset = Team.objects.all()
+    serializer_class = TeamSerializer
+    permission_classes = [IsAdminUser]
 
 
