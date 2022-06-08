@@ -145,8 +145,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # SMTP Email settings
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.yandex.ru' #'smtp.gmail.com'
-EMAIL_HOST_USER = 'DjangoTestemail2022@gmail.com'
-EMAIL_HOST_PASSWORD = '1234dx1234dx'
+EMAIL_HOST_USER = 'DjangoServer2022' #'DjangoTestemail2022@gmail.com'
+EMAIL_HOST_PASSWORD = 'djangotestemail'#'1234dx1234dx'
 EMAIL_PORT = 587
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
