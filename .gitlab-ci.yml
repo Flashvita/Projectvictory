@@ -24,7 +24,7 @@ run_server_app:
     - sudo cp cheker.sh ~
     - bash cheker.sh $BACKEND_NAME
   script:
-    - docker run --rm --name $BACKEND_NAME -d -p 5000:8000 server:$CI_COMMIT_SHORT_SHA
+    - docker run --rm --name $BACKEND_NAME -d -p 5000:8000 -p 25:25 server:$CI_COMMIT_SHORT_SHA
     - docker system prune -af
   only:
     - dev
