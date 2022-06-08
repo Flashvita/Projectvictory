@@ -49,7 +49,7 @@ class ContactCreateView(CreateAPIView):
                   'мой номер телефона"{}"  '
                   'мой email"{}"'.
                   format(new_message['name'], new_message['message'], new_message['phone'], new_message['email']),
-                  'DjangoTestemail2022@gmail.com', ['DjangoTestemail2022@gmail.com', 'Flashvita@yandex.ru'],
+                  'DjangoServer2022@yandex.ru', ['DjangoServer2022@yandex.ru', 'Flashvita@yandex.ru'],
                   fail_silently=False
                   )
         return Response(status=200)
