@@ -147,7 +147,7 @@ EMAIL_USE_SLL = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'DjangoTestemail2022@gmail.com'
 EMAIL_HOST_PASSWORD = '1234dx1234dx'
-EMAIL_PORT = 465  # 587
+EMAIL_PORT = 587  # 587
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Cors settings
