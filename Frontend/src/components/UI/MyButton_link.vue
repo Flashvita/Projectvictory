@@ -13,7 +13,7 @@ export default {
 <style scoped>
 .my-button {
   width: auto;
-  padding: 0 20px;
+  /*padding: 0 20px;*/
   border: none;
   background-color: transparent;
   color: var(--color-white);

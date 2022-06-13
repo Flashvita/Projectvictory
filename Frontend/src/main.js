@@ -5,6 +5,7 @@ import router from "@/router/router";
 import store from "@/store";
 import VueScrollTo from "vue-scrollto";
 import "@/axios";
+import CKEditor from "@ckeditor/ckeditor5-vue";
 
 const app = createApp(App);
 
@@ -28,4 +29,5 @@ app
     x: false,
     y: true,
   })
+  .use(CKEditor)
   .mount("#app");

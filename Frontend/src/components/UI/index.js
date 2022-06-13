@@ -1,4 +1,3 @@
-import MyLink from "@/components/UI/MyLink";
 import MyButton from "@/components/UI/MyButton";
 import MyInput from "@/components/UI/MyInput";
 import MyModal from "@/components/UI/MyModal";
@@ -8,7 +7,6 @@ import MySelect from "@/components/UI/MySelect";
 import Spinner from "@/components/UI/Spinner";
 
 export default [
-  MyLink,
   MyButton,
   MyButton_link,
   MyInput,

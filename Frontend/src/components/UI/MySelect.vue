@@ -2,17 +2,16 @@
   <div class="select-wrapper" :class="{ 'select-error': error }">
     <div class="select">
       <div
+        :style="backgroundColor"
         class="select-textTitle"
         :class="{ 'select-textTitle-error': error || this.isOpen }"
         @click="() => this.setOpenSelect(true)"
       >
         {{ value }}
       </div>
-      <div
-        :class="{ 'select-arrow-down': this.isOpen }"
-        class="select-arrow"
-        @click="() => this.setOpenSelect(true)"
-      />
+      <div class="select-arrow" @click="() => this.setOpenSelect(true)">
+        <IconArrow :is-rotate="this.isOpen" />
+      </div>
       <div
         class="select-placeholder"
         :class="{ 'select-placeholder_active': value.length > 0 }"
@@ -27,6 +26,7 @@
       @click="() => this.setOpenSelect(false)"
     />
     <div
+      :style="backgroundColor"
       class="select-optionsBlock"
       :class="{ 'select-optionsBlock_active': this.isOpen }"
     >
@@ -45,14 +45,22 @@
 </template>
 
 <script>
+import IconArrow from "@/components/UI/Icons/IconArrow";
 export default {
   name: "MySelect",
+  components: { IconArrow },
   data() {
     return {
       isOpen: false,
     };
   },
   props: {
+    backgroundColor: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
     options: {
       type: Array,
       default() {
@@ -161,37 +169,11 @@ export default {
   width: 26px;
   height: 20px;
   position: absolute;
-  transition: all 0.1s;
   margin-left: auto;
   top: 14px;
   right: 16px;
   transform: rotate(-90deg);
   cursor: pointer;
-
-  &:before {
-    content: "";
-    position: absolute;
-    top: 10px;
-    left: 3px;
-    width: 50%;
-    height: 2px;
-    background-color: var(--color-text-black);
-    transform: rotate(45deg);
-  }
-  &:after {
-    content: "";
-    position: absolute;
-    top: 10px;
-    right: 2px;
-    width: 50%;
-    height: 2px;
-    background-color: var(--color-text-black);
-    transform: rotate(-45deg);
-  }
-}
-
-.select-arrow-down {
-  transform: rotate(0deg);
 }
 
 .elementSelect {

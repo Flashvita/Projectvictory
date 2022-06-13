@@ -96,12 +96,12 @@ export const authModule = {
       if (state.email.length > 0 && state.password.length > 0) {
         commit("setLoading", true);
         try {
-          const response = await axios.post("/api-auth/login", {
-            email: state.email,
+          const response = await axios.post("/auth/token/login/", {
+            username: state.email,
             password: state.password,
           });
           console.log(response);
-          const token = "здесь будет токен";
+          const token = response.data.auth_token;
           if (token) {
             localStorage.setItem("isAuth", JSON.stringify(true));
             localStorage.setItem("token", JSON.stringify(token));
@@ -145,13 +145,13 @@ export const authModule = {
       ) {
         commit("setLoading", true);
         try {
-          const response = await axios.post("/auth/users", {
-            user: state.name,
+          const response = await axios.post("/auth/users/", {
+            username: state.name,
             email: state.email,
             password: state.password,
           });
           console.log(response);
-          const token = "здесь будет токен";
+          const token = response.data.auth_token;
           if (token) {
             localStorage.setItem("isAuth", JSON.stringify(true));
             localStorage.setItem("token", JSON.stringify(token));

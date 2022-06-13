@@ -1,7 +1,9 @@
 <template>
   <HeaderComponent />
-  <main>
-    <router-view />
+  <main class="app-main">
+    <component :is="layout">
+      <router-view />
+    </component>
   </main>
   <FooterComponent />
   <!--  <MyButton @click="onShowModal">Открыть модальное окно</MyButton>-->
@@ -13,25 +15,23 @@
 <script>
 import HeaderComponent from "@/components/Header";
 import FooterComponent from "@/components/Footer";
+import LayoutArticles from "@/layout/LayoutArticles";
+import EmptyLayout from "@/layout/EmptyLayout";
 
 export default {
-  components: { FooterComponent, HeaderComponent },
-  data() {
-    return {
-      // modalVisible: false,
-    };
-  },
-  methods: {
-    // onShowModal() {
-    //   this.modalVisible = true;
-    // },
+  components: { FooterComponent, HeaderComponent, LayoutArticles, EmptyLayout },
+  computed: {
+    layout() {
+      return this.$route.meta.layout || "EmptyLayout";
+    },
   },
 };
 </script>
 
-<style>
+<style lang="scss">
 html {
   box-sizing: border-box;
+  height: 100%;
 }
 
 *,
@@ -47,10 +47,16 @@ body {
   scroll-behavior: smooth;
   font-family: "Roboto-Regular", sans-serif;
   color: var(--color-text-black);
+  height: 100%;
 }
 
 ul {
   list-style: none;
+}
+
+li {
+  margin: 0;
+  padding: 0;
 }
 
 img {
@@ -65,6 +71,7 @@ img {
   --color-accent-70: rgba(255, 10, 127, 0.7);
   --color-text-black: rgba(23, 9, 47, 0.7);
   --color-bacground-black: #17092f;
+  --color-bacground-grey: #b8b5c1;
   --color-yelow: #faff00;
 
   --font-Thin: "Roboto-Thin", sans-serif;
@@ -75,9 +82,25 @@ img {
   --radius: 15px;
 }
 
+.app {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  background-color: var(--color-bacground-grey);
+  flex: 1 1 auto;
+  display: flex;
+}
+
 .container {
   width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+}
+
+.ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
+  border-color: red;
 }
 </style>

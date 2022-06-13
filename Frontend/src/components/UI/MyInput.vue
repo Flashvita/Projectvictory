@@ -1,6 +1,7 @@
 <template>
   <div class="my-input-wrapper" :class="{ 'my-input-error': error }">
     <input
+      :style="[backgroundColor, padding]"
       class="my-input"
       :value="modelValue"
       :type="type"
@@ -28,6 +29,8 @@ export default {
     modelValue: [String, Number],
     placeholderText: String,
     error: Boolean,
+    backgroundColor: Object,
+    padding: Object,
   },
   data() {
     return {

@@ -1,9 +1,14 @@
 <template>
   <nav class="navbar">
-    <MyLink to="/">Главная</MyLink>
-    <MyLink to="#services">Услуги</MyLink>
-    <MyLink to="#cases">Кейсы</MyLink>
-    <MyLink to="#feedback">Контакты</MyLink>
+    <router-link class="link" to="/" v-scroll-to="'/'">Главная</router-link>
+    <router-link class="link" to="/" v-scroll-to="'#services'">
+      Услуги
+    </router-link>
+    <router-link class="link" to="/" v-scroll-to="'#cases'">Кейсы</router-link>
+    <router-link class="link" to="/articles">Статьи</router-link>
+    <router-link class="link" to="/" v-scroll-to="'#feedback'">
+      Контакты
+    </router-link>
   </nav>
 </template>
 
@@ -18,7 +23,9 @@ export default {
   display: flex;
   flex-wrap: nowrap;
 
-  a {
+  .link {
+    padding: 10px;
+    text-decoration: none;
     color: var(--color-white);
   }
 }

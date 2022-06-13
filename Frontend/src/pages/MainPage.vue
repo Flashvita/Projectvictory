@@ -20,44 +20,46 @@
     </ul>
   </section>
   <section id="cases" class="main-cases">
-    <h2>Кейсы</h2>
-    <div class="carousel">
-      <div class="main-cases-carousel">
-        <div class="main-cases-carousel-item">
-          <div class="main-cases-item">
-            <img src="@/assets/img.png" alt="img" />
-            <div class="main-case-description">
-              <h3>Название</h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Dolorem error excepturi fugiat incidunt mollitia neque nisi
-                optio soluta! Doloremque est libero mollitia nam nobis quibusdam
-                voluptas. Aut fugit laudantium sed.
-              </p>
+    <div class="cases-wrapper">
+      <h2>Кейсы</h2>
+      <div class="carousel">
+        <div class="main-cases-carousel">
+          <div class="main-cases-carousel-item">
+            <div class="main-cases-item">
+              <img src="@/assets/img.png" alt="img" />
+              <div class="main-case-description">
+                <h3>Название</h3>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Dolorem error excepturi fugiat incidunt mollitia neque nisi
+                  optio soluta! Doloremque est libero mollitia nam nobis
+                  quibusdam voluptas. Aut fugit laudantium sed.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="main-cases-carousel-item">
+            <div class="main-cases-item">
+              <img src="@/assets/img.png" alt="img" />
+              <div class="main-case-description">
+                <h3>Название</h3>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Dolorem error excepturi fugiat incidunt mollitia neque nisi
+                  optio soluta! Doloremque est libero mollitia nam nobis
+                  quibusdam voluptas. Aut fugit laudantium sed.
+                </p>
+              </div>
             </div>
           </div>
         </div>
-        <div class="main-cases-carousel-item">
-          <div class="main-cases-item">
-            <img src="@/assets/img.png" alt="img" />
-            <div class="main-case-description">
-              <h3>Название</h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Dolorem error excepturi fugiat incidunt mollitia neque nisi
-                optio soluta! Doloremque est libero mollitia nam nobis quibusdam
-                voluptas. Aut fugit laudantium sed.
-              </p>
-            </div>
-          </div>
-        </div>
+        <button class="carousel-btn carousel-btn-prev">
+          <img src="@/assets/icons/next.svg" alt="prev" />
+        </button>
+        <button class="carousel-btn carousel-btn-next">
+          <img src="@/assets/icons/next.svg" alt="next" />
+        </button>
       </div>
-      <button class="carousel-btn carousel-btn-prev">
-        <img src="@/assets/icons/next.svg" alt="prev" />
-      </button>
-      <button class="carousel-btn carousel-btn-next">
-        <img src="@/assets/icons/next.svg" alt="next" />
-      </button>
     </div>
   </section>
   <FeedbackComponent />
@@ -170,6 +172,7 @@ export default {
   flex-direction: column;
   align-items: center;
   padding: 30px 20px;
+  background-color: var(--color-white);
 
   h2 {
     font-size: 43px;
@@ -188,12 +191,16 @@ export default {
 }
 
 .main-cases {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 30px 20px;
-  width: 913px;
-  margin: 0 auto;
+  background-color: var(--color-white);
+
+  .cases-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 20px 90px;
+    width: 913px;
+    margin: 0 auto;
+  }
 
   h2 {
     font-size: 43px;
