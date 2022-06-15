@@ -90,24 +90,23 @@ export const authModule = {
   },
   actions: {
     async signIn({ state, commit }) {
-      if (state.email.length <= 0) commit("setEmailError", true);
+      if (state.name.length <= 0) commit("setNameError", true);
       if (state.password.length <= 0) commit("setPasswordError", true);
 
-      if (state.email.length > 0 && state.password.length > 0) {
+      if (state.name.length > 0 && state.password.length > 0) {
         commit("setLoading", true);
         try {
           const response = await axios.post("/auth/token/login/", {
-            username: state.email,
+            username: state.name,
             password: state.password,
           });
-          console.log(response);
           const token = response.data.auth_token;
           if (token) {
             localStorage.setItem("isAuth", JSON.stringify(true));
             localStorage.setItem("token", JSON.stringify(token));
             commit("setIsAuth", true);
             commit("setToken", token);
-            commit("setEmail", "");
+            commit("setName", "");
             commit("setPassword", "");
             await router.push("/");
           }
@@ -180,7 +179,7 @@ export const authModule = {
     logout({ commit }) {
       localStorage.removeItem("isAuth");
       localStorage.removeItem("token");
-      commit("setIsAuth", true);
+      commit("setIsAuth", false);
       commit("setToken", "");
     },
   },

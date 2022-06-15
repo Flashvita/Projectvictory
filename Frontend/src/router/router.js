@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Main from "@/pages/MainPage";
 import AuthPage from "@/pages/AuthPage";
-// import ArticlesPage from "@/pages/ArticlesPage";
 import ArticleItemPage from "@/components/Articles/ArticleItemPage";
 import ArticleCreate from "@/components/Articles/ArticleCreate";
 import ArticleList from "@/components/Articles/ArticleList";
+import NotFound from "@/pages/404";
+import store from "@/store";
 
 const routes = [
   {
@@ -20,26 +21,43 @@ const routes = [
   {
     path: "/articles",
     name: "articles",
-    meta: { layout: "LayoutArticles" },
+    meta: { layout: "LayoutArticles", requiresAuth: true },
     component: ArticleList,
   },
   {
     path: "/articles/create",
-    name: "ArticleCreate",
-    meta: { layout: "LayoutArticles" },
+    name: "articleCreate",
+    meta: { layout: "LayoutArticles", requiresAuth: true },
     component: ArticleCreate,
   },
   {
     path: "/articles/:id",
-    name: "ArticleItemPage",
-    meta: { layout: "LayoutArticles" },
+    name: "articleItemPage",
+    meta: { layout: "LayoutArticles", requiresAuth: true },
     component: ArticleItemPage,
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "notFound",
+    component: NotFound,
   },
 ];
 
 const router = createRouter({
   routes,
   history: createWebHistory(),
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((route) => route.meta?.requiresAuth)) {
+    if (store.state.auth.isAuth) {
+      next();
+    } else {
+      next("/auth");
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;

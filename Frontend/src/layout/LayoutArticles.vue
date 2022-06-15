@@ -13,8 +13,12 @@
 
 <script>
 import MenuArticles from "@/components/Articles/MenuArticles";
+import { mapGetters } from "vuex";
 
 export default {
+  computed: {
+    ...mapGetters({ isAuth: "auth/isAuth" }),
+  },
   name: "LayoutArticles",
   components: { MenuArticles },
   data() {

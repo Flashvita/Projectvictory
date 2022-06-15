@@ -6,11 +6,11 @@
           <h1>Вход в аккаунт</h1>
           <div class="error-text" v-if="errorAuth">{{ messageErrorAuth }}</div>
           <MyInput
-            :model-value="email"
-            :error="errorAuth || emailError"
-            @update:model-value="setEmail"
+            :model-value="name"
+            :error="errorAuth || nameError"
+            @update:model-value="setName"
             type="text"
-            placeholderText="Email"
+            placeholderText="Имя"
           />
           <MyInput
             :model-value="password"

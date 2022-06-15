@@ -7,9 +7,7 @@
         <MyButton_link v-if="!isAuth" @click="$router.push('/auth')">
           Войти
         </MyButton_link>
-        <MyButton_link v-if="isAuth" @click="this.logout">
-          Выйти
-        </MyButton_link>
+        <MyButton_link v-else @click="this.logout"> Выйти </MyButton_link>
       </div>
     </div>
   </header>
