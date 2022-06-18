@@ -1,0 +1,21 @@
+[
+  {
+    id: "1",
+    name: "Разработка",
+    path: "Разработка",
+    listCategories: [
+        {
+            id: "2",
+            name: "Backend",
+            path: "Разработка/Backend",
+            listCategories: [
+                {
+                    id: "3",
+                    name: "Docker",
+                    path: "Разработка/Backend/Docker",
+                    listCategories: []
+                }
+            ]
+        }
+    ]
+]
