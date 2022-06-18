@@ -32,7 +32,7 @@
 
 <script>
 import RemoveBasket from "@/assets/icons/remove-basket";
-import IconBase from "@/components/UI/Icons/IconBase";
+import IconBase from "@/components/UI/IconBase";
 
 export default {
   name: "ArticleItem",

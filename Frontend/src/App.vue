@@ -28,8 +28,7 @@ export default {
   },
   methods: {
     async getProfile() {
-      const res = await axios.get(`/api/v1/profile/2`);
-      console.log(res);
+      await axios.get(`/api/v1/profile/2`);
     },
   },
   mounted() {

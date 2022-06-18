@@ -1,5 +1,6 @@
 <template>
-  <div class="main">
+  <div v-if="loadedArticle">Загрузка...</div>
+  <div v-else class="main">
     <h1 class="title">Создание статьи</h1>
     <form class="form-wrapper">
       <div class="theme-wrapper">
@@ -68,68 +69,28 @@
         <MyInput
           :padding="padding"
           :backgroundColor="backgroundColor"
-          :model-value="this.name"
+          :model-value="title"
           :error="false"
           type="text"
-          @update:model-value="changeName"
+          @update:model-value="setTitle"
         />
       </div>
       <div class="article-wrapper">
-        <TextEditor
-          @update:model-value="changeBodyArticle"
-          :model-value="this.bodyArticle"
-        />
+        <TextEditor />
       </div>
-      <MyButton @click="createArticle">Создать статью</MyButton>
+      <MyButton @click="this.createArticle">Создать статью</MyButton>
     </form>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
+import { mapActions, mapMutations, mapGetters } from "vuex";
 import TextEditor from "@/components/UI/TextEditor/TextEditor";
 
 export default {
   name: "ArticleCreate",
   components: { TextEditor },
-  methods: {
-    changeName(e) {
-      this.name = e;
-    },
-    changeBodyArticle(body) {
-      this.bodyArticle = body;
-    },
-    async createArticle(e) {
-      e.preventDefault();
-      try {
-        const response = await axios.post("/api/v1/post/create/", {
-          category: this.$route.query.catalog,
-          // subcategory: this.subcategory,
-          // theme: this.theme,
-          title: this.name,
-          content: this.bodyArticle,
-        });
-        console.log(response);
-      } catch (e) {
-        console.log(e);
-      }
-      console.log({
-        category: this.$route.query.catalog,
-        subcategory: this.subcategory,
-        theme: this.theme,
-        name: this.name,
-        bodyArticle: this.bodyArticle,
-      });
-    },
-    changeCategory(selected) {
-      this.categoryError = false;
-      this.category = selected.name;
-    },
-    changeSubcategory(selected) {
-      this.subcategoryError = false;
-      this.subcategory = selected.name;
-    },
-  },
   data() {
     return {
       backgroundColor: {
@@ -138,26 +99,41 @@ export default {
       padding: {
         padding: "0px 16px",
       },
-      categoryError: false,
-      category: "",
-      categories: [
-        { name: "Категория-1", id: "1" },
-        { name: "Категория-2", id: "2" },
-        { name: "Категория-3", id: "3" },
-        { name: "Категория-4", id: "4" },
-      ],
-      subcategoryError: false,
-      subcategory: "",
-      subcategories: [
-        { name: "Подкатегория-1", id: "1" },
-        { name: "Подкатегория-2", id: "2" },
-        { name: "Подкатегория-3", id: "3" },
-        { name: "Подкатегория-4", id: "4" },
-      ],
       theme: "",
-      name: "",
-      bodyArticle: "",
+      load: false,
     };
+  },
+  methods: {
+    ...mapActions({
+      getArticle: "article/getArticle",
+    }),
+    ...mapMutations({
+      setTitle: "article/setTitle",
+      setContent: "article/setContent",
+    }),
+    async createArticle(e) {
+      e.preventDefault();
+      console.log({
+        category: this.$route.query.catalog,
+        title: this.title,
+        content: this.content,
+      });
+    },
+  },
+  computed: {
+    ...mapGetters({
+      title: "article/title",
+      content: "article/content",
+      loadedArticle: "article/loadedArticle",
+    }),
+  },
+  async mounted() {
+    if (this.$route.query.id) {
+      await this.getArticle({ id: this.$route.query.id });
+    } else {
+      this.setTitle("");
+      this.setContent("");
+    }
   },
 };
 </script>

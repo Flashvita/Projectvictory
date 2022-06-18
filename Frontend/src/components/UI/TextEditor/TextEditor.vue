@@ -4,15 +4,16 @@
       @blur="ofFocused"
       @focus="onFocused"
       :editor="editor"
-      :value="modelValue"
+      :value="content"
       :config="editorConfig"
-      :ref="'text-editor'"
-      @input="onChangeData"
-    ></ckeditor>
+      v-model="content"
+      @input="setContent"
+    />
   </div>
 </template>
 
 <script>
+import { mapMutations, mapGetters } from "vuex";
 import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
 import Autoformat from "@ckeditor/ckeditor5-autoformat/src/autoformat.js";
 import AutoImage from "@ckeditor/ckeditor5-image/src/autoimage.js";
@@ -46,24 +47,23 @@ import "./style.css";
 
 export default {
   name: "TextEditor",
-  props: {
-    modelValue: {
-      type: String,
-      default() {
-        return "";
-      },
-    },
-  },
   methods: {
-    onChangeData(data) {
-      this.$emit("update:modelValue", data);
-    },
+    ...mapMutations({
+      setTitle: "article/setTitle",
+      setContent: "article/setContent",
+    }),
     onFocused() {
       this.active = true;
     },
     ofFocused() {
       this.active = false;
     },
+  },
+  computed: {
+    ...mapGetters({
+      content: "article/content",
+      loadedArticle: "article/loadedArticle",
+    }),
   },
   data() {
     return {
