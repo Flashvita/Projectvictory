@@ -62,6 +62,7 @@
 <script>
 import IconBase from "@/components/UI/IconBase";
 import ArrowIcon from "@/assets/icons/arrow-icon";
+import { mapActions } from "vuex";
 
 export default {
   name: "MenuArticles",
@@ -81,6 +82,9 @@ export default {
     },
   },
   methods: {
+    ...mapActions({
+      getArticlesOll: "article/getArticlesOll",
+    }),
     addArticle(address) {
       this.$router.push({
         path: "/articles/create",
@@ -91,6 +95,7 @@ export default {
       const path =
         this.$route.name === "ArticleCreate" ? "/articles/create" : "/articles";
       this.$router.push({ path: path, query: { catalog: address } });
+      this.getArticlesOll(address);
       if (this.changedCategory.includes(name)) {
         const indexElement = this.changedCategory.findIndex(
           (element) => element === name

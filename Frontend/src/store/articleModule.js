@@ -6,6 +6,7 @@ export const articleModule = {
     title: "",
     content: "",
     loadedArticle: false,
+    articleList: [],
   }),
   mutations: {
     setTitle(state, title) {
@@ -17,6 +18,9 @@ export const articleModule = {
     setLoadedArticle(state, load) {
       state.loadedArticle = load;
     },
+    setArticleList(state, articleList) {
+      state.articleList = articleList;
+    },
   },
   actions: {
     async getArticle({ commit }, article) {
@@ -25,6 +29,34 @@ export const articleModule = {
         const response = await axios.get(`/api/v1/posts/detail/${article.id}`);
         commit("setTitle", response.data.title);
         commit("setContent", response.data.content);
+      } catch (e) {
+        console.log(e.message);
+      } finally {
+        commit("setLoadedArticle", false);
+      }
+    },
+    async getArticlesOll({ commit }, query = "") {
+      commit("setLoadedArticle", true);
+      const queryParams = {
+        limit: 10,
+        catalog: query,
+      };
+      try {
+        const response = await axios.get("/api/v1/posts/", {
+          params: queryParams,
+        });
+        commit("setArticleList", response.data);
+        console.log(response.data);
+      } catch (e) {
+        console.log(e.message);
+      } finally {
+        commit("setLoadedArticle", false);
+      }
+    },
+    async removeArticle({ commit }, id) {
+      commit("setLoadedArticle", true);
+      try {
+        await axios.delete(`/api/v1/posts/detail/${id}`);
       } catch (e) {
         console.log(e.message);
       } finally {
@@ -41,6 +73,9 @@ export const articleModule = {
     },
     loadedArticle(state) {
       return state.loadedArticle;
+    },
+    articleList(state) {
+      return state.articleList;
     },
   },
   namespaced: true,

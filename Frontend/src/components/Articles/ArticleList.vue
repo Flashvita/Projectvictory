@@ -1,19 +1,18 @@
 <template>
-  <div v-if="load">Загрузка...</div>
-  <p v-if="!load && articles.length === 0">Список пуст</p>
-  <ul v-if="!load && articles.length > 0" class="article-list">
+  <div v-if="loadedArticle">Загрузка...</div>
+  <p v-if="!loadedArticle && articleList.length === 0">Список пуст</p>
+  <ul v-if="!loadedArticle && articleList.length > 0" class="article-list">
     <ArticleItem
       :key="article.id"
       :article="article"
-      v-for="article in articles"
-      :remove="removeArticle"
+      v-for="article in articleList"
     />
   </ul>
 </template>
 
 <script>
-import axios from "axios";
 import ArticleItem from "@/components/Articles/ArticleItem";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "ArticleList",
@@ -25,31 +24,18 @@ export default {
     };
   },
   methods: {
-    async fetchArticles() {
-      this.load = true;
-      try {
-        const response = await axios.get("/api/v1/posts/").finally(() => {
-          this.load = false;
-        });
-        this.articles = response.data;
-      } catch (e) {
-        console.log(e.message);
-      }
-    },
-    async removeArticle(id) {
-      this.load = true;
-      try {
-        await axios.delete(`/api/v1/posts/detail/${id}`).finally(() => {
-          this.load = false;
-        });
-        await this.fetchArticles();
-      } catch (e) {
-        console.log(e.message);
-      }
-    },
+    ...mapActions({
+      getArticlesOll: "article/getArticlesOll",
+    }),
+  },
+  computed: {
+    ...mapGetters({
+      articleList: "article/articleList",
+      loadedArticle: "article/loadedArticle",
+    }),
   },
   mounted() {
-    this.fetchArticles();
+    this.getArticlesOll();
   },
 };
 </script>

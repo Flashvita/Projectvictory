@@ -8,8 +8,6 @@ axios.interceptors.request.use(function (config) {
   if (token) {
     config.headers.common = {
       Authorization: `Token ${JSON.parse(token)}`,
-      // "Content-type": "application/json",
-      // Accept: "application/json",
     };
   }
   return config;
