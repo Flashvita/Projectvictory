@@ -84,7 +84,7 @@
 </template>
 
 <script>
-// import axios from "axios";
+import axios from "axios";
 import { mapActions, mapMutations, mapGetters } from "vuex";
 import TextEditor from "@/components/UI/TextEditor/TextEditor";
 
@@ -115,9 +115,21 @@ export default {
       e.preventDefault();
       console.log({
         category: this.$route.query.catalog,
+        theme: this.theme,
         title: this.title,
         content: this.content,
       });
+      try {
+        const response = await axios.post("/api/v1/post/create/", {
+          category: this.$route.query.catalog,
+          theme: this.theme,
+          title: this.title,
+          content: this.content,
+        });
+        console.log(response);
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
   computed: {
