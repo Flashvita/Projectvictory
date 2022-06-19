@@ -52,6 +52,12 @@ class ContactCreateView(CreateAPIView):
                   'DjangoServer2022@yandex.ru', ['DjangoServer2022@yandex.ru', 'Flashvita@yandex.ru'],
                   fail_silently=False
                   )
+        Contact.objects.create(
+            message=new_message['message'],
+            phone=new_message['phone'],
+            email=new_message['email'],
+            name=new_message['name'],
+        )
         return Response(status=200)
 
 
@@ -64,6 +70,7 @@ class PostCreateView(CreateAPIView):
 class PostListView(ListCreateAPIView):
     """Все статьи"""
     queryset = Post.objects.all()
+    quantity = queryset.count()
     serializer_class = PostListSerializer
     permission_classes = [IsAuthenticated]
 

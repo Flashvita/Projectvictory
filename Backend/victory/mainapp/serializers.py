@@ -1,5 +1,9 @@
 from rest_framework import serializers
 from .models import Profile, Contact, Post, Team
+from djoser.serializers import UserCreateSerializer
+
+
+
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -13,9 +17,21 @@ class ProfileSerializer(serializers.ModelSerializer):
 class ContactSerializer(serializers.ModelSerializer):
     """Сериалайзер для формы обратной связи"""
 
+
+
+    def validate(self, data):
+       phone = data.get('phone')
+       if len(phone)!=11:
+           message = 'Номер телефона должен быть 11 цифр'
+           raise serializers.ValidationError(message)
+       return data
+
+
     class Meta:
         model = Contact
         fields = ('name', 'email', 'phone', 'message')
+        validators = []
+
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -23,9 +39,22 @@ class PostSerializer(serializers.ModelSerializer):
 
     owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
+    def validate(self, data):
+       content = data.get('content')
+       title = data.get('title')
+       if len(title) < 5:
+           message = 'Название статьи должно быть больше 5 символов'
+           raise serializers.ValidationError(message)
+       if len(content) < 500:
+           message = 'Статья должна быть больше 500 символов'
+           raise serializers.ValidationError(message)
+       return data
+
     class Meta:
         model = Post
-        fields = ('title', 'content', 'owner')
+        fields = ('title', 'content', 'owner', 'subcategory')
+        validators = []
+
 
 
 class PostUserUpdateSerializer(serializers.ModelSerializer):
@@ -49,7 +78,7 @@ class PostUpdateAdminSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('title', 'content', 'is_active', 'is_private')
+        fields = ('title', 'content', 'is_active', 'is_private', 'subcategory')
 
 
 class TeamCreateSerializer(serializers.ModelSerializer):

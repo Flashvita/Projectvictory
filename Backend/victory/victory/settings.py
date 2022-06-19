@@ -150,6 +150,7 @@ EMAIL_HOST_PASSWORD = 'djangotestemail'#'1234dx1234dx'
 EMAIL_PORT = 587
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+
 # Cors settings
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
@@ -160,6 +161,7 @@ CORS_ALLOW_CREDENTIALS = True
 #     'http://45.8.248.219:5000',
 #     'http://45.8.248.219:5001',
 # ]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
