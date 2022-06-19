@@ -40,11 +40,42 @@ class Contact(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = 'Форма'
+        verbose_name_plural = 'Формы'
+
+
+class Category(models.Model):
+    title = models.CharField(max_length=200, verbose_name='Название категории')
+    slug = models.SlugField(max_length=255, unique=False)
+
+    def __str__(self):
+        return f"{self.title}"
+
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+
+
+class SubCategory(models.Model):
+    title = models.CharField(max_length=200, verbose_name='Название подкатегории')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Подкатегория')
+    slug = models.SlugField(max_length=255, unique=False)
+
+    def __str__(self):
+        return f"{self.title}"
+
+    class Meta:
+        verbose_name = 'Подкатегория'
+        verbose_name_plural = 'Подкатегории'
+
 
 class Post(models.Model):
     """Статьи"""
-    title = models.CharField(max_length=200, verbose_name='Заголовок')
-    content = models.TextField(max_length=5000, verbose_name='Содержимое')
+    title = models.CharField(max_length=200, verbose_name='Заголовок статьи')
+    slug = models.SlugField(max_length=255, unique=False)
+    subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE, verbose_name='Категория')
+    content = models.TextField(max_length=90000, verbose_name='Содержимое')
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='post_owner')
     is_active = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now=True, db_index=True, verbose_name='Время публикации')
