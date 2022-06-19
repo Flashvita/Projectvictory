@@ -70,7 +70,6 @@ class PostCreateView(CreateAPIView):
 class PostListView(ListCreateAPIView):
     """Все статьи"""
     queryset = Post.objects.all()
-    quantity = queryset.count()
     serializer_class = PostListSerializer
     permission_classes = [IsAuthenticated]
 
