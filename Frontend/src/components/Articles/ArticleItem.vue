@@ -16,7 +16,10 @@
       >
         Читать далее
       </MyButton>
-      <div class="icon-remove" @click="remove(article.id)">
+      <div
+        class="icon-remove"
+        @click="this.onRemove(article.id, this.$route.query)"
+      >
         <IconBase
           iconName="remove-icon"
           width="20"
@@ -33,6 +36,7 @@
 <script>
 import RemoveBasket from "@/assets/icons/remove-basket";
 import IconBase from "@/components/UI/IconBase";
+import { mapActions } from "vuex";
 
 export default {
   name: "ArticleItem",
@@ -53,11 +57,17 @@ export default {
         required: true,
       },
     },
-    remove: {
-      type: Function,
+  },
+  methods: {
+    ...mapActions({
+      getArticleOll: "article/getArticlesOll",
+      removeArticle: "article/removeArticle",
+    }),
+    async onRemove(id, query) {
+      await this.removeArticle(id);
+      await this.getArticleOll(query);
     },
   },
-  methods: {},
 };
 </script>
 
