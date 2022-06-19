@@ -76,7 +76,7 @@
         />
       </div>
       <div class="article-wrapper">
-        <TextEditor />
+        <!--        <TextEditor />-->
       </div>
       <MyButton @click="this.createArticle">Создать статью</MyButton>
     </form>
@@ -86,11 +86,11 @@
 <script>
 import axios from "axios";
 import { mapActions, mapMutations, mapGetters } from "vuex";
-import TextEditor from "@/components/UI/TextEditor/TextEditor";
+// import TextEditor from "@/components/UI/TextEditor/TextEditor";
 
 export default {
   name: "ArticleCreate",
-  components: { TextEditor },
+  // components: { TextEditor },
   data() {
     return {
       backgroundColor: {
