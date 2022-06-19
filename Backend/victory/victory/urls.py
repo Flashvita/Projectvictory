@@ -20,13 +20,13 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
-    path('auth/', include('djoser.urls')),
-    path('auth/', include('djoser.urls.jwt')),
-    path('auth/', include('djoser.urls.authtoken')),
-    path('api/v1/', include('mainapp.urls')),
-]
+    path('server/admin/', admin.site.urls),
+    path('server/api-auth/', include('rest_framework.urls')),
+    path('server/auth/', include('djoser.urls')),
+    path('server/auth/', include('djoser.urls.jwt')),
+    path('server/auth/', include('djoser.urls.authtoken')),
+    path('server/api/v1/', include('mainapp.urls')),
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

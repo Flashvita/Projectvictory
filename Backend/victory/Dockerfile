@@ -1,9 +1,7 @@
 FROM python:3.8
 
-COPY . /server
-
-WORKDIR /server
+COPY . /.
 
 RUN pip3 install -r requirements.txt
 
-ENTRYPOINT bash init.sh
+ENTRYPOINT bash init.sh 0.0.0.0

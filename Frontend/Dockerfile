@@ -1,9 +1,13 @@
-FROM node:16.15
+FROM node:16.15 as build
 
-COPY . /app
-
-WORKDIR /app
-
+COPY . /.
 RUN yarn install
+RUN yarn build
 
-ENTRYPOINT yarn serve
+FROM nginx:stable
+
+RUN mkdir /www
+COPY --from=build dist/ www/
+COPY nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 80

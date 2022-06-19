@@ -1,0 +1,31 @@
+version: '3.1'
+
+services:
+  backend: 
+    container_name: django
+    build: Backend/victory/
+    restart: always
+    ports:
+      - 8000:8000
+      - 587:587
+    expose:
+      - 8000
+      - 587
+
+  # frontend:
+  #   container_name: vue3
+  #   build: ~/projectvictory-test/frontend/
+  #   restart: always
+  #   ports:
+  #     - 5001:80
+  #   depends_on:
+  #     - backend
+  #   expose:
+  #     - 5001
+    
+  web:
+    image: nginx:stable
+    ports:
+      - 8080:80
+    volumes:
+      - /Users/pavel_milanov/Desktop/projects/projectvictory/nginx.conf:/etc/nginx/nginx.conf
