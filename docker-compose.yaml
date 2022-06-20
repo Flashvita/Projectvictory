@@ -25,5 +25,5 @@ services:
     expose:
       - 80
     volumes:
-      - /home/gitlab-runner/projectvictory-test/projectvictory-test/nginx.conf:/etc/nginx/nginx.conf
-      - /home/gitlab-runner/projectvictory-test/projectvictory-test/static/:/www/static
+      - /home/gitlab-runner/projectvictory-test/nginx.conf:/etc/nginx/nginx.conf
+      - /home/gitlab-runner/projectvictory-test/static/:/www/static
