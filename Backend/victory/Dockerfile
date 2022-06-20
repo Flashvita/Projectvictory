@@ -4,4 +4,4 @@ COPY . /.
 
 RUN pip3 install -r requirements.txt
 
-ENTRYPOINT bash init.sh 0.0.0.0
+ENTRYPOINT bash init.sh 45.8.248.219

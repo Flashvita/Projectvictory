@@ -12,7 +12,7 @@ services:
       - 8000
       - 587
     volumes:
-      - ~/projectvictory-test/static/:/static/
+      - /home/gitlab-runner/projectvictory-test/static/:/static/
 
   frontend:
     container_name: web
@@ -25,6 +25,6 @@ services:
     expose:
       - 80
     volumes:
-      - ~/projectvictory-test/nginx.conf:/etc/nginx/nginx.conf
-      - ~/projectvictory-test/static/:/www/static
+      - /home/gitlab-runner/projectvictory-test/projectvictory-test/nginx.conf:/etc/nginx/nginx.conf
+      - /home/gitlab-runner/projectvictory-test/projectvictory-test/static/:/www/static
 
