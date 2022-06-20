@@ -8,54 +8,56 @@ variables:
   BACKEND_NAME: "django"
   FRONTEND_NAME: "Vue3"
 
-building Django:
+copy files:
   stage: build
   tags:
     - shell
   script:
     - sudo cp -r Backend/victory ~/projectvictory-test/backend/
-    - docker build -t server:$CI_COMMIT_SHORT_SHA ~/projectvictory-test/backend/victory/
+    - sudo cp -r Frontend/ ~/projectvictory-test/frontend/
+  after_script:
+    - sudo cp nginx.conf ~/projectvictory-test/
   only:
     - dev
   
-building Vue3:
-  stage: build
-  tags:
-    - shell
-  script:
-    - sudo cp -r Frontend/ ~/projectvictory-test/frontend/
-    - docker build -t frontend:$CI_COMMIT_SHORT_SHA ~/projectvictory-test/frontend/
-  only:
-    - dev
+# building Vue3:
+#   stage: build
+#   tags:
+#     - shell
+#   script:
+#     - sudo cp -r Frontend/ ~/projectvictory-test/frontend/
+#     - docker build -t frontend:$CI_COMMIT_SHORT_SHA ~/projectvictory-test/frontend/
+#   only:
+#     - dev
 
-start Django:
-  stage: test
-  tags:
-    - shell
-  before_script:
-    - sudo cp cheker.sh ~
-    - bash cheker.sh $BACKEND_NAME
-  script:
-    - docker run --rm --name $BACKEND_NAME -d -p 5000:8000 -p 587:587 server:$CI_COMMIT_SHORT_SHA
-  only:
-    - dev
+# start Django:
+#   stage: test
+#   tags:
+#     - shell
+#   before_script:
+#     - sudo cp cheker.sh ~
+#     - bash cheker.sh $BACKEND_NAME
+#   script:
+#     - docker run --rm --name $BACKEND_NAME -d -p 5000:8000 -p 587:587 server:$CI_COMMIT_SHORT_SHA
+#   only:
+#     - dev
 
-start Vue3:
-  stage: test
-  tags:
-    - shell
-  before_script:
-    - sudo cp cheker.sh ~
-    - bash cheker.sh $FRONTEND_NAME
-  script:
-     - docker run --rm --name $FRONTEND_NAME -d -p 5001:8080 frontend:$CI_COMMIT_SHORT_SHA
-  only:
-    - dev
+# start Vue3:
+#   stage: test
+#   tags:
+#     - shell
+#   before_script:
+#     - sudo cp cheker.sh ~
+#     - bash cheker.sh $FRONTEND_NAME
+#   script:
+#      - docker run --rm --name $FRONTEND_NAME -d -p 5001:8080 frontend:$CI_COMMIT_SHORT_SHA
+#   only:
+#     - dev
 
-remove old containers:
-  stage: clear
-  tags:
-    - shell
-  script: docker system prune -af
-  only:
-    - dev
+# remove old containers:
+#   stage: clear
+#   tags:
+#     - shell
+#   script: docker system prune -af
+#   only:
+#     - dev
