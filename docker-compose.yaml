@@ -3,7 +3,7 @@ version: '3.1'
 services:
   backend: 
     container_name: backend
-    build: backend/victory/
+    build: backend/
     restart: always
     ports:
       - 8000:8000
@@ -27,4 +27,3 @@ services:
     volumes:
       - /home/gitlab-runner/projectvictory-test/projectvictory-test/nginx.conf:/etc/nginx/nginx.conf
       - /home/gitlab-runner/projectvictory-test/projectvictory-test/static/:/www/static
-
