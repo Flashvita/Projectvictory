@@ -17,7 +17,7 @@ copy files:
     - sudo cp -r Frontend/ ~/projectvictory-test/frontend/
   after_script:
     - sudo cp nginx.conf ~/projectvictory-test/
-    - sudo cp docker-compose.yaml
+    - sudo cp docker-compose.yaml ~/projectvictory-test/
   only:
     - dev
   
