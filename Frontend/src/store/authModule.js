@@ -122,7 +122,7 @@ export const authModule = {
         }
       }
     },
-    async signUp({ state, commit }) {
+    async signUp({ state, commit, dispatch }) {
       if (state.name.length <= 0) commit("setNameError", true);
       if (state.email.length <= 0) commit("setEmailError", true);
       if (state.password.length <= 0) commit("setPasswordError", true);
@@ -132,7 +132,6 @@ export const authModule = {
         commit("setErrorConfirmPassword", true);
         commit("setPasswordError", true);
       }
-
       if (
         state.name.length > 0 &&
         state.email.length > 0 &&
@@ -148,6 +147,7 @@ export const authModule = {
           });
           console.log(response);
           if (response.status === 201) {
+            await dispatch("signIn");
             commit("setName", "");
             commit("setEmail", "");
             commit("setPassword", "");
