@@ -76,7 +76,8 @@
         />
       </div>
       <div class="article-wrapper">
-        <!--        <TextEditor />-->
+        <!--        <QuillEditor />-->
+        <QuillEditor />
       </div>
       <MyButton @click="this.createArticle">Создать статью</MyButton>
     </form>
@@ -86,11 +87,13 @@
 <script>
 import axios from "axios";
 import { mapActions, mapMutations, mapGetters } from "vuex";
-// import TextEditor from "@/components/UI/TextEditor/TextEditor";
+import QuillEditor from "@/components/UI/QuillEditor/QuillEditor";
+// import QuillEditor from "@/components/UI/QuillEditor/QuillEditor";
 
 export default {
   name: "ArticleCreate",
-  // components: { TextEditor },
+  components: { QuillEditor },
+  // components: { QuillEditor },
   data() {
     return {
       backgroundColor: {
@@ -165,7 +168,7 @@ export default {
   }
 
   .form-wrapper {
-    width: 740px;
+    //width: 740px;
 
     .category-wrapper {
       display: flex;
@@ -189,6 +192,11 @@ export default {
 
     .name-wrapper-title {
       margin-bottom: 10px;
+    }
+
+    .article-wrapper {
+      margin: 30px 0;
+      position: relative;
     }
   }
   .theme-input-radio-item {

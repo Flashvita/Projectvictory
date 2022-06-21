@@ -1,0 +1,45 @@
+:root {
+  --color: red;
+}
+
+.ql-snow {
+  background-color: var(--color-white);
+}
+
+.ql-toolbar.ql-snow {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
+  border-top: none;
+  border-right: none;
+  border-left: none;
+}
+
+.ql-container.ql-snow {
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+  border: none;
+}
+
+/*.ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar, .ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners {*/
+/*  border: none;*/
+/*  background-color: var(--color-white);*/
+/*  border-bottom: 1px solid #b8b5c1;*/
+/*  !*border-top-left-radius: var(--radius);*!*/
+/*  !*border-top-right-radius: var(--radius);*!*/
+/*}*/
+
+/*.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {*/
+/*  border: none;*/
+/*  border-bottom-left-radius: var(--radius);*/
+/*  border-bottom-right-radius: var(--radius);*/
+/*}*/
+
+/*.ck.ck-editor__editable.ck-focused:not(.ck-editor__nested-editable) {*/
+/*  box-shadow: none;*/
+/*  border: none;*/
+/*  border-bottom-left-radius: var(--radius);*/
+/*  border-bottom-right-radius: var(--radius);*/
+/*}*/
