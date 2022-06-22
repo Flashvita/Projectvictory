@@ -1,0 +1,20 @@
+.ql-snow {
+  background-color: var(--color-white);
+}
+
+.ql-toolbar.ql-snow {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
+  border-top: none;
+  border-right: none;
+  border-left: none;
+}
+
+.ql-container.ql-snow {
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+  border: none;
+}

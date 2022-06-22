@@ -5,6 +5,7 @@ export const authModule = {
   state: () => ({
     isAuth: JSON.parse(localStorage.getItem("isAuth")) || false,
     token: localStorage.getItem("token") || "",
+    profile: {},
     name: "",
     nameError: false,
     email: "",
@@ -87,6 +88,9 @@ export const authModule = {
     setMessageErrorAuth(state, message) {
       state.messageErrorAuth = message;
     },
+    setProfile(state, profile) {
+      state.profile = profile;
+    },
   },
   actions: {
     async signIn({ state, commit }) {
@@ -111,21 +115,14 @@ export const authModule = {
             await router.push("/");
           }
         } catch (e) {
-          if (e.response.status === 404) {
-            commit("setErrorAuth", true);
-            commit("setMessageErrorAuth", e.message);
-            console.log(e);
-          } else {
-            commit("setErrorAuth", true);
-            commit("setMessageErrorAuth", e.message);
-            console.log(e);
-          }
+          commit("setErrorAuth", true);
+          commit("setMessageErrorAuth", e.response.data.non_field_errors[0]);
         } finally {
           commit("setLoading", false);
         }
       }
     },
-    async signUp({ state, commit }) {
+    async signUp({ state, commit, dispatch }) {
       if (state.name.length <= 0) commit("setNameError", true);
       if (state.email.length <= 0) commit("setEmailError", true);
       if (state.password.length <= 0) commit("setPasswordError", true);
@@ -135,7 +132,6 @@ export const authModule = {
         commit("setErrorConfirmPassword", true);
         commit("setPasswordError", true);
       }
-
       if (
         state.name.length > 0 &&
         state.email.length > 0 &&
@@ -150,24 +146,22 @@ export const authModule = {
             password: state.password,
           });
           console.log(response);
-          const token = response.data.auth_token;
-          if (token) {
-            localStorage.setItem("isAuth", JSON.stringify(true));
-            localStorage.setItem("token", JSON.stringify(token));
-            commit("setIsAuth", true);
-            commit("setToken", token);
+          if (response.status === 201) {
+            await dispatch("signIn");
             commit("setName", "");
             commit("setEmail", "");
             commit("setPassword", "");
             commit("setConfirmPassword", "");
           }
         } catch (e) {
-          if (e.response.status === 404) {
-            console.log(e);
-            commit("setErrorAuth", true);
-            commit("setMessageErrorAuth", e.message);
+          if (e.response.data.email) {
+            commit("setMessageErrorAuth", e.response.data.password.join(" "));
+            commit("setEmailError", true);
+          } else if (e.response.data.password) {
+            commit("setMessageErrorAuth", e.response.data.password.join(" "));
+            commit("setPasswordError", true);
+            commit("setErrorConfirmPassword", true);
           } else {
-            console.log(e);
             commit("setErrorAuth", true);
             commit("setMessageErrorAuth", e.message);
           }
@@ -176,11 +170,20 @@ export const authModule = {
         }
       }
     },
-    logout({ commit }) {
+    async logout({ commit }) {
       localStorage.removeItem("isAuth");
       localStorage.removeItem("token");
       commit("setIsAuth", false);
       commit("setToken", "");
+      await router.push("/");
+    },
+    async getMe({ commit }) {
+      try {
+        const response = await axios.get("/auth/users/me/");
+        commit("setProfile", response.data);
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
   getters: {
@@ -207,6 +210,9 @@ export const authModule = {
     },
     setMessageErrorAuth(state) {
       return state.messageErrorAuth;
+    },
+    profile(state) {
+      return state.profile;
     },
   },
   namespaced: true,
