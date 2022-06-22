@@ -43,20 +43,7 @@ export default {
   components: { IconBase, RemoveBasket },
 
   props: {
-    article: {
-      id: {
-        type: String,
-        required: true,
-      },
-      title: {
-        type: String,
-        required: true,
-      },
-      body: {
-        type: String,
-        required: true,
-      },
-    },
+    article: Object,
   },
   methods: {
     ...mapActions({
