@@ -75,9 +75,8 @@
           @update:model-value="setTitle"
         />
       </div>
-      <div class="article-wrapper">
-        <!--        <QuillEditor />-->
-        <QuillEditor />
+      <div class="article-wrapper" :class="{ 'quill-active': activeQuill }">
+        <QuillEditor :onFocused="onFocused" :ofFocused="ofFocused" />
       </div>
       <MyButton @click="this.createArticle">Создать статью</MyButton>
     </form>
@@ -88,14 +87,14 @@
 import axios from "axios";
 import { mapActions, mapMutations, mapGetters } from "vuex";
 import QuillEditor from "@/components/UI/QuillEditor/QuillEditor";
-// import QuillEditor from "@/components/UI/QuillEditor/QuillEditor";
 
 export default {
   name: "ArticleCreate",
   components: { QuillEditor },
-  // components: { QuillEditor },
+
   data() {
     return {
+      activeQuill: false,
       backgroundColor: {
         backgroundColor: "#ffffff",
       },
@@ -106,6 +105,7 @@ export default {
       load: false,
     };
   },
+
   methods: {
     ...mapActions({
       getArticle: "article/getArticle",
@@ -114,6 +114,12 @@ export default {
       setTitle: "article/setTitle",
       setContent: "article/setContent",
     }),
+    onFocused() {
+      this.activeQuill = true;
+    },
+    ofFocused() {
+      this.activeQuill = false;
+    },
     async createArticle(e) {
       e.preventDefault();
       console.log({
@@ -124,7 +130,7 @@ export default {
       });
       try {
         const response = await axios.post("/api/v1/post/create/", {
-          category: this.$route.query.catalog,
+          subcategory: this.$route.query.catalog,
           theme: this.theme,
           title: this.title,
           content: this.content,
@@ -135,6 +141,7 @@ export default {
       }
     },
   },
+
   computed: {
     ...mapGetters({
       title: "article/title",
@@ -142,6 +149,7 @@ export default {
       loadedArticle: "article/loadedArticle",
     }),
   },
+
   async mounted() {
     if (this.$route.query.id) {
       await this.getArticle({ id: this.$route.query.id });
@@ -197,6 +205,12 @@ export default {
     .article-wrapper {
       margin: 30px 0;
       position: relative;
+      border: 2px solid transparent;
+      border-radius: var(--radius);
+    }
+
+    .quill-active {
+      border: 2px solid var(--color-accent);
     }
   }
   .theme-input-radio-item {
