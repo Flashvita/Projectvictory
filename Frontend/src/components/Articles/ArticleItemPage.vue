@@ -16,7 +16,7 @@
             path: '/articles/create',
             query: {
               catalog: 'Разработка/Backend/Docker', // this.articleItem.path !!!!!!!!!!!!!!!!!!!!!!
-              id: '7', // this.articleItem.id !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+              id: '1', // this.articleItem.id !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             },
           }"
           class="article-owner-button"

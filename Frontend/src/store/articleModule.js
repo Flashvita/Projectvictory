@@ -1,5 +1,4 @@
 import axios from "axios";
-// import router from "@/router/router";
 
 export const articleModule = {
   state: () => ({
@@ -27,6 +26,7 @@ export const articleModule = {
       commit("setLoadedArticle", true);
       try {
         const response = await axios.get(`/api/v1/posts/detail/${article.id}`);
+        console.log(response);
         commit("setTitle", response.data.title);
         commit("setContent", response.data.content);
       } catch (e) {
@@ -46,7 +46,6 @@ export const articleModule = {
           params: queryParams,
         });
         commit("setArticleList", response.data);
-        console.log(response.data);
       } catch (e) {
         console.log(e.message);
       } finally {

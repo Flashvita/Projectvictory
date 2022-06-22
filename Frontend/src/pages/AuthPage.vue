@@ -28,7 +28,12 @@
           v-if="!isSignIn"
         >
           <h1>Создание аккаунта</h1>
-          <div class="error-text" v-if="errorAuth">{{ messageErrorAuth }}</div>
+          <div
+            class="error-text"
+            v-if="errorAuth || emailError || passwordError"
+          >
+            {{ messageErrorAuth }}
+          </div>
           <MyInput
             :model-value="name"
             :error="errorAuth || nameError"
@@ -207,10 +212,11 @@ export default {
   flex-direction: column;
   align-items: center;
   width: 1026px;
-  height: 512px;
+  //height: 512px;
   margin: auto;
   background: rgba(217, 217, 217, 0.48);
   border-radius: 47px;
+  padding-bottom: 30px;
 }
 
 .auth-form {
@@ -223,10 +229,11 @@ export default {
     font-size: 38px;
     font-family: var(--font-bold);
     color: var(--color-white);
+    //margin-bottom: 20px;
   }
 
   .error-text {
-    position: absolute;
+    //position: absolute;
     top: 53px;
     width: 100%;
     text-align: center;

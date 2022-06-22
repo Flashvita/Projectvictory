@@ -17,7 +17,8 @@ import HeaderComponent from "@/components/Header";
 import FooterComponent from "@/components/Footer";
 import LayoutArticles from "@/layout/LayoutArticles";
 import EmptyLayout from "@/layout/EmptyLayout";
-import axios from "axios";
+// import axios from "axios";
+import { mapActions } from "vuex";
 
 export default {
   components: { FooterComponent, HeaderComponent, LayoutArticles, EmptyLayout },
@@ -27,13 +28,13 @@ export default {
     },
   },
   methods: {
-    async getProfile() {
-      await axios.get(`/api/v1/profile/2`);
-    },
+    ...mapActions({
+      getMe: "auth/getMe",
+    }),
   },
   mounted() {
     if (this.$store.state.auth.isAuth) {
-      this.getProfile();
+      this.getMe();
     }
   },
 };
