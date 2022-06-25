@@ -4,9 +4,16 @@ stages:
   - clear
   - deploy
 
-variables:
-  BACKEND_NAME: "django"
-  FRONTEND_NAME: "Vue3"
+stop application:
+  stage: build
+  tags:
+    - shell
+  script:
+    - docker compose down -v
+  after_script:
+    - sudo rm -r ~/projectvictory-test/static
+  only:
+    - dev
 
 copy files:
   stage: build
@@ -21,17 +28,6 @@ copy files:
   only:
     - dev
   
-stop application:
-  stage: build
-  tags:
-    - shell
-  script:
-    - docker compose down -v
-  after_script:
-    - sudo rm -r ~/projectvictory-test/static
-  only:
-    - dev
-
 start new application:
   stage: test
   tags:
@@ -39,7 +35,7 @@ start new application:
   after_script:
     - cd ~/projectvictory-test
   script:
-    - docker compose -d --build
+    - docker compose up -d --build
   only:
     - dev
 
