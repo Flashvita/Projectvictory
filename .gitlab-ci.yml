@@ -32,7 +32,7 @@ start new application:
   stage: test
   tags:
     - shell
-  after_script:
+  before_script:
     - cd ~/projectvictory-test
   script:
     - docker compose up -d --build
