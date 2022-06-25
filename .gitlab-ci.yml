@@ -21,27 +21,27 @@ copy files:
   only:
     - dev
   
-# building Vue3:
-#   stage: build
-#   tags:
-#     - shell
-#   script:
-#     - sudo cp -r Frontend/ ~/projectvictory-test/frontend/
-#     - docker build -t frontend:$CI_COMMIT_SHORT_SHA ~/projectvictory-test/frontend/
-#   only:
-#     - dev
+stop application:
+  stage: build
+  tags:
+    - shell
+  script:
+    - docker compose down -v
+  after_script:
+    - sudo rm -r ~/projectvictory-test/static
+  only:
+    - dev
 
-# start Django:
-#   stage: test
-#   tags:
-#     - shell
-#   before_script:
-#     - sudo cp cheker.sh ~
-#     - bash cheker.sh $BACKEND_NAME
-#   script:
-#     - docker run --rm --name $BACKEND_NAME -d -p 5000:8000 -p 587:587 server:$CI_COMMIT_SHORT_SHA
-#   only:
-#     - dev
+start new application:
+  stage: test
+  tags:
+    - shell
+  after_script:
+    - cd ~/projectvictory-test
+  script:
+    - docker compose -d --build
+  only:
+    - dev
 
 # start Vue3:
 #   stage: test
