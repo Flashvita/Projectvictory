@@ -1,48 +1,55 @@
 <template>
-  <section id="feedback" class="wrapper">
-    <h2>Заказать сайт</h2>
-    <p>
-      Выберите вид работ и оставьте свои контакты — с вами свяжется наш менеджер
-    </p>
-    <form class="form">
-      <div class="wrapper-form">
-        <div class="form-left">
-          <MyInput
-            class="input"
-            v-model="this.name"
-            type="text"
-            placeholderText="Имя"
-            :error="this.nameError"
-            @update:model-value="this.nameError = false"
-          />
-          <MyInput
-            class="input"
-            v-model="this.email"
-            type="text"
-            placeholderText="Email"
-            :error="this.emailError"
-            @update:model-value="this.emailError = false"
-          />
-          <MySelect
-            :error="this.serviceError"
-            :options="servicesList"
-            :value="this.service"
-            placeholderText="Услуга"
-            @select="serviceHandler"
-            @update:model-value="this.serviceError = false"
-          />
-        </div>
-        <div class="form-right">
-          <MyTextarea
-            v-model="this.comments"
-            placeholderText="Комментарий"
-            :error="this.commentsError"
-            @update:model-value="this.commentsError = false"
-          />
+  <section id="feedback" class="feedback-section">
+    <div class="feedback">
+      <div class="container">
+        <div class="wrapper">
+          <h2 class="feedback-title">Заказать сайт</h2>
+          <p class="feedback-description">
+            Выберите вид работ и оставьте свои контакты — с вами свяжется наш
+            менеджер
+          </p>
+          <form class="form">
+            <div class="wrapper-form">
+              <div class="form-left">
+                <MyInput
+                  class="input"
+                  v-model="this.name"
+                  type="text"
+                  placeholderText="Имя"
+                  :error="this.nameError"
+                  @update:model-value="this.nameError = false"
+                />
+                <MyInput
+                  class="input"
+                  v-model="this.email"
+                  type="text"
+                  placeholderText="Email"
+                  :error="this.emailError"
+                  @update:model-value="this.emailError = false"
+                />
+                <MySelect
+                  :error="this.serviceError"
+                  :options="servicesList"
+                  :value="this.service"
+                  placeholderText="Услуга"
+                  @select="serviceHandler"
+                  @update:model-value="this.serviceError = false"
+                />
+              </div>
+              <div class="form-right">
+                <MyTextarea
+                  v-model="this.comments"
+                  placeholderText="Комментарий"
+                  :error="this.commentsError"
+                  @update:model-value="this.commentsError = false"
+                />
+              </div>
+            </div>
+            <MyButton @click="this.sendRequest">Отправить заявку</MyButton>
+          </form>
         </div>
       </div>
-      <MyButton @click="this.sendRequest">Отправить заявку</MyButton>
-    </form>
+    </div>
   </section>
 </template>
 
@@ -110,25 +117,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.feedback-section {
+  margin-top: -50px;
+  padding-top: 50px;
+}
+
+.feedback {
+  background-color: var(--color-bacground-black);
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: var(--color-bacground-black);
   color: var(--color-white);
   padding-bottom: 63px;
 
-  h2 {
+  .feedback-title {
+    text-align: center;
     font-size: 43px;
     margin-top: 30px;
     margin-bottom: 20px;
+  }
+
+  .feedback-description {
+    text-align: center;
   }
 
   .form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 623px;
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
 
     .wrapper-form {
       display: grid;
@@ -140,12 +163,26 @@ export default {
       .form-right {
         color: var(--color-bacground-black);
       }
+
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        width: 100%;
+        padding: 0 10%;
+      }
+
+      @media (max-width: 425px) {
+        padding: 0;
+      }
     }
 
     .input {
       width: 300px;
       color: var(--color-bacground-black);
       margin-bottom: 23px;
+
+      @media (max-width: 768px) {
+        width: 100%;
+      }
     }
 
     button:hover {

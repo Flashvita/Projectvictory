@@ -4,22 +4,28 @@
       <div class="header-wrapper">
         <div>Logo</div>
         <NavbarComponent />
-        <MyButton_link v-if="!isAuth" @click="$router.push('/auth')">
-          Войти
-        </MyButton_link>
-        <MyButton_link v-else @click="this.logout"> Выйти </MyButton_link>
+        <div class="btn-auth">
+          <MyButton_link v-if="!isAuth" @click="$router.push('/auth')">
+            Войти
+          </MyButton_link>
+          <MyButton_link v-else @click="this.logout"> Выйти </MyButton_link>
+        </div>
+        <div class="navbar-mobile">
+          <navbar-mobile />
+        </div>
       </div>
     </div>
   </header>
 </template>
 
 <script>
-import NavbarComponent from "@/components/Navbar";
+import NavbarComponent from "@/components/Navbar/Navbar";
 import { mapGetters, mapActions } from "vuex";
+import NavbarMobile from "@/components/Navbar/NavbarMobile";
 
 export default {
   name: "HeaderComponent",
-  components: { NavbarComponent },
+  components: { NavbarMobile, NavbarComponent },
   methods: {
     ...mapActions({ logout: "auth/logout" }),
   },
@@ -36,6 +42,12 @@ export default {
   height: 80px;
   background: var(--color-bacground-black);
   color: var(--color-white);
+  position: fixed;
+  z-index: 2;
+
+  @media (max-width: 600px) {
+    height: 50px;
+  }
 }
 
 .header-wrapper {
@@ -46,6 +58,18 @@ export default {
 
   button {
     font-size: 12px;
+
+    @media (max-width: 600px) {
+      display: none;
+    }
+  }
+
+  .navbar-mobile {
+    display: none;
+
+    @media (max-width: 600px) {
+      display: block;
+    }
   }
 }
 </style>

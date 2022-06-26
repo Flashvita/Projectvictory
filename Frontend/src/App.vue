@@ -104,15 +104,42 @@ img {
   background-color: var(--color-bacground-grey);
   flex: 1 1 auto;
   display: flex;
+  margin-top: 80px;
 }
 
 .container {
-  width: 1200px;
+  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   padding: 0 20px;
 }
 
-.ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
-  border-color: red;
+.carousel {
+  .carousel__prev,
+  .carousel__next {
+    background-color: transparent;
+    width: 60px;
+
+    @media (max-width: 500px) {
+      display: none;
+    }
+  }
+
+  .carousel__next {
+    right: -20px;
+  }
+
+  .carousel__prev {
+    left: -20px;
+  }
+
+  .carousel__prev--in-active,
+  .carousel__next--in-active {
+    display: none;
+  }
+
+  .carousel__icon {
+    fill: var(--color-bacground-black);
+  }
 }
 </style>

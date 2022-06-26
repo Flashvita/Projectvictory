@@ -1,6 +1,8 @@
 <template>
   <nav class="navbar">
-    <router-link class="link" to="/">Главная</router-link>
+    <router-link class="link" to="/" v-scroll-to="'#about'">
+      Главная
+    </router-link>
     <router-link class="link" to="/" v-scroll-to="'#services'">
       Услуги
     </router-link>
@@ -32,6 +34,12 @@ export default {
     padding: 10px;
     text-decoration: none;
     color: var(--color-white);
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    display: none;
   }
 }
 </style>
