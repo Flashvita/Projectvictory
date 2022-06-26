@@ -47,6 +47,10 @@ export default {
   justify-items: center;
   color: var(--color-white);
 
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+
   small {
     font-size: 10px;
   }

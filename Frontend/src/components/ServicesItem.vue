@@ -56,15 +56,23 @@ export default {
 
   .main-services-item_description {
     margin-top: 10px;
+    margin-bottom: 20px;
     font-size: 12px;
     color: var(--color-white);
   }
 
   button {
+    width: 100%;
     margin-top: auto;
     background-color: transparent;
     border: 1px solid var(--color-yelow);
     color: var(--color-yelow);
   }
+}
+
+@media (max-width: 600px) {
+  //.main-services-item {
+  //  height: auto;
+  //}
 }
 </style>
