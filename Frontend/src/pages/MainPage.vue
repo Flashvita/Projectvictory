@@ -1,7 +1,9 @@
 <template>
   <section id="about" class="main-about">
     <div class="main-about-center">
-      <h1>Тут пару строк или строчка о том, что мы делаем</h1>
+      <h1 class="about_title">
+        Тут пару строк или строчка о том, что мы делаем
+      </h1>
       <MyButton>Заказать сайт</MyButton>
     </div>
     <a href="#" v-scroll-to="'#services'" class="main-about-arrow">
@@ -19,60 +21,19 @@
       />
     </ul>
   </section>
-  <section id="cases" class="main-cases">
-    <div class="cases-wrapper">
-      <h2>Кейсы</h2>
-      <div class="carousel">
-        <div class="main-cases-carousel">
-          <div class="main-cases-carousel-item">
-            <div class="main-cases-item">
-              <img src="@/assets/img.png" alt="img" />
-              <div class="main-case-description">
-                <h3>Название</h3>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Dolorem error excepturi fugiat incidunt mollitia neque nisi
-                  optio soluta! Doloremque est libero mollitia nam nobis
-                  quibusdam voluptas. Aut fugit laudantium sed.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="main-cases-carousel-item">
-            <div class="main-cases-item">
-              <img src="@/assets/img.png" alt="img" />
-              <div class="main-case-description">
-                <h3>Название</h3>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Dolorem error excepturi fugiat incidunt mollitia neque nisi
-                  optio soluta! Doloremque est libero mollitia nam nobis
-                  quibusdam voluptas. Aut fugit laudantium sed.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <button class="carousel-btn carousel-btn-prev">
-          <img src="@/assets/icons/next.svg" alt="prev" />
-        </button>
-        <button class="carousel-btn carousel-btn-next">
-          <img src="@/assets/icons/next.svg" alt="next" />
-        </button>
-      </div>
-    </div>
-  </section>
-  <FeedbackComponent />
+  <cases-component />
+  <feedback-component />
 </template>
 
 <script>
 import ServicesItem from "@/components/ServicesItem";
 import FeedbackComponent from "@/components/Main/Feedback";
+import CasesComponent from "@/components/Main/Cases";
 
 export default {
   buildModules: ["vue-ssr-carousel/nuxt"],
   name: "MainPage",
-  components: { FeedbackComponent, ServicesItem },
+  components: { CasesComponent, FeedbackComponent, ServicesItem },
   data() {
     return {
       services: [
@@ -128,6 +89,17 @@ export default {
   height: calc(668px - 80px);
   background: var(--color-bacground-black);
   color: var(--color-white);
+  margin-top: -80px;
+  padding-top: 80px;
+
+  @media (max-width: 600px) {
+    margin-top: -50px;
+    padding-top: 50px;
+  }
+
+  @media (max-width: 425px) {
+    height: 100vh;
+  }
 }
 
 .main-about-center {
@@ -136,9 +108,11 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
+  margin: 0 30px;
   z-index: 1;
 
-  h1 {
+  .about_title {
+    text-align: center;
     font-size: 19px;
     font-weight: 400;
     margin-bottom: 40px;
@@ -147,7 +121,7 @@ export default {
 
 .circle-main-about {
   position: absolute;
-  width: 500px;
+  max-width: 500px;
   height: 500px;
   left: 0;
   top: 0;
@@ -171,8 +145,14 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 30px 20px;
+  margin-top: -80px;
+  padding: 110px 50px 30px 50px;
   background-color: var(--color-white);
+
+  @media (max-width: 600px) {
+    margin-top: -50px;
+    padding: 90px 50px 30px 50px;
+  }
 
   h2 {
     font-size: 43px;
@@ -183,101 +163,21 @@ export default {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     row-gap: 55px;
-    column-gap: 75px;
+    column-gap: 5%;
     max-width: 930px;
     list-style: none;
     margin-top: 50px;
   }
-}
 
-.main-cases {
-  background-color: var(--color-white);
-
-  .cases-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 30px 20px 90px;
-    width: 913px;
-    margin: 0 auto;
-  }
-
-  h2 {
-    font-size: 43px;
-    font-weight: 600;
-    margin-bottom: 64px;
-  }
-
-  .carousel {
-    width: 930px;
-    position: relative;
-
-    .carousel-btn {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      margin: auto 0;
-      width: 50px;
-      height: 50px;
-      background-color: transparent;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-    }
-
-    .carousel-btn-prev {
-      left: -53px;
-    }
-
-    .carousel-btn-next {
-      right: -53px;
-      transform: rotate(180deg);
+  @media (max-width: 900px) {
+    .main-services-list {
+      grid-template-columns: 1fr 1fr;
     }
   }
 
-  .main-cases-carousel {
-    position: relative;
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    width: 100%;
-
-    .main-cases-carousel-item {
-      position: relative;
-      display: inline-block;
-      min-width: 913px;
-      margin-right: 34px;
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
-    }
-  }
-  .main-cases-item {
-    display: grid;
-    grid-template-columns: 50% 50%;
-    width: 100%;
-    background-color: var(--color-bacground-black);
-    border-radius: 33px;
-    color: var(--color-white);
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 10px;
-    }
-
-    .main-case-description {
-      padding: 28px 40px 28px 35px;
-
-      h3 {
-        font-size: 41px;
-        font-weight: 600;
-      }
-
-      p {
-        margin-top: 20px;
-        font-size: 19px;
-      }
+  @media (max-width: 600px) {
+    .main-services-list {
+      grid-template-columns: 1fr;
     }
   }
 }

@@ -93,7 +93,7 @@ export const authModule = {
     },
   },
   actions: {
-    async signIn({ state, commit }) {
+    async signIn({ state, commit, dispatch }) {
       if (state.name.length <= 0) commit("setNameError", true);
       if (state.password.length <= 0) commit("setPasswordError", true);
 
@@ -112,6 +112,7 @@ export const authModule = {
             commit("setToken", token);
             commit("setName", "");
             commit("setPassword", "");
+            await dispatch("getMe");
             await router.push("/");
           }
         } catch (e) {
