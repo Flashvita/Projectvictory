@@ -11,7 +11,7 @@ stop application:
   script:
     - docker compose down -v
   after_script:
-    - sudo rm -r ~/projectvictory-test/static
+    - sudo rm -r ~/projectvictory-test/static/ ~/projectvictory-test/frontend/ ~/projectvictory-test/backend/
   only:
     - dev
 
