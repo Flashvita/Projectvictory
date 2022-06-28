@@ -39,22 +39,10 @@ start new application:
   only:
     - dev
 
-# start Vue3:
-#   stage: test
-#   tags:
-#     - shell
-#   before_script:
-#     - sudo cp cheker.sh ~
-#     - bash cheker.sh $FRONTEND_NAME
-#   script:
-#      - docker run --rm --name $FRONTEND_NAME -d -p 5001:8080 frontend:$CI_COMMIT_SHORT_SHA
-#   only:
-#     - dev
-
-# remove old containers:
-#   stage: clear
-#   tags:
-#     - shell
-#   script: docker system prune -af
-#   only:
-#     - dev
+remove old images:
+  stage: clear
+  tags:
+    - shell
+  script: docker system prune -af
+  only:
+    - dev
