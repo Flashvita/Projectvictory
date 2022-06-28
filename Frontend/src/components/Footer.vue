@@ -8,7 +8,7 @@
           facere facilis fugit natus odio officia praesentium quia sapiente,
           voluptate.
         </div>
-        <small>projectvictory © 2022 v.1.0.0</small>
+        <small>projectvictory © 2022 v.1.0.1</small>
         <div>
           <div>
             --------------------------------------------------------------------
