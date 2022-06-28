@@ -3,7 +3,7 @@
     <div class="auth-container">
       <form @submit.prevent class="auth-form">
         <div class="auth-form-wrapper" v-if="isSignIn">
-          <h1>Вход в аккаунт</h1>
+          <h1 class="auth-form-title">Вход в аккаунт</h1>
           <div class="error-text" v-if="errorAuth">{{ messageErrorAuth }}</div>
           <MyInput
             :model-value="name"
@@ -27,7 +27,7 @@
           class="auth-form-wrapper auth-form-wrapper_signup"
           v-if="!isSignIn"
         >
-          <h1>Создание аккаунта</h1>
+          <h1 class="auth-form-title">Создание аккаунта</h1>
           <div
             class="error-text"
             v-if="errorAuth || emailError || passwordError"
@@ -211,25 +211,41 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 1026px;
-  //height: 512px;
+  max-width: 600px;
+  width: 100%;
   margin: auto;
   background: rgba(217, 217, 217, 0.48);
   border-radius: 47px;
   padding-bottom: 30px;
+  padding-left: 60px;
+  padding-right: 60px;
+
+  @media (max-width: 600px) {
+    height: 100%;
+    width: 100%;
+    border-radius: 0;
+  }
+
+  @media (max-width: 425px) {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 }
 
 .auth-form {
   margin-top: 37px;
   margin-bottom: 14px;
-  width: 407px;
+  width: 100%;
 
-  h1 {
+  .auth-form-title {
     text-align: center;
     font-size: 38px;
     font-family: var(--font-bold);
     color: var(--color-white);
-    //margin-bottom: 20px;
+
+    @media (max-width: 425px) {
+      font-size: 26px;
+    }
   }
 
   .error-text {

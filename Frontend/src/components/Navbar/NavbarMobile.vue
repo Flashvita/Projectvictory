@@ -31,6 +31,12 @@
           <router-link class="link" to="/" v-scroll-to="'#feedback'">
             Контакты
           </router-link>
+          <div class="btn-auth">
+            <MyButton_link v-if="!isAuth" @click="$router.push('/auth')">
+              Войти
+            </MyButton_link>
+            <MyButton_link v-else @click="this.logout"> Выйти </MyButton_link>
+          </div>
         </nav>
       </div>
     </transition>
@@ -38,7 +44,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import IconBase from "@/components/UI/IconBase";
 import CloseIcon from "@/assets/icons/close-icon";
 
@@ -54,6 +60,7 @@ export default {
       menuActive: false,
     };
   },
+
   methods: {
     openMenu() {
       this.menuActive = true;
@@ -61,7 +68,9 @@ export default {
     closeMenu() {
       this.menuActive = false;
     },
+    ...mapActions({ logout: "auth/logout" }),
   },
+
   computed: {
     ...mapGetters({ isAuth: "auth/isAuth" }),
   },
@@ -98,6 +107,14 @@ export default {
     color: var(--color-white);
     text-align: center;
     font-size: 29px;
+  }
+
+  .btn-auth {
+    padding-top: 30px;
+    .my-button {
+      font-size: 29px;
+      width: 100%;
+    }
   }
 
   .close-btn-wrapper {
