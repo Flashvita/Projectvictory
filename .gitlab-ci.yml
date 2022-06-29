@@ -1,48 +1,29 @@
 stages:
   - build
   - test
-  - clear
   - deploy
-
-# stop application:
-#   stage: build
-#   tags:
-#     - shell
-#   script:
-#     - docker compose down -v
-#   after_script:
-#     - sudo rm -r ~/projectvictory-test/static/ ~/projectvictory-test/frontend/ ~/projectvictory-test/backend/
-#   only:
-#     - dev
 
 copy files:
   stage: build
   tags:
     - shell
+  before_script:
+    - sudo rm -r ~/projectvictory-test/
   script:
     - sudo cp -r Backend/victory ~/projectvictory-test/backend/
     - sudo cp -r Frontend/ ~/projectvictory-test/frontend/
-  after_script:
     - sudo cp nginx.conf ~/projectvictory-test/
     - sudo cp docker-compose.yaml ~/projectvictory-test/
   only:
     - dev
   
-# start new application:
-#   stage: test
-#   tags:
-#     - shell
-#   before_script:
-#     - cd ~/projectvictory-test
-#   script:
-#     - docker compose up -d --build
-#   only:
-#     - dev
-
-# remove old images:
-#   stage: clear
-#   tags:
-#     - shell
-#   script: docker system prune -af
-#   only:
-#     - dev
+build application:
+  stage: test
+  tags:
+    - shell
+  before_script:
+    - cd ~/projectvictory-test
+  script:
+    - docker compose up -d --no-deps --build
+  only:
+    - dev
