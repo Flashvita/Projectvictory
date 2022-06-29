@@ -4,16 +4,16 @@ stages:
   - clear
   - deploy
 
-stop application:
-  stage: build
-  tags:
-    - shell
-  script:
-    - docker compose down -v
-  after_script:
-    - sudo rm -r ~/projectvictory-test/static/ ~/projectvictory-test/frontend/ ~/projectvictory-test/backend/
-  only:
-    - dev
+# stop application:
+#   stage: build
+#   tags:
+#     - shell
+#   script:
+#     - docker compose down -v
+#   after_script:
+#     - sudo rm -r ~/projectvictory-test/static/ ~/projectvictory-test/frontend/ ~/projectvictory-test/backend/
+#   only:
+#     - dev
 
 copy files:
   stage: build
@@ -28,21 +28,21 @@ copy files:
   only:
     - dev
   
-start new application:
-  stage: test
-  tags:
-    - shell
-  before_script:
-    - cd ~/projectvictory-test
-  script:
-    - docker compose up -d --build
-  only:
-    - dev
+# start new application:
+#   stage: test
+#   tags:
+#     - shell
+#   before_script:
+#     - cd ~/projectvictory-test
+#   script:
+#     - docker compose up -d --build
+#   only:
+#     - dev
 
-remove old images:
-  stage: clear
-  tags:
-    - shell
-  script: docker system prune -af
-  only:
-    - dev
+# remove old images:
+#   stage: clear
+#   tags:
+#     - shell
+#   script: docker system prune -af
+#   only:
+#     - dev
