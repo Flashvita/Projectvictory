@@ -4,6 +4,7 @@ services:
   backend: 
     container_name: backend
     build: backend/
+      context: .
       args:
         ip: 0.0.0.0
     restart: always
