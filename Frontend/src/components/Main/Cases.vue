@@ -5,7 +5,7 @@
       <carousel :autoplay="3000" :wrap-around="true" :items-to-show="1">
         <slide v-for="slide in 3" :key="slide">
           <div class="cases-item">
-            <img class="cases-item-img" src="@/assets/img.png" alt="img" />
+            <img class="cases-item-img" src="@/assets/img.jpg" alt="img" />
             <div class="description">
               <h3 class="description-title">Название</h3>
               <p class="description-paragraph">
