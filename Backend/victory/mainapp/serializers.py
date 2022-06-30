@@ -1,9 +1,6 @@
 from rest_framework import serializers
-from .models import Profile, Contact, Post, Team
-from djoser.serializers import UserCreateSerializer
-
-
-
+from .models import Profile, Contact, Post, Team, Category, User
+from djoser.serializers import UserSerializer
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -17,21 +14,33 @@ class ProfileSerializer(serializers.ModelSerializer):
 class ContactSerializer(serializers.ModelSerializer):
     """Сериалайзер для формы обратной связи"""
 
-
-
     def validate(self, data):
        phone = data.get('phone')
-       if len(phone)!=11:
+       if len(phone) != 11:
            message = 'Номер телефона должен быть 11 цифр'
            raise serializers.ValidationError(message)
        return data
-
 
     class Meta:
         model = Contact
         fields = ('name', 'email', 'phone', 'message')
         validators = []
 
+
+class CategoryCreateSerializers(serializers.ModelSerializer):
+    """Сериалайзер для создания категории"""
+
+    class Meta:
+        model = Category
+        fields = ('title', 'parent')
+
+
+class CategoriesSerializers(serializers.ModelSerializer):
+    """Сериалайзер для всех категорий"""
+
+    class Meta:
+        model = Category
+        fields = '__all__'
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -52,9 +61,8 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('title', 'content', 'owner', 'subcategory')
+        fields = ('title', 'content', 'owner', 'category')
         validators = []
-
 
 
 class PostUserUpdateSerializer(serializers.ModelSerializer):
@@ -68,9 +76,12 @@ class PostUserUpdateSerializer(serializers.ModelSerializer):
 class PostListSerializer(serializers.ModelSerializer):
     """Сериалайзер для всех статей"""
 
+    owner = serializers.CharField(read_only=True, source='owner.username')
+    avatar = serializers.CharField(read_only=True, source='owner.profile.avatar')
+
     class Meta:
         model = Post
-        fields = '__all__'
+        fields = ('title', 'category', 'owner', 'avatar')
 
 
 class PostUpdateAdminSerializer(serializers.ModelSerializer):
@@ -78,7 +89,7 @@ class PostUpdateAdminSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('title', 'content', 'is_active', 'is_private', 'subcategory')
+        fields = ('title', 'content', 'is_active', 'is_private', 'category')
 
 
 class TeamCreateSerializer(serializers.ModelSerializer):

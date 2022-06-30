@@ -1,11 +1,16 @@
-from rest_framework.generics import (ListCreateAPIView, RetrieveUpdateDestroyAPIView,)
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
-from .models import Profile, Contact, Post, Team
+from .models import Profile, Contact, Post, Team, Category
 from .permissions import IsOwnerProfileOrReadOnly, IsOwnerPostOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView, GenericAPIView, RetrieveUpdateDestroyAPIView
 from django.core.mail import send_mail
+from rest_framework.generics import (
+    ListCreateAPIView,
+    RetrieveUpdateDestroyAPIView,
+    CreateAPIView,
+    GenericAPIView,
+)
+
 from .serializers import (
     ProfileSerializer,
     ContactSerializer,
@@ -15,7 +20,9 @@ from .serializers import (
     PostUserUpdateSerializer,
     TeamCreateSerializer,
     TeamSerializer,
-    TeamsSerializer
+    TeamsSerializer,
+    CategoryCreateSerializers,
+    CategoriesSerializers,
 )
 
 
@@ -33,6 +40,18 @@ class ProfileDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [IsOwnerProfileOrReadOnly, IsAuthenticated]
+
+
+class CategoryCreateView(CreateAPIView):
+    """Создание категории"""
+    serializer_class = CategoryCreateSerializers
+    queryset = Category.objects.all()
+
+
+class CategoriesView(ListCreateAPIView):
+    """Все категории"""
+    serializer_class = CategoriesSerializers
+    queryset = Category.objects.all()
 
 
 class ContactCreateView(CreateAPIView):
@@ -72,6 +91,7 @@ class PostListView(ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostListSerializer
     permission_classes = [IsAuthenticated]
+
 
 
 class PostDetailAdminView(RetrieveUpdateDestroyAPIView):

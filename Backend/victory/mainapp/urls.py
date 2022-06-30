@@ -12,6 +12,8 @@ from .views import (
     TeamCreateView,
     TeamsView,
     TeamDetailView,
+    CategoryCreateView,
+    CategoriesView,
 )
 
 urlpatterns = [
@@ -20,6 +22,8 @@ urlpatterns = [
     path('posts/', PostListView.as_view()),
     path('posts/detail/<int:pk>/', PostDetailView.as_view()),
     path('team/create/', TeamCreateView.as_view()),
+    path('category/create/', CategoryCreateView.as_view()),
+    path('categories/', CategoriesView.as_view()),
     path('teams/', TeamsView.as_view()),
     path('team/detail/<int:pk>/', TeamDetailView.as_view()),
     path('posts/detail_admin/<int:pk>/', PostDetailAdminView.as_view()),

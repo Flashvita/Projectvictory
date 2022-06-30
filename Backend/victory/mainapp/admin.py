@@ -1,5 +1,5 @@
 from django.contrib import admin
-from mainapp.models import Profile, Contact, Post, Team, Category, SubCategory
+from mainapp.models import Profile, Contact, Post, Team, Category
 
 
 class ProfileAdmin(admin.ModelAdmin):
@@ -13,17 +13,12 @@ class ContactAdmin(admin.ModelAdmin):
 
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
-    list_display = ('title', 'id', )
-
-
-class SubCategoryAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('title',)}
-    list_display = ('title', 'category', 'id', )
+    list_display = ('title', 'id', 'parent', 'level')
 
 
 class PostAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
-    list_display = ('title', 'owner', 'id', 'created', 'is_active', 'is_private', 'subcategory' )
+    list_display = ('title', 'owner', 'id', 'created', 'is_active', 'is_private', 'category', )
 
 
 class TeamAdmin(admin.ModelAdmin):
@@ -35,4 +30,3 @@ admin.site.register(Contact, ContactAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Team, TeamAdmin)
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(SubCategory, SubCategoryAdmin)
