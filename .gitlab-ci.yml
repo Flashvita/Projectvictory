@@ -7,8 +7,11 @@ copy files:
   stage: build
   tags:
     - shell
-  # before_script:
-  #   - sudo rm -r ~/projectvictory-test/
+  before_script:
+    - sudo rm -r ~/projectvictory-test/backend/
+    - sudo rm -r ~/projectvictory-test/frontend/
+    - sudo rm -r ~/projectvictory-test/static/
+
   script:
     - sudo cp -R Backend/victory ~/projectvictory-test/backend/
     - sudo cp -R Frontend/ ~/projectvictory-test/frontend/
