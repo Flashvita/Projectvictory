@@ -7,7 +7,6 @@ from .views import (
     ContactCreateView,
     PostCreateView,
     PostListView,
-    PostDetailAdminView,
     PostDetailView,
     TeamCreateView,
     TeamsView,
@@ -26,7 +25,6 @@ urlpatterns = [
     path('categories/', CategoriesView.as_view()),
     path('teams/', TeamsView.as_view()),
     path('team/detail/<int:pk>/', TeamDetailView.as_view()),
-    path('posts/detail_admin/<int:pk>/', PostDetailAdminView.as_view()),
     path('all-profiles/', ProfileListCreateView.as_view(), name="all-profiles"),
     path('profile/<int:pk>/', ProfileDetailView.as_view(), name="profile"),
 ]

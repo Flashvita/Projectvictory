@@ -1,6 +1,6 @@
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from .models import Profile, Contact, Post, Team, Category
-from .permissions import IsOwnerProfileOrReadOnly, IsOwnerPostOrReadOnly
+from .permissions import IsOwnerProfileOrReadOnly, IsOwnerOrAdminOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.core.mail import send_mail
@@ -16,7 +16,6 @@ from .serializers import (
     ContactSerializer,
     PostSerializer,
     PostListSerializer,
-    PostUpdateAdminSerializer,
     PostUserUpdateSerializer,
     TeamCreateSerializer,
     TeamSerializer,
@@ -94,18 +93,25 @@ class PostListView(ListCreateAPIView):
 
 
 
-class PostDetailAdminView(RetrieveUpdateDestroyAPIView):
-    """Отредактировать и опубликовать статью(доступно только админам)"""
-    queryset = Post.objects.all()
-    serializer_class = PostUpdateAdminSerializer
-    permission_classes = [IsAuthenticated, IsAdminUser]
-
-
 class PostDetailView(RetrieveUpdateDestroyAPIView):
     """Статья"""
     queryset = Post.objects.all()
     serializer_class = PostUserUpdateSerializer
-    permission_classes = [IsAuthenticated, IsOwnerPostOrReadOnly]
+    permission_classes = [IsAuthenticated, IsOwnerOrAdminOrReadOnly]
+
+    def get(self, request, *args, **kwargs):
+        if request.user:
+            return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+
+        return self.update(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
 
 
 class TeamCreateView(CreateAPIView):

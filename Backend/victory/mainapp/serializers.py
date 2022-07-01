@@ -11,6 +11,14 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class SpecialUserSerializer(serializers.ModelSerializer):
+
+    is_admin = serializers.CharField(read_only=True, source='is_staff')
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'id', 'is_admin')
+
 class ContactSerializer(serializers.ModelSerializer):
     """Сериалайзер для формы обратной связи"""
 
@@ -66,11 +74,13 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class PostUserUpdateSerializer(serializers.ModelSerializer):
-    """Сериалайзер для редактирования статьи владельцем"""
+    """Сериалайзер для редактирования статьи владельцем и админом"""
+
+
 
     class Meta:
         model = Post
-        fields = ('title', 'content')
+        fields = ('title', 'content', 'category', 'is_active', 'is_private')
 
 
 class PostListSerializer(serializers.ModelSerializer):
@@ -81,15 +91,7 @@ class PostListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('title', 'category', 'owner', 'avatar')
-
-
-class PostUpdateAdminSerializer(serializers.ModelSerializer):
-    """Сериалайзер для редактирования  статей админом"""
-
-    class Meta:
-        model = Post
-        fields = ('title', 'content', 'is_active', 'is_private', 'category')
+        fields = ('title', 'category', 'owner', 'avatar', 'road', 'id', 'slug',)
 
 
 class TeamCreateSerializer(serializers.ModelSerializer):

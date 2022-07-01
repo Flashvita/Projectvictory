@@ -55,16 +55,28 @@ class Category(models.Model):
     parent = models.ForeignKey('Category', on_delete=models.CASCADE,
                                verbose_name='Родитель', null=True, blank=True, default=None
                                )
-    level = models.IntegerField(verbose_name='Уровень', default=0)
+    level = models.IntegerField(verbose_name='Уровень')
     slug = models.SlugField(max_length=255, unique=False)
+    road = models.URLField(max_length=500, verbose_name='Путь')
+
 
     def __str__(self):
         return f"{self.title}"
 
     def save(self, *args, **kwargs):
-        if self.slug is None:
+        if not self.slug:
             self.slug = slugify(self.title)
-        super().save(*args, **kwargs)
+            if not self.parent:
+                self.level = 0
+                self.road = 'http://45.8.248.219/server/api/v1/' + self.slug + '/'
+
+            else:
+                self.level = self.parent.level + 1
+
+                self.road = self.parent.road + self.slug + '/'
+
+
+        super(Category, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Категория'
@@ -81,13 +93,16 @@ class Post(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='post_owner')
     is_active = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now=True, db_index=True, verbose_name='Время публикации')
+    road = models.URLField(max_length=500, verbose_name='Путь')
     is_private = models.BooleanField(default=False)
 
 
 
     def save(self, *args, **kwargs):
-        if self.slug is None:
+        if not self.slug:
             self.slug = slugify(self.title)
+            if not self.road:
+                self.road = self.category.road + self.slug + '/'
         super().save(*args, **kwargs)
 
     def __str__(self):
