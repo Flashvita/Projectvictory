@@ -13,7 +13,7 @@ class ContactAdmin(admin.ModelAdmin):
 
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
-    list_display = ('title', 'id', 'parent', 'level', 'slug', 'road')
+    list_display = ('title', 'id', 'parent', 'level', 'slug', 'road', 'children')
 
 
 class PostAdmin(admin.ModelAdmin):

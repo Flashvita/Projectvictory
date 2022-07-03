@@ -3,6 +3,7 @@ from .models import Profile, Contact, Post, Team, Category, User
 from djoser.serializers import UserSerializer
 
 
+
 class ProfileSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)
 
@@ -43,8 +44,12 @@ class CategoryCreateSerializers(serializers.ModelSerializer):
         fields = ('title', 'parent')
 
 
+
+
 class CategoriesSerializers(serializers.ModelSerializer):
     """Сериалайзер для всех категорий"""
+  
+
 
     class Meta:
         model = Category
@@ -76,22 +81,24 @@ class PostSerializer(serializers.ModelSerializer):
 class PostUserUpdateSerializer(serializers.ModelSerializer):
     """Сериалайзер для редактирования статьи владельцем и админом"""
 
-
-
     class Meta:
         model = Post
         fields = ('title', 'content', 'category', 'is_active', 'is_private')
 
 
+
+
 class PostListSerializer(serializers.ModelSerializer):
     """Сериалайзер для всех статей"""
+
 
     owner = serializers.CharField(read_only=True, source='owner.username')
     avatar = serializers.CharField(read_only=True, source='owner.profile.avatar')
 
+
     class Meta:
         model = Post
-        fields = ('title', 'category', 'owner', 'avatar', 'road', 'id', 'slug',)
+        fields = ('title', 'category', 'owner', 'avatar', 'road', 'id', 'slug', 'my_children')
 
 
 class TeamCreateSerializer(serializers.ModelSerializer):

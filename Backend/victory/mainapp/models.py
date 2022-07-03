@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.text import slugify
+from django.db.models.signals import post_save, pre_save
+
+
 
 
 class Profile(models.Model):
@@ -48,6 +51,10 @@ class Contact(models.Model):
         verbose_name_plural = 'Формы'
 
 
+
+
+
+
 class Category(models.Model):
     """Категория"""
 
@@ -58,7 +65,7 @@ class Category(models.Model):
     level = models.IntegerField(verbose_name='Уровень')
     slug = models.SlugField(max_length=255, unique=False)
     road = models.URLField(max_length=500, verbose_name='Путь')
-
+    children = models.TextField(verbose_name='Потомки', null=True, blank=True, max_length=500)
 
     def __str__(self):
         return f"{self.title}"
@@ -68,14 +75,10 @@ class Category(models.Model):
             self.slug = slugify(self.title)
             if not self.parent:
                 self.level = 0
-                self.road = 'http://45.8.248.219/server/api/v1/' + self.slug + '/'
-
+                self.road = self.slug + '/'
             else:
                 self.level = self.parent.level + 1
-
                 self.road = self.parent.road + self.slug + '/'
-
-
         super(Category, self).save(*args, **kwargs)
 
     class Meta:
@@ -95,8 +98,6 @@ class Post(models.Model):
     created = models.DateTimeField(auto_now=True, db_index=True, verbose_name='Время публикации')
     road = models.URLField(max_length=500, verbose_name='Путь')
     is_private = models.BooleanField(default=False)
-
-
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -129,3 +130,12 @@ class Team(models.Model):
 
 
 
+def add_children(instance, **kwargs):
+    if instance.parent:
+        children = Category.objects.filter(parent=instance.parent)
+        if children:
+            parent = Category.objects.get(title=instance.parent)
+            parent.children = str(children)
+            parent.save()
+
+post_save.connect(add_children, sender=Category)
