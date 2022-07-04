@@ -16,7 +16,7 @@ services:
       - 587
     volumes:
       - /home/gitlab-runner/projectvictory-test/static/:/static/
-      - /home/gitlab-runner/projectvictory-test/localdb.db:/db.sqlite3
+      - /home/gitlab-runner/projectvictory-test/local.db:/db.sqlite3
 
   frontend:
     container_name: web
