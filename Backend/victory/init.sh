@@ -8,7 +8,7 @@ python3 manage.py makemigrations mainapp
 python3 manage.py migrate
 echo yes | python3 manage.py collectstatic
 
-default_admin=$("from django.contrib.auth import get_user_model; User = get_user_model(); admin=User.objects.get(username='admin'); print(admin)" | python manage.py shell)
+default_admin=$(echo "from django.contrib.auth import get_user_model; User = get_user_model(); admin=User.objects.get(username='admin'); print(admin)" | python manage.py shell)
 
 if [ $default_admin=='admin' ]; then
     echo 'admin is exsist'
