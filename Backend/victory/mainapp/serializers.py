@@ -98,7 +98,7 @@ class PostListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('title', 'category', 'owner', 'avatar', 'road', 'id', 'slug', 'my_children')
+        fields = ('title', 'category', 'owner', 'avatar', 'road', 'id', 'slug')
 
 
 class TeamCreateSerializer(serializers.ModelSerializer):
