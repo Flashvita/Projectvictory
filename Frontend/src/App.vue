@@ -105,6 +105,10 @@ img {
   flex: 1 1 auto;
   display: flex;
   margin-top: 80px;
+
+  @media (max-width: 600px) {
+    margin-top: 50px;
+  }
 }
 
 .container {

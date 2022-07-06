@@ -3,7 +3,11 @@
     <div class="article-owner">
       <div class="article-avatar">
         <div v-if="!article.avatar" class="article-avatar-placeholder"></div>
-        <img v-else src="#" alt="avatar" />
+        <img
+          v-else
+          :src="'http://45.8.248.219/media/' + article.avatar"
+          alt="avatar"
+        />
       </div>
       <div>{{ article.owner }}</div>
     </div>
@@ -37,6 +41,7 @@
 import RemoveBasket from "@/assets/icons/remove-basket";
 import IconBase from "@/components/UI/IconBase";
 import { mapActions } from "vuex";
+import axios from "axios";
 
 export default {
   name: "ArticleItem",
@@ -45,6 +50,13 @@ export default {
   props: {
     article: Object,
   },
+
+  data() {
+    return {
+      baseURL: axios.defaults.baseURL,
+    };
+  },
+
   methods: {
     ...mapActions({
       getArticleOll: "article/getArticlesOll",
@@ -54,6 +66,10 @@ export default {
       await this.removeArticle(id);
       await this.getArticleOll(query);
     },
+  },
+
+  mounted() {
+    console.log(this.baseURL);
   },
 };
 </script>

@@ -134,6 +134,7 @@ export default {
           theme: this.theme,
           title: this.title,
           content: this.content,
+          category: 1,
         });
         console.log(response);
       } catch (e) {
@@ -173,6 +174,10 @@ export default {
     margin-top: 38px;
     font-size: 38px;
     font-weight: 700;
+
+    @media (max-width: 600px) {
+      font-size: 26px;
+    }
   }
 
   .form-wrapper {

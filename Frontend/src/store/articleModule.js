@@ -6,6 +6,8 @@ export const articleModule = {
     content: "",
     loadedArticle: false,
     articleList: [],
+    categoryList: [],
+    categoryError: false,
   }),
   mutations: {
     setTitle(state, title) {
@@ -19,6 +21,12 @@ export const articleModule = {
     },
     setArticleList(state, articleList) {
       state.articleList = articleList;
+    },
+    setCategoryList(state, categoryList) {
+      state.categoryList = categoryList;
+    },
+    setCategoryError(state, categoryError) {
+      state.categoryError = categoryError;
     },
   },
   actions: {
@@ -37,6 +45,7 @@ export const articleModule = {
     },
     async getArticlesOll({ commit }, query = "") {
       commit("setLoadedArticle", true);
+      console.log(query);
       const queryParams = {
         limit: 10,
         catalog: query,
@@ -45,7 +54,8 @@ export const articleModule = {
         const response = await axios.get("/api/v1/posts/", {
           params: queryParams,
         });
-        commit("setArticleList", response.data);
+        console.log(response.data);
+        commit("setArticleList", response.data.results);
       } catch (e) {
         console.log(e.message);
       } finally {
@@ -56,6 +66,35 @@ export const articleModule = {
       commit("setLoadedArticle", true);
       try {
         await axios.delete(`/api/v1/posts/detail/${id}`);
+      } catch (e) {
+        console.log(e.message);
+      } finally {
+        commit("setLoadedArticle", false);
+      }
+    },
+    async createCategory({ commit, dispatch }, title, parent) {
+      commit("setLoadedArticle", true);
+      try {
+        const response = await axios.post(`/api/v1/category/create/`, {
+          title,
+          parent,
+        });
+        await dispatch("getCategory");
+        console.log(response);
+        return response;
+      } catch (e) {
+        console.log(e.message);
+        commit("setCategoryError", true);
+      } finally {
+        commit("setLoadedArticle", false);
+      }
+    },
+    async getCategory({ commit }) {
+      commit("setLoadedArticle", true);
+      try {
+        const response = await axios.get(`/api/v1/categories/`);
+        commit("setCategoryList", response.data.results);
+        console.log(response.data.results);
       } catch (e) {
         console.log(e.message);
       } finally {
@@ -75,6 +114,12 @@ export const articleModule = {
     },
     articleList(state) {
       return state.articleList;
+    },
+    categoryList(state) {
+      return state.categoryList;
+    },
+    categoryError(state) {
+      return state.categoryError;
     },
   },
   namespaced: true,

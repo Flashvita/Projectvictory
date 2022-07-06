@@ -4,7 +4,7 @@
 
 .ql-toolbar.ql-snow {
   position: sticky;
-  top: 0;
+  top: 80px;
   z-index: 1;
   border-top-left-radius: var(--radius);
   border-top-right-radius: var(--radius);
@@ -17,4 +17,10 @@
   border-bottom-left-radius: var(--radius);
   border-bottom-right-radius: var(--radius);
   border: none;
+}
+
+@media (max-width: 600px) {
+  .ql-toolbar.ql-snow {
+    top: 94px;
+  }
 }

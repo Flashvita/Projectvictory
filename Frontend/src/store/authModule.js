@@ -178,11 +178,12 @@ export const authModule = {
       commit("setToken", "");
       await router.push("/");
     },
-    async getMe({ commit }) {
+    async getMe({ commit, dispatch }) {
       try {
         const response = await axios.get("/auth/users/me/");
         commit("setProfile", response.data);
       } catch (e) {
+        await dispatch("logout");
         console.log(e);
       }
     },

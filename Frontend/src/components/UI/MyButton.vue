@@ -1,13 +1,15 @@
 <template>
   <button class="my-button">
     <slot v-if="!isLoad"></slot>
-    <MySpinner v-if="isLoad" />
+    <my-spinner v-if="isLoad" />
   </button>
 </template>
 
 <script>
+import MySpinner from "@/components/UI/Spinner";
 export default {
   name: "MyButton",
+  components: { MySpinner },
   props: {
     isLoad: {
       type: Boolean,
