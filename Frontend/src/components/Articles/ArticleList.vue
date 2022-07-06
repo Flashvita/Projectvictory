@@ -1,7 +1,14 @@
 <template>
-  <div v-if="loadedArticle">Загрузка...</div>
-  <p v-if="!loadedArticle && articleList.length === 0">Список пуст</p>
-  <ul v-if="!loadedArticle && articleList.length > 0" class="article-list">
+  <div v-if="loadedArticle" class="spinner">
+    <my-spinner></my-spinner>
+  </div>
+  <p
+    class="article_list_zero"
+    v-if="!loadedArticle && articleList.length === 0"
+  >
+    Список пуст
+  </p>
+  <ul class="article_list" v-if="!loadedArticle && articleList.length > 0">
     <ArticleItem
       :key="article.id"
       :article="article"
@@ -12,11 +19,12 @@
 
 <script>
 import ArticleItem from "@/components/Articles/ArticleItem";
+import MySpinner from "@/components/UI/Spinner";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "ArticleList",
-  components: { ArticleItem },
+  components: { ArticleItem, MySpinner },
   data() {
     return {
       articles: [],
@@ -35,9 +43,27 @@ export default {
     }),
   },
   mounted() {
+    console.log(this.articleList);
     this.getArticlesOll();
   },
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.article_list {
+  width: 100%;
+  margin-top: 40px;
+}
+
+.article_list_zero {
+  text-align: center;
+  margin-top: 40px;
+  width: 100%;
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  margin: auto;
+}
+</style>
