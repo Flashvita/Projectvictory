@@ -10,6 +10,9 @@
 <script>
 export default {
   name: "MySpinner",
+  props: {
+    size: [Number],
+  },
 };
 </script>
 
@@ -17,15 +20,15 @@ export default {
 .lds-ring {
   display: inline-block;
   position: relative;
-  width: 20px;
-  height: 20px;
+  width: 100%;
+  height: 100%;
 }
 .lds-ring div {
   box-sizing: border-box;
   display: block;
   position: absolute;
-  width: 16px;
-  height: 16px;
+  width: 100%;
+  height: 100%;
   top: 0;
   bottom: 0;
   left: 0;

@@ -1,7 +1,7 @@
 <template>
   <div v-if="this.load">Загрузка...</div>
-  <div v-else>
-    <div class="article">
+  <div v-else class="article">
+    <div class="article__body">
       <div class="article-owner">
         <div class="article-avatar">
           <div
@@ -16,7 +16,7 @@
             path: '/articles/create',
             query: {
               catalog: 'Разработка/Backend/Docker', // this.articleItem.path !!!!!!!!!!!!!!!!!!!!!!
-              id: '1', // this.articleItem.id !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+              id: this.articleItem.id,
             },
           }"
           class="article-owner-button"
@@ -69,10 +69,14 @@ export default {
 <style lang="scss" scoped>
 .article {
   width: 100%;
-  margin-bottom: 32px;
-  padding: 20px 25px;
-  background-color: var(--color-white);
-  border-radius: 3px;
+
+  &__body {
+    width: 100%;
+    margin-bottom: 32px;
+    padding: 20px 25px;
+    background-color: var(--color-white);
+    border-radius: 3px;
+  }
 }
 
 .article-owner {
