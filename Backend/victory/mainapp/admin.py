@@ -4,7 +4,7 @@ from mainapp.models import Profile, Contact, Post, Team, Category
 
 class ProfileAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('user',)}
-    list_display = ('user', 'created', 'phone', 'id')
+    list_display = ('user', 'role', 'phone', 'avatar', 'id')
 
 
 class ContactAdmin(admin.ModelAdmin):
@@ -13,7 +13,7 @@ class ContactAdmin(admin.ModelAdmin):
 
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
-    list_display = ('title', 'id', 'parent', 'level', 'slug', 'road', 'children')
+    list_display = ('title', 'id', 'parent', 'level', 'slug', 'road')
 
 
 class PostAdmin(admin.ModelAdmin):
