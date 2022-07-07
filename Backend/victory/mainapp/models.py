@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.text import slugify
-from django.db.models.signals import post_save, pre_save
 
 
 
@@ -27,7 +26,7 @@ class Profile(models.Model):
     scrum_master = models.BooleanField(default=False, verbose_name='Скрам мастер')
 
     def __str__(self):
-        return f"{self.user.username}"
+        return f"{self.user.username}"            
 
     class Meta:
         verbose_name = 'Профиль пользователя'
@@ -65,7 +64,6 @@ class Category(models.Model):
     level = models.IntegerField(verbose_name='Уровень')
     slug = models.SlugField(max_length=255, unique=False)
     road = models.URLField(max_length=500, verbose_name='Путь')
-    children = models.TextField(verbose_name='Потомки', null=True, blank=True, max_length=500)
 
     def __str__(self):
         return f"{self.title}"
@@ -79,7 +77,7 @@ class Category(models.Model):
             else:
                 self.level = self.parent.level + 1
                 self.road = self.parent.road + self.slug + '/'
-        super(Category, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Категория'
@@ -92,7 +90,7 @@ class Post(models.Model):
     title = models.CharField(max_length=200, verbose_name='Заголовок статьи')
     slug = models.SlugField(max_length=255, unique=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
-    content = models.TextField(max_length=90000, verbose_name='Содержимое')
+    content = models.TextField(verbose_name='Содержимое')
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='post_owner')
     is_active = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now=True, db_index=True, verbose_name='Время публикации')
@@ -128,14 +126,3 @@ class Team(models.Model):
         verbose_name = 'Команда'
         verbose_name_plural = 'Команды'
 
-
-
-def add_children(instance, **kwargs):
-    if instance.parent:
-        children = Category.objects.filter(parent=instance.parent)
-        if children:
-            parent = Category.objects.get(title=instance.parent)
-            parent.children = str(children)
-            parent.save()
-
-post_save.connect(add_children, sender=Category)

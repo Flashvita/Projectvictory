@@ -3,6 +3,7 @@ from .models import Profile, Contact, Post, Team, Category
 from .permissions import IsOwnerProfileOrReadOnly, IsOwnerOrAdminOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.pagination import LimitOffsetPagination
 from django.core.mail import send_mail
 from rest_framework.generics import (
     ListCreateAPIView,
@@ -51,6 +52,7 @@ class CategoriesView(ListCreateAPIView):
     """Все категории"""
     serializer_class = CategoriesSerializers
     queryset = Category.objects.all()
+    pagination_class = None
 
 
 class ContactCreateView(CreateAPIView):
@@ -90,6 +92,9 @@ class PostListView(ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostListSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = LimitOffsetPagination
+    limit_query_param = 'limit'
+
 
 
 
