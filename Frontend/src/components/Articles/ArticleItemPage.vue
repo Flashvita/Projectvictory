@@ -1,22 +1,19 @@
 <template>
-  <div v-if="this.load">Загрузка...</div>
+  <div v-if="loadedArticle">Загрузка...</div>
   <div v-else class="article">
     <div class="article__body">
       <div class="article-owner">
         <div class="article-avatar">
-          <div
-            v-if="!this.articleItem.avatar"
-            class="article-avatar-placeholder"
-          />
+          <div v-if="!article.avatar" class="article-avatar-placeholder" />
           <img v-else src="#" alt="avatar" />
         </div>
-        <div>{{ this.articleItem.owner }}</div>
+        <div>{{ article.owner }}</div>
         <router-link
           :to="{
             path: '/articles/create',
             query: {
               catalog: 'Разработка/Backend/Docker', // this.articleItem.path !!!!!!!!!!!!!!!!!!!!!!
-              id: this.articleItem.id,
+              id: this.$route.params.id,
             },
           }"
           class="article-owner-button"
@@ -24,44 +21,55 @@
           Редактировать
         </router-link>
       </div>
-      <h2 class="article-title">{{ this.articleItem.title }}</h2>
-      <div class="article-body" v-html="this.articleItem.content"></div>
+      <h2 class="article-title">{{ article.title }}</h2>
+      <div class="article-body" v-html="article.content"></div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "ArticleItemPage",
-  components: {},
-  data() {
-    return {
-      articleItem: {},
-      load: false,
-    };
-  },
+  // data() {
+  //   return {
+  //     articleItem: {},
+  //     load: false,
+  //   };
+  // },
   methods: {
-    async fetchArticleItem() {
-      this.load = true;
-      try {
-        const response = await axios
-          .get(`/api/v1/posts/detail/${this.$route.params.id}`)
-          .finally(() => {
-            this.load = false;
-          });
-        this.articleItem = response.data;
-        await this.$router.push({
-          query: { catalog: "Разработка/Backend/Docker" },
-        });
-      } catch (e) {
-        console.log(e.message);
-      }
-    },
+    ...mapActions({
+      getArticle: "article/getArticle",
+    }),
+    // async fetchArticleItem() {
+    //   this.load = true;
+    //   try {
+    //     const response = await axios
+    //       .get(`/api/v1/posts/detail/${this.$route.params.id}`)
+    //       .finally(() => {
+    //         this.load = false;
+    //       });
+    //     this.articleItem = response.data;
+    //     await this.$router.push({
+    //       query: { catalog: "Разработка/Backend/Docker" },
+    //     });
+    //   } catch (e) {
+    //     console.log(e.message);
+    //   }
+    // },
+  },
+  computed: {
+    ...mapGetters({
+      article: "article/article",
+      loadedArticle: "article/loadedArticle",
+    }),
   },
   mounted() {
-    this.fetchArticleItem();
+    this.getArticle({
+      method: "GET",
+      article: { id: this.$route.params.id },
+    });
   },
 };
 </script>

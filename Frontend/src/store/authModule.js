@@ -117,7 +117,14 @@ export const authModule = {
           }
         } catch (e) {
           commit("setErrorAuth", true);
-          commit("setMessageErrorAuth", e.response.data.non_field_errors[0]);
+          if (e.message === "Network Error") {
+            commit(
+              "setMessageErrorAuth",
+              "Хьюстон, у нас проблема! Мы работаем над этим."
+            );
+          } else {
+            commit("setMessageErrorAuth", e.response.data.non_field_errors[0]);
+          }
         } finally {
           commit("setLoading", false);
         }
@@ -155,7 +162,14 @@ export const authModule = {
             commit("setConfirmPassword", "");
           }
         } catch (e) {
-          if (e.response.data.email) {
+          console.log(e);
+          if (e.message === "Network Error") {
+            commit("setErrorAuth", true);
+            commit(
+              "setMessageErrorAuth",
+              "Хьюстон, у нас проблема! Мы работаем над этим."
+            );
+          } else if (e.response.data.email) {
             commit("setMessageErrorAuth", e.response.data.password.join(" "));
             commit("setEmailError", true);
           } else if (e.response.data.password) {
@@ -164,7 +178,10 @@ export const authModule = {
             commit("setErrorConfirmPassword", true);
           } else {
             commit("setErrorAuth", true);
-            commit("setMessageErrorAuth", e.message);
+            commit(
+              "setMessageErrorAuth",
+              "Хьюстон, у нас проблема! Мы работаем над этим."
+            );
           }
         } finally {
           commit("setLoading", false);

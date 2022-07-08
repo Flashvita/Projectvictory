@@ -1,7 +1,9 @@
 <template>
   <button class="my-button">
     <slot v-if="!isLoad"></slot>
-    <my-spinner v-if="isLoad" />
+    <div class="spinner" v-if="isLoad">
+      <my-spinner />
+    </div>
   </button>
 </template>
 
@@ -38,6 +40,11 @@ export default {
 
   &:hover {
     //transform: scale(1.1);
+  }
+
+  & .spinner {
+    width: 16px;
+    height: 16px;
   }
 }
 </style>

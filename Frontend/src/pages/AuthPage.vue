@@ -4,15 +4,19 @@
       <form @submit.prevent class="auth-form">
         <div class="auth-form-wrapper" v-if="isSignIn">
           <h1 class="auth-form-title">Вход в аккаунт</h1>
-          <div class="error-text" v-if="errorAuth">{{ messageErrorAuth }}</div>
-          <MyInput
+          <transition name="bounce">
+            <div class="error-text" v-show="errorAuth">
+              {{ messageErrorAuth }}
+            </div>
+          </transition>
+          <my-input
             :model-value="name"
             :error="errorAuth || nameError"
             @update:model-value="setName"
             type="text"
             placeholderText="Имя"
           />
-          <MyInput
+          <my-input
             :model-value="password"
             :error="errorAuth || passwordError"
             @update:model-value="setPassword"
@@ -20,7 +24,7 @@
             placeholderText="Пароль"
           />
           <div class="auth-form-btn">
-            <MyButton @click="this.signIn"> Войти </MyButton>
+            <my-button @click="this.signIn"> Войти </my-button>
           </div>
         </div>
         <div
@@ -28,34 +32,36 @@
           v-if="!isSignIn"
         >
           <h1 class="auth-form-title">Создание аккаунта</h1>
-          <div
-            class="error-text"
-            v-if="errorAuth || emailError || passwordError"
-          >
-            {{ messageErrorAuth }}
-          </div>
-          <MyInput
+          <transition name="bounce">
+            <div
+              class="error-text"
+              v-show="errorAuth || emailError || passwordError"
+            >
+              {{ messageErrorAuth }}
+            </div>
+          </transition>
+          <my-input
             :model-value="name"
             :error="errorAuth || nameError"
             @update:model-value="setName"
             type="text"
             placeholderText="Имя"
           />
-          <MyInput
+          <my-input
             :model-value="email"
             :error="errorAuth || emailError"
             @update:model-value="setEmail"
             type="text"
             placeholderText="Email"
           />
-          <MyInput
+          <my-input
             :model-value="password"
             :error="errorAuth || passwordError"
             @update:model-value="setPassword"
             type="password"
             placeholderText="Пароль"
           />
-          <MyInput
+          <my-input
             :model-value="confirmPassword"
             :error="errorAuth || confirmPasswordError"
             @update:model-value="setConfirmPassword"
@@ -63,17 +69,17 @@
             placeholderText="Подтверждение пароля"
           />
           <div class="auth-form-btn">
-            <MyButton @click="this.signUp" :isLoad="isLoading">
+            <my-button @click="this.signUp" :isLoad="isLoading">
               Зарегистрироваться
-            </MyButton>
+            </my-button>
           </div>
         </div>
       </form>
-      <MyButton_link @click="changeTypeAuth">
+      <my-button-link @click="changeTypeAuth">
         {{
           this.isSignIn ? "У меня ещё нет аккаунта" : "У меня уже есть аккаунта"
         }}
-      </MyButton_link>
+      </my-button-link>
       <div class="auth-circle_1"></div>
       <div class="auth-circle_2"></div>
       <div class="auth-circle_3"></div>
@@ -85,9 +91,13 @@
 <script>
 import { mapActions, mapMutations, mapState, mapGetters } from "vuex";
 import router from "@/router/router";
+import MyInput from "@/components/UI/MyInput";
+import MyButton from "@/components/UI/MyButton";
+import MyButtonLink from "@/components/UI/MyButton_link";
 
 export default {
   name: "AuthPage",
+  components: { MyButtonLink, MyButton, MyInput },
   data() {
     return {
       isSignIn: true,
@@ -242,6 +252,7 @@ export default {
     font-size: 38px;
     font-family: var(--font-bold);
     color: var(--color-white);
+    margin-bottom: 10px;
 
     @media (max-width: 425px) {
       font-size: 26px;
@@ -249,11 +260,11 @@ export default {
   }
 
   .error-text {
-    //position: absolute;
+    position: absolute;
     top: 53px;
     width: 100%;
     text-align: center;
-    color: var(--color-error);
+    color: #c00052;
   }
 }
 
@@ -283,6 +294,24 @@ export default {
   .auth-form-btn {
     display: flex;
     justify-content: center;
+  }
+}
+
+.bounce-enter-active {
+  animation: bounce-in 0.3s;
+}
+.bounce-leave-active {
+  animation: bounce-in 0.3s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 </style>
