@@ -1,7 +1,6 @@
 <template>
   <div class="category-create" :class="{ 'my-input-error': categoryError }">
     <my-input
-      autofocus
       :model-value="category"
       :error="categoryError"
       type="text"
@@ -23,15 +22,8 @@ export default {
   name: "CategoryCreate",
   components: { MyInput, MyButton },
   props: {
-    parent: {
-      type: Number,
-      default() {
-        return 0;
-      },
-    },
-    ofShowModal: {
-      type: Function,
-    },
+    parent: [Number],
+    ofShowModal: [Function],
   },
   data() {
     return {
@@ -50,14 +42,15 @@ export default {
       this.category = value;
     },
     async onCreateCategory() {
-      console.log(this.category);
-      console.log(this.parent);
       this.setCategoryError(false);
       if (this.category.length <= 0) {
         this.setCategoryError(true);
         return;
       }
-      const category = await this.createCategory(this.category, this.parent);
+      const category = await this.createCategory({
+        title: this.category,
+        parent: this.parent,
+      });
       if (category.status === 201) {
         this.ofShowModal();
       }
@@ -68,6 +61,9 @@ export default {
       loadedArticle: "article/loadedArticle",
       categoryError: "article/categoryError",
     }),
+  },
+  mounted() {
+    console.log(this.parent);
   },
 };
 </script>

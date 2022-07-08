@@ -103,8 +103,9 @@ export default {
       this.burger = !this.burger;
     },
     onShowModal(id) {
-      if (id?.target?.value?.length > 0) this.parent = id;
       this.modalVisible = true;
+      if (typeof id === "object") return;
+      this.parent = id;
     },
     ofShowModal() {
       this.modalVisible = false;

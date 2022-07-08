@@ -3,7 +3,7 @@
     <div
       class="category-title"
       :class="{
-        'category-title-selected': this.$route.query.catalog === category.path,
+        'category-title-selected': this.$route.query.catalog === category.road,
       }"
     >
       <div class="category-title-wrapper">
@@ -27,18 +27,21 @@
         </span>
         <span
           class="category-title-name"
-          @click="onChangeCategory(category.title, category.path)"
+          @click="onChangeCategory(category.title, category.road)"
         >
           {{ category.title }}
         </span>
         <span
           class="add-btn-block"
           v-if="
-            this.$route.query.catalog === category.path &&
+            this.$route.query.catalog === category.road &&
             this.$route.path === '/articles'
           "
         >
-          <my-button class="add-btn" @click="addArticle(category.path)">
+          <my-button
+            class="add-btn"
+            @click="addArticle(category.road, category.id)"
+          >
             +
             <icons-component name="document" class="icon__folder" />
           </my-button>
@@ -67,7 +70,7 @@
 import IconBase from "@/components/UI/IconBase";
 import ArrowIcon from "@/assets/icons/arrow-icon";
 import IconsComponent from "@/assets/icons/icons-component";
-import { mapActions } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 import MyButton from "@/components/UI/MyButton";
 
 export default {
@@ -98,7 +101,15 @@ export default {
     ...mapActions({
       getArticlesOll: "article/getArticlesOll",
     }),
-    addArticle(address) {
+    ...mapMutations({
+      setCategoryId: "article/setCategoryId",
+      setContent: "article/setContent",
+      setTitle: "article/setTitle",
+    }),
+    addArticle(address, categoryId) {
+      this.setCategoryId(categoryId);
+      this.setContent("");
+      this.setTitle("");
       this.$router.push({
         path: "/articles/create",
         query: { catalog: address },
@@ -210,10 +221,10 @@ export default {
   transform: rotate(0deg);
 }
 
-//.category-title-selected {
-//  font-weight: bold;
-//  color: var(--color-accent);
-//}
+.category-title-selected {
+  font-weight: bold;
+  color: var(--color-accent);
+}
 
 .subcategory {
   overflow: hidden;
