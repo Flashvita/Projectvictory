@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
-from django.utils.text import slugify
-
+from transliterate import slugify
+from transliterate.utils import translit
 
 
 
@@ -67,10 +67,12 @@ class Category(models.Model):
 
     def __str__(self):
         return f"{self.title}"
+    
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title)
+            slug_trunslite = translit(value=self.title, language_code='ru')
+            self.slug = slugify(slug_trunslite)
             if not self.parent:
                 self.level = 0
                 self.road = self.slug + '/'
@@ -99,7 +101,8 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title)
+            slug_trunslite = translit(value=self.title, language_code='ru')
+            self.slug = slugify(slug_trunslite)
             if not self.road:
                 self.road = self.category.road + self.slug + '/'
         super().save(*args, **kwargs)
