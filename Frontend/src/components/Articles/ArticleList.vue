@@ -43,7 +43,6 @@ export default {
     }),
   },
   mounted() {
-    console.log(this.articleList);
     this.getArticlesOll();
   },
 };

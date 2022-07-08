@@ -3,12 +3,12 @@
     <div class="container">
       <div class="header-wrapper">
         <div>Logo</div>
-        <NavbarComponent />
+        <navbar-component />
         <div class="btn-auth">
-          <MyButton_link v-if="!isAuth" @click="$router.push('/auth')">
+          <my-button-link v-if="!isAuth" @click="$router.push('/auth')">
             Войти
-          </MyButton_link>
-          <MyButton_link v-else @click="this.logout"> Выйти </MyButton_link>
+          </my-button-link>
+          <my-button-link v-else @click="this.logout"> Выйти </my-button-link>
         </div>
         <div class="navbar-mobile">
           <navbar-mobile />
@@ -22,10 +22,11 @@
 import NavbarComponent from "@/components/Navbar/Navbar";
 import { mapGetters, mapActions } from "vuex";
 import NavbarMobile from "@/components/Navbar/NavbarMobile";
+import MyButtonLink from "@/components/UI/MyButton_link";
 
 export default {
   name: "HeaderComponent",
-  components: { NavbarMobile, NavbarComponent },
+  components: { MyButtonLink, NavbarMobile, NavbarComponent },
   methods: {
     ...mapActions({ logout: "auth/logout" }),
   },

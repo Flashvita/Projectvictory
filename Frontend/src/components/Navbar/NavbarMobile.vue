@@ -32,10 +32,10 @@
             Контакты
           </router-link>
           <div class="btn-auth">
-            <MyButton_link v-if="!isAuth" @click="$router.push('/auth')">
+            <my-button-link v-if="!isAuth" @click="$router.push('/auth')">
               Войти
-            </MyButton_link>
-            <MyButton_link v-else @click="this.logout"> Выйти </MyButton_link>
+            </my-button-link>
+            <my-button-link v-else @click="this.logout"> Выйти </my-button-link>
           </div>
         </nav>
       </div>
@@ -47,10 +47,12 @@
 import { mapActions, mapGetters } from "vuex";
 import IconBase from "@/components/UI/IconBase";
 import CloseIcon from "@/assets/icons/close-icon";
+import MyButtonLink from "@/components/UI/MyButton_link";
 
 export default {
   name: "NavbarMobile",
   components: {
+    MyButtonLink,
     CloseIcon,
     IconBase,
   },
