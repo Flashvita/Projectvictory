@@ -7,7 +7,10 @@ export const articleModule = {
     article: {},
     articleError: false,
     loadedArticle: false,
-    articleList: [],
+    articleList: {},
+    limitPagination: 4,
+    offsetNext: null,
+    offsetPrevious: null,
     categoryId: null,
     categoryList: [],
     categoryError: false,
@@ -30,6 +33,12 @@ export const articleModule = {
     },
     setArticleList(state, articleList) {
       state.articleList = articleList;
+    },
+    setOffsetNext(state, offsetNext) {
+      state.offsetNext = offsetNext;
+    },
+    setOffsetPrevious(state, offsetPrevious) {
+      state.offsetPrevious = offsetPrevious;
     },
     setCategoryList(state, categoryList) {
       state.categoryList = categoryList;
@@ -89,17 +98,20 @@ export const articleModule = {
       }
     },
 
-    async getArticlesOll({ commit }, query = "") {
+    async getArticlesOll({ commit, state }, query = {}) {
       commit("setLoadedArticle", true);
       const queryParams = {
-        limit: 10,
-        catalog: query,
+        limit: state.limitPagination,
+        catalog: query.catalog,
+        offset: query.offset,
       };
       try {
         const response = await axios.get("/api/v1/posts/", {
           params: queryParams,
         });
-        commit("setArticleList", response.data.results);
+        commit("setArticleList", response.data);
+        commit("setOffsetNext", response.data.next);
+        commit("setOffsetPrevious", response.data.previous);
       } catch (e) {
         console.log(e.message);
       } finally {
@@ -174,6 +186,15 @@ export const articleModule = {
     },
     categoryError(state) {
       return state.categoryError;
+    },
+    limitPagination(state) {
+      return state.limitPagination;
+    },
+    offsetNext(state) {
+      return state.offsetNext;
+    },
+    offsetPrevious(state) {
+      return state.offsetPrevious;
     },
   },
   namespaced: true,
