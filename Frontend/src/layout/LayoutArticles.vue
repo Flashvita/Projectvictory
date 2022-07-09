@@ -125,6 +125,7 @@ export default {
 .article {
   display: flex;
   padding: 30px 0;
+  min-height: 100%;
 
   &__breadcrumbs {
     display: flex;
@@ -178,6 +179,7 @@ export default {
 
   &__layout {
     display: flex;
+    flex-direction: column;
     width: 100%;
     margin-left: 30px;
     //margin-top: 50px;
