@@ -32,8 +32,10 @@ build application:
   stage: build
   tags:
     - shell
+  before_script:
+    - cd ~/projectvictory-test/
   script:
-    - docker compose --project-directory projectvictory-test/ build
+    - docker compose build
   only:
     - dev
 
