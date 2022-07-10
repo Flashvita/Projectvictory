@@ -31,7 +31,7 @@ services:
       - 80
     volumes:
       - /home/gitlab-runner/projectvictory-test/nginx.conf:/etc/nginx/nginx.conf
-      - /home/gitlab-runner/projectvictory-test/private_pkey.pem:/etc/nginx/private_pkey.pem
-      - /home/gitlab-runner/projectvictory-test/out_cert.pem:/etc/nginx/out_cert.pem
+      #- /home/gitlab-runner/projectvictory-test/private_pkey.pem:/etc/nginx/private_pkey.pem
+      #- /home/gitlab-runner/projectvictory-test/out_cert.pem:/etc/nginx/out_cert.pem
       - /home/gitlab-runner/projectvictory-test/static/:/www/static
       - /home/gitlab-runner/projectvictory-test/media/:/www/media
