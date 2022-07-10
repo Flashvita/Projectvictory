@@ -34,8 +34,10 @@ run application:
   tags:
     - shell
   before_script:
-    - docker compose down -v
+    - cd ~/projectvictory-test
   script:
+    - docker compose down -v
+  after_script:
     - docker compose up -d
   only:
     - dev
