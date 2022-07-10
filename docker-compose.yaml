@@ -21,7 +21,8 @@ services:
 
   frontend:
     container_name: web
-    build: frontend/
+    build: 
+      context: frontend/
     restart: always
     ports:
       - 443:443
