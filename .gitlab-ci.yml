@@ -55,11 +55,12 @@ update frontend:
 
 build application:
   stage: run
+  needs: ["update frontend", "update backend"]
+  when: on_success
   tags:
     - shell
   before_script:
     - cd ~/projectvictory-test
   script:
-    - docker compose up -d
-  only:
-    - dev
+    - docker compose up -d --build
+
