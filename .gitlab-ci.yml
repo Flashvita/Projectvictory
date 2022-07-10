@@ -23,8 +23,8 @@ update files:
   tags:
     - shell
   script:
-    - sudo cp -r Backend/victory/. ~/projectvictory-test/backend
-    - sudo cp -r Frontend/. ~/projectvictory-test/frontend
+    - sudo cp -rf Backend/victory/. ~/projectvictory-test/backend
+    - sudo cp -rf Frontend/. ~/projectvictory-test/frontend
   only:
     - dev 
 
