@@ -43,14 +43,14 @@ build web:
     refs:
       - dev
     changes:
-      - Frontend/*
+      - Frontend/*.vue
 
 run server:
   stage: run
   tags:
     - shell
   before_script:
-    - docker compose stop frontend
+    - docker compose stop backend
   script:
     - docker compose up -d backend
   only:
@@ -71,7 +71,7 @@ run web:
     refs:
       - dev
     changes:
-      - Frontend/*
+      - Frontend/*.vue
 
 run application:
   stage: run
