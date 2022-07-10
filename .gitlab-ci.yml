@@ -3,19 +3,21 @@ stages:
   - test
   - deploy
 
-copy files:
+check_backend:
   stage: build
   tags:
     - shell
-
   script:
     - sudo cp -r Backend/victory/. ~/projectvictory-test/backend
     - sudo cp -r Frontend/. ~/projectvictory-test/frontend
-    - sudo cp -f nginx.conf ~/projectvictory-test/
-    - sudo cp -f docker-compose.yaml ~/projectvictory-test/
+    #- sudo cp -f nginx.conf ~/projectvictory-test/
+    #- sudo cp -f docker-compose.yaml ~/projectvictory-test/
   only:
-    - dev
-  
+    refs:
+      - dev
+    changes:
+      - Backend/victory/*
+
 build application:
   stage: test
   tags:
