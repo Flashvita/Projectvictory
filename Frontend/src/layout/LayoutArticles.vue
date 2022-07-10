@@ -103,8 +103,9 @@ export default {
       this.burger = !this.burger;
     },
     onShowModal(id) {
-      if (id?.target?.value?.length > 0) this.parent = id;
       this.modalVisible = true;
+      if (typeof id === "object") return;
+      this.parent = id;
     },
     ofShowModal() {
       this.modalVisible = false;
@@ -124,6 +125,7 @@ export default {
 .article {
   display: flex;
   padding: 30px 0;
+  min-height: 100%;
 
   &__breadcrumbs {
     display: flex;
@@ -177,6 +179,7 @@ export default {
 
   &__layout {
     display: flex;
+    flex-direction: column;
     width: 100%;
     margin-left: 30px;
     //margin-top: 50px;

@@ -67,10 +67,6 @@ export default {
       await this.getArticleOll(query);
     },
   },
-
-  mounted() {
-    console.log(this.baseURL);
-  },
 };
 </script>
 

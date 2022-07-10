@@ -78,13 +78,15 @@
       <div class="article-wrapper" :class="{ 'quill-active': activeQuill }">
         <QuillEditor :onFocused="onFocused" :ofFocused="ofFocused" />
       </div>
-      <MyButton @click="this.createArticle">Создать статью</MyButton>
+      <div>
+        <MyButton @click="this.onCreateArticle">Создать статью</MyButton>
+        <div v-show="articleError">ошибка</div>
+      </div>
     </form>
   </div>
 </template>
 
 <script>
-import axios from "axios";
 import { mapActions, mapMutations, mapGetters } from "vuex";
 import QuillEditor from "@/components/UI/QuillEditor/QuillEditor";
 
@@ -102,13 +104,14 @@ export default {
         padding: "0px 16px",
       },
       theme: "",
-      load: false,
     };
   },
 
   methods: {
     ...mapActions({
       getArticle: "article/getArticle",
+      createArticle: "article/createArticle",
+      patchArticle: "article/patchArticle",
     }),
     ...mapMutations({
       setTitle: "article/setTitle",
@@ -120,25 +123,25 @@ export default {
     ofFocused() {
       this.activeQuill = false;
     },
-    async createArticle(e) {
+    async onCreateArticle(e) {
       e.preventDefault();
-      console.log({
-        category: this.$route.query.catalog,
-        theme: this.theme,
-        title: this.title,
-        content: this.content,
-      });
-      try {
-        const response = await axios.post("/api/v1/post/create/", {
+      if (this.$route.query.id) {
+        const article = await this.patchArticle({
+          id: this.$route.query.id,
+          theme: this.theme,
+          title: this.title,
+          content: this.content,
+        });
+        await this.$router.push({ path: `/articles/create/${article.id}` });
+      } else {
+        const article = await this.createArticle({
           subcategory: this.$route.query.catalog,
           theme: this.theme,
           title: this.title,
           content: this.content,
-          category: 1,
+          category: this.categoryId,
         });
-        console.log(response);
-      } catch (e) {
-        console.log(e);
+        await this.$router.push({ path: `/articles/create/${article.id}` });
       }
     },
   },
@@ -148,16 +151,15 @@ export default {
       title: "article/title",
       content: "article/content",
       loadedArticle: "article/loadedArticle",
+      articleError: "article/articleError",
+      categoryId: "article/categoryId",
     }),
   },
 
   async mounted() {
-    if (this.$route.query.id) {
-      await this.getArticle({ id: this.$route.query.id });
-    } else {
-      this.setTitle("");
-      this.setContent("");
-    }
+    if (this.$route.query.id) return;
+    this.setTitle("");
+    this.setContent("");
   },
 };
 </script>

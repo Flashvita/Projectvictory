@@ -4,46 +4,60 @@
   </div>
   <p
     class="article_list_zero"
-    v-if="!loadedArticle && articleList.length === 0"
+    v-if="!loadedArticle && articleList.results?.length === 0"
   >
     Список пуст
   </p>
-  <ul class="article_list" v-if="!loadedArticle && articleList.length > 0">
+  <ul
+    class="article_list"
+    v-if="!loadedArticle && articleList.results?.length > 0"
+  >
     <ArticleItem
       :key="article.id"
       :article="article"
-      v-for="article in articleList"
+      v-for="article in articleList.results"
     />
   </ul>
+  <my-pagination
+    :count="articleList.count"
+    :limit="limitPagination"
+    :handlerClick="handlerPagination"
+  />
 </template>
 
 <script>
 import ArticleItem from "@/components/Articles/ArticleItem";
 import MySpinner from "@/components/UI/Spinner";
+import MyPagination from "@/components/UI/MyPagination";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "ArticleList",
-  components: { ArticleItem, MySpinner },
-  data() {
-    return {
-      articles: [],
-      load: false,
-    };
-  },
+  components: { ArticleItem, MySpinner, MyPagination },
   methods: {
     ...mapActions({
       getArticlesOll: "article/getArticlesOll",
     }),
+    handlerPagination({ offset }) {
+      const catalog = this.$route.query;
+      if (offset <= 0) {
+        this.getArticlesOll({ ...catalog, offset });
+      } else {
+        this.getArticlesOll({
+          ...catalog,
+          offset: offset * this.limitPagination,
+        });
+      }
+    },
   },
   computed: {
     ...mapGetters({
       articleList: "article/articleList",
       loadedArticle: "article/loadedArticle",
+      limitPagination: "article/limitPagination",
     }),
   },
   mounted() {
-    console.log(this.articleList);
     this.getArticlesOll();
   },
 };
@@ -53,6 +67,7 @@ export default {
 .article_list {
   width: 100%;
   margin-top: 40px;
+  flex: 1 1 auto;
 }
 
 .article_list_zero {
