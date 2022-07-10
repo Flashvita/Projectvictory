@@ -10,7 +10,7 @@ copy files:
   before_script:
     - sudo rm -r ~/projectvictory-test/backend/
     - sudo rm -r ~/projectvictory-test/frontend/
-    - sudo rm -r ~/projectvictory-test/static/
+    #- sudo rm -r ~/projectvictory-test/static/
 
   script:
     - sudo cp -R Backend/victory ~/projectvictory-test/backend/
