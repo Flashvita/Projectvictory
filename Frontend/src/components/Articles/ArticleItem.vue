@@ -3,11 +3,7 @@
     <div class="article__owner">
       <div class="avatar">
         <div v-if="!article.avatar" class="avatar__placeholder" />
-        <img
-          v-else
-          :src="'http://45.8.248.219/media/' + article.avatar"
-          alt="avatar"
-        />
+        <img v-else :src="baseURL + 'media/' + article.avatar" alt="avatar" />
       </div>
       <div>{{ article.owner }}</div>
     </div>
