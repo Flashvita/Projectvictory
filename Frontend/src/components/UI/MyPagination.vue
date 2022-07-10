@@ -1,5 +1,5 @@
 <template>
-  <div class="pagination" v-if="count">
+  <div class="pagination" v-if="countComputed > 1">
     <my-button
       v-if="1 <= offsetChange - range - 1"
       @click="onChooseOffset(1)"

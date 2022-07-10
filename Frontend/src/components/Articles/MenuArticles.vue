@@ -61,6 +61,7 @@
       <menu-articles
         v-if="category.children && category.children.length > 0"
         :list-categories="category.children"
+        :onShowModal="onShowModal"
       />
     </div>
   </div>
@@ -213,12 +214,12 @@ export default {
   justify-content: center;
   width: 20px;
   height: 16px;
-  transform: rotate(-90deg);
+  transform: rotate(0deg);
   transition: all 0.2s;
 }
 
 .category-title-arrow-rotate {
-  transform: rotate(0deg);
+  transform: rotate(-90deg);
 }
 
 .category-title-selected {

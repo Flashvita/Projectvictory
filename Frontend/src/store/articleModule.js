@@ -54,7 +54,10 @@ export const articleModule = {
     async createArticle({ commit }, article) {
       commit("setLoadedArticle", true);
       try {
-        const response = await axios.post("/api/v1/post/create/", article);
+        const response = await axios.post(
+          "server/api/v1/post/create/",
+          article
+        );
         return response.data;
       } catch (e) {
         console.log(e.message);
@@ -68,7 +71,7 @@ export const articleModule = {
       commit("setLoadedArticle", true);
       try {
         const response = await axios.patch(
-          `/api/v1/posts/detail/${article.id}/`,
+          `server/api/v1/posts/detail/${article.id}/`,
           article
         );
         return response.data;
@@ -85,7 +88,7 @@ export const articleModule = {
       try {
         const response = await axios({
           method: method,
-          url: `/api/v1/posts/detail/${article.id}/`,
+          url: `server/api/v1/posts/detail/${article.id}/`,
           data: article,
         });
         commit("setArticle", response.data);
@@ -106,7 +109,7 @@ export const articleModule = {
         offset: query.offset,
       };
       try {
-        const response = await axios.get("/api/v1/posts/", {
+        const response = await axios.get("server/api/v1/posts/", {
           params: queryParams,
         });
         commit("setArticleList", response.data);
@@ -122,7 +125,7 @@ export const articleModule = {
     async removeArticle({ commit }, id) {
       commit("setLoadedArticle", true);
       try {
-        await axios.delete(`/api/v1/posts/detail/${id}`);
+        await axios.delete(`server/api/v1/posts/detail/${id}`);
       } catch (e) {
         console.log(e.message);
       } finally {
@@ -133,7 +136,7 @@ export const articleModule = {
     async createCategory({ commit, dispatch }, { title, parent }) {
       commit("setLoadedArticle", true);
       try {
-        const response = await axios.post(`/api/v1/category/create/`, {
+        const response = await axios.post(`server/api/v1/category/create/`, {
           title,
           parent,
         });
@@ -150,7 +153,7 @@ export const articleModule = {
     async getCategory({ commit }) {
       commit("setLoadedArticle", true);
       try {
-        const response = await axios.get(`/api/v1/childrens/`);
+        const response = await axios.get(`server/api/v1/childrens/`);
         commit("setCategoryList", response.data);
       } catch (e) {
         console.log(e.message);

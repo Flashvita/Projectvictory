@@ -10,7 +10,7 @@
           />
           <img
             v-else
-            :src="'http://45.8.248.219/media/' + article.owner_avatar"
+            :src="baseURL + 'media/' + article.owner_avatar"
             alt="avatar"
           />
         </div>
@@ -36,35 +36,19 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import axios from "axios";
 
 export default {
   name: "ArticleItemPage",
-  // data() {
-  //   return {
-  //     articleItem: {},
-  //     load: false,
-  //   };
-  // },
+  data() {
+    return {
+      baseURL: axios.defaults.baseURL,
+    };
+  },
   methods: {
     ...mapActions({
       getArticle: "article/getArticle",
     }),
-    // async fetchArticleItem() {
-    //   this.load = true;
-    //   try {
-    //     const response = await axios
-    //       .get(`/api/v1/posts/detail/${this.$route.params.id}`)
-    //       .finally(() => {
-    //         this.load = false;
-    //       });
-    //     this.articleItem = response.data;
-    //     await this.$router.push({
-    //       query: { catalog: "Разработка/Backend/Docker" },
-    //     });
-    //   } catch (e) {
-    //     console.log(e.message);
-    //   }
-    // },
   },
   computed: {
     ...mapGetters({
