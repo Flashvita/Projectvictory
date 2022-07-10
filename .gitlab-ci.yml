@@ -49,6 +49,8 @@ run server:
   stage: run
   tags:
     - shell
+  before_script:
+    - docker compose stop frontend
   script:
     - docker compose up -d backend
   only:
@@ -61,6 +63,8 @@ run web:
   stage: run
   tags:
     - shell
+  before_script:
+    - docker compose stop frontend
   script:
     - docker compose up -d frontend
   only:
@@ -75,6 +79,7 @@ run application:
     - shell
   before_script:
     - cd ~/projectvictory-test
+    - docker compose down -v
   script:
     - docker compose up -d
   only:
