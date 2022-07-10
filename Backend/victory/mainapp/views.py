@@ -13,7 +13,7 @@ from rest_framework.generics import (
 )
 from .models import Profile, Contact, Post, Team, Category
 from .permissions import IsOwnerProfileOrReadOnly, IsOwnerOrAdminOrReadOnly
-from .utils import category_tree
+from .utils import category_tree, all_childrens
 from .serializers import (
     ProfileSerializer,
     ContactSerializer,
@@ -144,12 +144,5 @@ class TeamDetailView(RetrieveUpdateDestroyAPIView):
 class ClassAPIView(APIView):
     def get(self, request):
         data = category_tree()
-        print(f'data = {type(data)}')
-        print()
         json_data = json.dumps(data)
-        print(json_data)
-
-        
-        return JsonResponse(data, safe = False)
-
-
+        return JsonResponse(data, safe=False)

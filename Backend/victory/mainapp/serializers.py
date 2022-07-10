@@ -41,10 +41,12 @@ class ContactSerializer(serializers.ModelSerializer):
 
 class CategoryCreateSerializers(serializers.ModelSerializer):
     """Сериалайзер для создания категории"""
+    parent_title = serializers.CharField(read_only=True, source='parent.title')
+
 
     class Meta:
         model = Category
-        fields = ('title', 'parent')
+        fields = ('title', 'parent', 'parent_title', 'id')
 
 
 class CategoriesSerializers(serializers.ModelSerializer):
