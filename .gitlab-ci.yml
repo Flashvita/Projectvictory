@@ -1,10 +1,11 @@
 stages:
+  - copy
   - build
   - run
   - deploy
 
 update config:
-  stage: build
+  stage: copy
   tags:
     - shell
   script:
@@ -17,14 +18,21 @@ update config:
       - nginx.conf
       - docker-compose.yaml
 
-build application:
-  stage: build
+update files:
+  stage: copy
   tags:
     - shell
   script:
     - sudo cp -r Backend/victory/. ~/projectvictory-test/backend
     - sudo cp -r Frontend/. ~/projectvictory-test/frontend
-  after_script:
+  only:
+    - dev 
+
+build application:
+  stage: build
+  tags:
+    - shell
+  script:
     - docker compose --project-directory projectvictory-test/ build
   only:
     - dev
@@ -40,20 +48,6 @@ run application:
   only:
     - dev
 
-reconfig application:
-  stage: run
-  tags:
-    - shell
-  before_script:
-    - docker compose --project-directory projectvictory-test/ down -v
-  script:
-    - docker compose --project-directory projectvictory-test/ up -d
-  only:
-    refs:
-      - dev
-    changes:
-      - nginx.conf
-      - docker-compose.yaml
 
 create application:
   stage: run
