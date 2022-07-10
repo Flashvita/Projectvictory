@@ -51,12 +51,12 @@ update frontend:
       - Frontend/*
 
 build application:
-  stage: test
+  stage: build
   tags:
     - shell
   before_script:
     - cd ~/projectvictory-test
   script:
-    - docker compose up -d --build
+    - docker compose build
   only:
     - dev
