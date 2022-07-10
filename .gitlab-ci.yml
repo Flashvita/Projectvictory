@@ -25,7 +25,7 @@ build application:
     - sudo cp -r Backend/victory/. ~/projectvictory-test/backend
     - sudo cp -r Frontend/. ~/projectvictory-test/frontend
   after_script:
-    - docker compose build
+    - docker compose --project-directory projectvictory-test/ build
   only:
     - dev
 
@@ -33,12 +33,10 @@ run application:
   stage: run
   tags:
     - shell
-  before_script:
-    - cd ~/projectvictory-test
   script:
-    - docker compose down -v
+    - docker compose --project-directory projectvictory-test/ down -v
   after_script:
-    - docker compose up -d
+    - docker compose --project-directory projectvictory-test/ up -d
   only:
     - dev
 
@@ -47,10 +45,9 @@ reconfig application:
   tags:
     - shell
   before_script:
-    - cd ~/projectvictory-test
-    - docker compose down -v
+    - docker compose --project-directory projectvictory-test/ down -v
   script:
-    - docker compose up -d
+    - docker compose --project-directory projectvictory-test/ up -d
   only:
     refs:
       - dev
@@ -62,8 +59,6 @@ create application:
   stage: run
   tags:
     - shell
-  before_script:
-    - cd ~/projectvictory-test
   script:
-    - docker compose up -d --build
+    - docker compose --project-directory projectvictory-test/ up -d --build
   when: manual
