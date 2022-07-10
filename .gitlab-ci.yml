@@ -17,63 +17,30 @@ update config:
       - nginx.conf
       - docker-compose.yaml
 
-build server:
+build application:
   stage: build
   tags:
     - shell
   script:
     - sudo cp -r Backend/victory/. ~/projectvictory-test/backend
-  after_script:
-    - docker compose build backend
-  only:
-    refs:
-      - dev
-    changes:
-      - Backend/victory/*
-
-build web:
-  stage: build
-  tags:
-    - shell
-  script:
     - sudo cp -r Frontend/. ~/projectvictory-test/frontend
   after_script:
-    - docker compose build frontend
+    - docker compose build
   only:
-    refs:
-      - dev
-    changes:
-      - Frontend/*.vue
-
-run server:
-  stage: run
-  tags:
-    - shell
-  before_script:
-    - docker compose stop backend
-  script:
-    - docker compose up -d backend
-  only:
-    refs:
-      - dev
-    changes:
-      - Backend/victory/*
-
-run web:
-  stage: run
-  tags:
-    - shell
-  before_script:
-    - docker compose stop frontend
-  script:
-    - docker compose up -d frontend
-  only:
-    refs:
-      - dev
-    changes:
-      - Frontend/*.vue
+    - dev
 
 run application:
+  stage: run
+  tags:
+    - shell
+  before_script:
+    - docker compose down -v
+  script:
+    - docker compose up -d
+  only:
+    - dev
+
+reconfig application:
   stage: run
   tags:
     - shell
