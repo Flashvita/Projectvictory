@@ -1,8 +1,8 @@
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
-from .models import Profile, Contact, Post, Team, Category
-from .permissions import IsOwnerProfileOrReadOnly, IsOwnerOrAdminOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
+import json 
+from django.http import JsonResponse
 from rest_framework.pagination import LimitOffsetPagination
 from django.core.mail import send_mail
 from rest_framework.generics import (
@@ -11,7 +11,9 @@ from rest_framework.generics import (
     CreateAPIView,
     GenericAPIView,
 )
-
+from .models import Profile, Contact, Post, Team, Category
+from .permissions import IsOwnerProfileOrReadOnly, IsOwnerOrAdminOrReadOnly
+from .utils import category_tree
 from .serializers import (
     ProfileSerializer,
     ContactSerializer,
@@ -137,5 +139,17 @@ class TeamDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Team.objects.all()
     serializer_class = TeamSerializer
     permission_classes = [IsAdminUser]
+
+
+class ClassAPIView(APIView):
+    def get(self, request):
+        data = category_tree()
+        print(f'data = {type(data)}')
+        print()
+        json_data = json.dumps(data)
+        print(json_data)
+
+        
+        return JsonResponse(data, safe = False)
 
 

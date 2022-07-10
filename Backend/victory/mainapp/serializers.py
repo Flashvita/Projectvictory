@@ -15,7 +15,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 class SpecialUserSerializer(serializers.ModelSerializer):
     """Переопределение сериалайзера для модели User"""
 
-    is_admin = serializers.CharField(read_only=True, source='is_staff')
+    is_admin = serializers.BooleanField(read_only=True, source='is_staff')
     avatar = serializers.CharField(read_only=True, source='profile.avatar')
 
 
@@ -59,6 +59,8 @@ class PostSerializer(serializers.ModelSerializer):
     """Сериалайзер для создания статьи"""
 
     owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    category_title = serializers.CharField(read_only=True, source='category.title')
+
 
     def validate(self, data):
        content = data.get('content')
@@ -73,7 +75,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('title', 'content', 'owner', 'category')
+        fields = ('title', 'content', 'id', 'owner', 'category', 'category_title')
         validators = []
 
 
@@ -81,10 +83,16 @@ class PostUserUpdateSerializer(serializers.ModelSerializer):
     """Сериалайзер для редактирования статьи владельцем и админом"""
 
     owner = serializers.CharField(read_only=True, source='owner.username')
+    owner_avatar = serializers.CharField(read_only=True, source='owner.profile.avatar')
+    category_title = serializers.CharField(read_only=True, source='category.title')
+
+    
 
     class Meta:
         model = Post
-        fields = ('title', 'content', 'owner', 'category', 'is_active', 'is_private')
+        fields = ('title', 'content', 'id', 'owner', 'owner_avatar',
+                 'category', 'category_title', 'is_active', 'is_private'
+                 )
 
 
 class PostListSerializer(serializers.ModelSerializer):
@@ -93,11 +101,12 @@ class PostListSerializer(serializers.ModelSerializer):
 
     owner = serializers.CharField(read_only=True, source='owner.username')
     avatar = serializers.CharField(read_only=True, source='owner.profile.avatar')
+    category_title = serializers.CharField(read_only=True, source='category.title')
 
 
     class Meta:
         model = Post
-        fields = ('title', 'category', 'owner', 'avatar', 'road', 'id', 'slug')
+        fields = ('title', 'category', 'category_title', 'owner', 'avatar', 'road', 'id', 'slug')
 
 
 class TeamCreateSerializer(serializers.ModelSerializer):
