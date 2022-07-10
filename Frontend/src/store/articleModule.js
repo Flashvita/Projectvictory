@@ -150,7 +150,7 @@ export const articleModule = {
     async getCategory({ commit }) {
       commit("setLoadedArticle", true);
       try {
-        const response = await axios.get(`/api/v1/categories/`);
+        const response = await axios.get(`/api/v1/childrens/`);
         commit("setCategoryList", response.data);
       } catch (e) {
         console.log(e.message);

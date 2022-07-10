@@ -62,9 +62,6 @@ export default {
       categoryError: "article/categoryError",
     }),
   },
-  mounted() {
-    console.log(this.parent);
-  },
 };
 </script>
 

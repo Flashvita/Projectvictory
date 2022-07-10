@@ -132,7 +132,7 @@ export default {
           title: this.title,
           content: this.content,
         });
-        await this.$router.push({ path: `/articles/create/${article.id}` });
+        await this.$router.push({ path: `/articles/${article.id}` });
       } else {
         const article = await this.createArticle({
           subcategory: this.$route.query.catalog,
@@ -141,7 +141,7 @@ export default {
           content: this.content,
           category: this.categoryId,
         });
-        await this.$router.push({ path: `/articles/create/${article.id}` });
+        await this.$router.push({ path: `/articles/${article.id}` });
       }
     },
   },

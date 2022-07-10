@@ -16,7 +16,7 @@
           }"
         >
           <icon-base
-            v-if="category.listCategories && category.listCategories.length > 0"
+            v-if="category.children && category.children.length > 0"
             iconName="arrow-icon"
             width="10"
             heigth="10"
@@ -59,8 +59,8 @@
       }"
     >
       <menu-articles
-        v-if="category.listCategories && category.listCategories.length > 0"
-        :list-categories="category.listCategories"
+        v-if="category.children && category.children.length > 0"
+        :list-categories="category.children"
       />
     </div>
   </div>
