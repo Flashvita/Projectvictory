@@ -4,8 +4,15 @@
     <div class="article__body">
       <div class="article-owner">
         <div class="article-avatar">
-          <div v-if="!article.avatar" class="article-avatar-placeholder" />
-          <img v-else src="#" alt="avatar" />
+          <div
+            v-if="!article.owner_avatar"
+            class="article-avatar-placeholder"
+          />
+          <img
+            v-else
+            :src="'http://45.8.248.219/media/' + article.owner_avatar"
+            alt="avatar"
+          />
         </div>
         <div>{{ article.owner }}</div>
         <router-link
@@ -110,7 +117,6 @@ export default {
 
 .article-avatar {
   width: 30px;
-  height: 30px;
   margin-right: 10px;
   border-radius: 3px;
 }
