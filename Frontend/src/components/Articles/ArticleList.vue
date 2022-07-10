@@ -19,6 +19,7 @@
     />
   </ul>
   <my-pagination
+    v-if="articleList.results"
     :count="articleList.count"
     :limit="limitPagination"
     :handlerClick="handlerPagination"
