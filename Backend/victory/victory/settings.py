@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'djoser',
     'rest_framework_simplejwt',
     'corsheaders',
+    'django_filters',
 
     #Applications
     'mainapp',
@@ -61,6 +62,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
     ),
 }
 

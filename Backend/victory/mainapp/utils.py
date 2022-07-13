@@ -8,6 +8,8 @@ def all_childrens(parent, children_list = {}):
         'id': parent.id,
         'title': parent.title,
         'level': parent.level,
+        'slug': parent.slug,
+        'road': parent.road,
         'children': []
     }
     if not childrens:

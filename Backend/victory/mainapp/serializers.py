@@ -64,6 +64,7 @@ class PostSerializer(serializers.ModelSerializer):
     category_title = serializers.CharField(read_only=True, source='category.title')
 
 
+
     def validate(self, data):
        content = data.get('content')
        title = data.get('title')
@@ -87,6 +88,8 @@ class PostUserUpdateSerializer(serializers.ModelSerializer):
     owner = serializers.CharField(read_only=True, source='owner.username')
     owner_avatar = serializers.CharField(read_only=True, source='owner.profile.avatar')
     category_title = serializers.CharField(read_only=True, source='category.title')
+    is_active = serializers.BooleanField()
+    is_private = serializers.BooleanField()
 
     
 
@@ -104,11 +107,13 @@ class PostListSerializer(serializers.ModelSerializer):
     owner = serializers.CharField(read_only=True, source='owner.username')
     avatar = serializers.CharField(read_only=True, source='owner.profile.avatar')
     category_title = serializers.CharField(read_only=True, source='category.title')
+    is_active = serializers.BooleanField(read_only=True)
+    is_private = serializers.BooleanField(read_only=True)
 
 
     class Meta:
         model = Post
-        fields = ('title', 'category', 'category_title', 'owner', 'avatar', 'road', 'id', 'slug')
+        fields = ('title', 'category', 'category_title', 'owner', 'avatar', 'road', 'id', 'slug', 'is_active', 'is_private')
 
 
 class TeamCreateSerializer(serializers.ModelSerializer):
