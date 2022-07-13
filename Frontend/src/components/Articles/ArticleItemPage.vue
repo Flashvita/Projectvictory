@@ -4,8 +4,15 @@
     <div class="article__body">
       <div class="article-owner">
         <div class="article-avatar">
-          <div v-if="!article.avatar" class="article-avatar-placeholder" />
-          <img v-else src="#" alt="avatar" />
+          <div
+            v-if="!article.owner_avatar"
+            class="article-avatar-placeholder"
+          />
+          <img
+            v-else
+            :src="baseURL + 'media/' + article.owner_avatar"
+            alt="avatar"
+          />
         </div>
         <div>{{ article.owner }}</div>
         <router-link
@@ -29,35 +36,19 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import axios from "axios";
 
 export default {
   name: "ArticleItemPage",
-  // data() {
-  //   return {
-  //     articleItem: {},
-  //     load: false,
-  //   };
-  // },
+  data() {
+    return {
+      baseURL: axios.defaults.baseURL,
+    };
+  },
   methods: {
     ...mapActions({
       getArticle: "article/getArticle",
     }),
-    // async fetchArticleItem() {
-    //   this.load = true;
-    //   try {
-    //     const response = await axios
-    //       .get(`/api/v1/posts/detail/${this.$route.params.id}`)
-    //       .finally(() => {
-    //         this.load = false;
-    //       });
-    //     this.articleItem = response.data;
-    //     await this.$router.push({
-    //       query: { catalog: "Разработка/Backend/Docker" },
-    //     });
-    //   } catch (e) {
-    //     console.log(e.message);
-    //   }
-    // },
   },
   computed: {
     ...mapGetters({
@@ -110,7 +101,6 @@ export default {
 
 .article-avatar {
   width: 30px;
-  height: 30px;
   margin-right: 10px;
   border-radius: 3px;
 }

@@ -100,7 +100,7 @@ export const authModule = {
       if (state.name.length > 0 && state.password.length > 0) {
         commit("setLoading", true);
         try {
-          const response = await axios.post("/auth/token/login/", {
+          const response = await axios.post("server/auth/token/login/", {
             username: state.name,
             password: state.password,
           });
@@ -148,7 +148,7 @@ export const authModule = {
       ) {
         commit("setLoading", true);
         try {
-          const response = await axios.post("/auth/users/", {
+          const response = await axios.post("server/auth/users/", {
             username: state.name,
             email: state.email,
             password: state.password,
@@ -197,7 +197,7 @@ export const authModule = {
     },
     async getMe({ commit, dispatch }) {
       try {
-        const response = await axios.get("/auth/users/me/");
+        const response = await axios.get("server/auth/users/me/");
         commit("setProfile", response.data);
       } catch (e) {
         await dispatch("logout");
