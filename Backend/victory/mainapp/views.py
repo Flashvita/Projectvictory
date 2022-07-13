@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 import json 
 from django.http import JsonResponse
 from rest_framework.pagination import LimitOffsetPagination
+from django_filters.rest_framework import DjangoFilterBackend
 from django.core.mail import send_mail
 from rest_framework.generics import (
     ListCreateAPIView,
@@ -13,7 +14,8 @@ from rest_framework.generics import (
 )
 from .models import Profile, Contact, Post, Team, Category
 from .permissions import IsOwnerProfileOrReadOnly, IsOwnerOrAdminOrReadOnly
-from .utils import category_tree, all_childrens
+from .utils import category_tree
+from .filters import PostFilter
 from .serializers import (
     ProfileSerializer,
     ContactSerializer,
@@ -91,11 +93,32 @@ class PostCreateView(CreateAPIView):
 
 class PostListView(ListCreateAPIView):
     """Все статьи"""
-    queryset = Post.objects.all()
     serializer_class = PostListSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     pagination_class = LimitOffsetPagination
     limit_query_param = 'limit'
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = PostFilter
+
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_staff:
+            self.queryset = Post.objects.all()
+            return self.list(request, *args, **kwargs)
+        elif request.user.is_authenticated:
+            self.queryset = Post.objects.filter(is_active=True, is_private=True)
+            return self.list(request, *args, **kwargs)
+        else:
+            self.queryset = Post.objects.filter(is_active=True, is_private=False)
+            return self.list(request, *args, **kwargs)
+
+
+
+
+
+            
+
+
 
 
 
