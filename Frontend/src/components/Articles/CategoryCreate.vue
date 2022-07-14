@@ -69,12 +69,25 @@ export default {
 .category-create {
   display: flex;
 
+  @media (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
   & .my-input-wrapper {
     width: 350px;
     //box-shadow: 0 0 0 1px var(--color-bacground-black);
     border: 1px solid var(--color-bacground-black);
     border-radius: var(--radius);
     margin-right: 16px;
+
+    @media (max-width: 600px) {
+      width: 100%;
+      margin: 20px;
+    }
   }
 
   & .my-input-error {
@@ -84,6 +97,15 @@ export default {
   & .my-button {
     width: 100px;
     height: auto;
+
+    @media (max-width: 600px) {
+      //display: flex;
+      //flex-direction: column;
+      //justify-content: center;
+      //align-items: center;
+      height: 40px;
+      margin-top: 20px;
+    }
   }
 }
 </style>
