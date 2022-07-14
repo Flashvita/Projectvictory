@@ -55,7 +55,9 @@
     <div
       class="subcategory"
       :class="{
-        'subcategory-active': this.changedCategory.includes(category.title),
+        'subcategory-active':
+          this.changedCategory.includes(category.title) &&
+          !this.changedCategory,
       }"
     >
       <menu-articles
@@ -133,16 +135,6 @@ export default {
         this.changedCategory = [...this.changedCategory, name];
       }
     },
-  },
-  mounted() {
-    if (this.$route.query.catalog) {
-      const lastElement = this.$route.query.catalog.split("/").length - 1;
-      this.changedCategory = this.$route.query.catalog.split("/");
-      this.onChangeCategory(
-        this.$route.query.catalog.split("/")[lastElement],
-        this.$route.query.catalog
-      );
-    }
   },
 };
 </script>

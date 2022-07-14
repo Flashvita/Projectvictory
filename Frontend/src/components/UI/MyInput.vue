@@ -94,14 +94,14 @@ export default {
   height: 46px;
   padding: 8px 14px 0;
   border-radius: var(--radius);
-  border: 2px solid transparent;
+  border: 0 solid transparent;
   background-color: rgba(255, 255, 255, 0.62);
   font-size: 19px;
   color: var(--color-text-black);
 
   &:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 2px var(--color-accent);
+    box-shadow: inset 0 0 0 2px var(--color-accent);
   }
 }
 
