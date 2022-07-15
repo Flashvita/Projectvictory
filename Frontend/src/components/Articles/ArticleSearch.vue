@@ -64,12 +64,16 @@ export default {
   position: relative;
 
   &__input {
-    background-color: var(--color-white);
     border-radius: 3px 0 0 3px;
     width: 100%;
 
     &:deep(.my-input) {
       border-radius: 3px 0 0 3px;
+      background-color: var(--color-white);
+
+      &:focus-visible {
+        box-shadow: inset 0 0 0 2px var(--color-accent);
+      }
 
       @media (max-width: 768px) {
         padding-right: 38px;

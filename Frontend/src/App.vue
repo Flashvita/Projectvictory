@@ -76,6 +76,10 @@ img {
   vertical-align: bottom;
 }
 
+textarea {
+  font-family: "Roboto-Regular", sans-serif;
+}
+
 :root {
   --color-white: #ffffff;
   --color-accent: #ff0a7f;
