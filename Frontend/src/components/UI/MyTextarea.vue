@@ -89,13 +89,19 @@ export default {
     padding: 16px 14px 0;
     border-radius: var(--radius);
     border: 2px solid transparent;
-    background-color: rgba(255, 255, 255, 0.62);
+    background-color: var(--color-bacground-grey);
     font-size: 19px;
     color: var(--color-text-black);
+    resize: inherit;
 
     &:focus-visible {
       outline: none;
       box-shadow: 0 0 0 2px var(--color-accent);
+    }
+
+    @media (max-width: 768px) {
+      font-size: 16px;
+      min-height: 200px;
     }
   }
 
@@ -105,6 +111,7 @@ export default {
     left: 14px;
     transition: all 0.3s;
     color: var(--color-text-black);
+    background-color: var(--color-bacground-grey);
   }
 
   .placeholder_active {

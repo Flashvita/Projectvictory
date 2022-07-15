@@ -69,6 +69,10 @@ export default {
 .category-create {
   display: flex;
 
+  &:deep(.my-input) {
+    background-color: var(--color-white);
+  }
+
   @media (max-width: 600px) {
     display: flex;
     flex-direction: column;

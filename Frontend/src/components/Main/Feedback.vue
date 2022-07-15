@@ -10,108 +10,169 @@
           </p>
           <form class="form">
             <div class="wrapper-form">
+              <div v-if="errorAPI" class="feedback__error_text">
+                {{ errorTextAPI }}
+              </div>
               <div class="form-left">
-                <MyInput
+                <my-input
                   class="input"
-                  v-model="this.name"
                   type="text"
                   placeholderText="Имя"
-                  :error="this.nameError"
-                  @update:model-value="this.nameError = false"
+                  :model-value="name"
+                  :error="nameError"
+                  @update:model-value="setName"
                 />
-                <MyInput
+                <my-input
                   class="input"
-                  v-model="this.email"
                   type="text"
                   placeholderText="Email"
-                  :error="this.emailError"
-                  @update:model-value="this.emailError = false"
+                  :model-value="email"
+                  :error="emailError"
+                  @update:model-value="setEmail"
                 />
-                <MySelect
-                  :error="this.serviceError"
+                <my-input
+                  class="input"
+                  type="text"
+                  placeholderText="Телефон"
+                  :model-value="phone"
+                  :error="phoneError"
+                  @update:model-value="setPhone"
+                />
+                <my-select
+                  :error="serviceError"
                   :options="servicesList"
-                  :value="this.service"
+                  :value="service"
                   placeholderText="Услуга"
                   @select="serviceHandler"
-                  @update:model-value="this.serviceError = false"
                 />
               </div>
               <div class="form-right">
-                <MyTextarea
-                  v-model="this.comments"
+                <my-textarea
+                  :model-value="message"
                   placeholderText="Комментарий"
-                  :error="this.commentsError"
-                  @update:model-value="this.commentsError = false"
+                  :error="messageError"
+                  @update:model-value="setMessage"
                 />
               </div>
             </div>
-            <MyButton @click="this.sendRequest">Отправить заявку</MyButton>
+            <my-button @click="this.sendRequest" :is-load="isLoad">
+              Отправить заявку
+            </my-button>
           </form>
         </div>
       </div>
     </div>
   </section>
+  <my-modal v-model:show="isReady">
+    <div class="feedback__modal">
+      <p class="feedback__modal__text">Сообщение отправлено!</p>
+      <my-button @click="isReady = false">Закрыть</my-button>
+    </div>
+  </my-modal>
 </template>
 
 <script>
+import MyTextarea from "@/components/UI/MyTextarea";
+import MyInput from "@/components/UI/MyInput";
+import MySelect from "@/components/UI/MySelect";
+import MyButton from "@/components/UI/MyButton";
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import MyModal from "@/components/UI/MyModal";
+
 export default {
   name: "FeedbackComponent",
+  components: { MyButton, MySelect, MyInput, MyTextarea, MyModal },
   data() {
     return {
-      name: "",
-      nameError: false,
-      email: "",
-      emailError: false,
-      service: "",
-      serviceError: false,
+      isReady: false,
       servicesList: [
         { name: "Интернет-магазин", value: "1" },
         { name: "Лендинг", value: "2" },
         { name: "Телеграмм-бот", value: "3" },
       ],
-      comments: "",
-      commentsError: false,
     };
   },
   methods: {
+    ...mapActions({
+      sendFeedbackForm: "feedback/sendFeedbackForm",
+    }),
+    ...mapMutations({
+      setName: "feedback/setName",
+      setNameError: "feedback/setNameError",
+      setEmail: "feedback/setEmail",
+      setEmailError: "feedback/setEmailError",
+      setPhone: "feedback/setPhone",
+      setPhoneError: "feedback/setPhoneError",
+      setService: "feedback/setService",
+      setServiceError: "feedback/setServiceError",
+      setMessage: "feedback/setMessage",
+      setMessageError: "feedback/setMessageError",
+    }),
     resetForm() {
-      this.name = "";
-      this.email = "";
-      this.service = "";
-      this.comments = "";
+      this.setName("");
+      this.setEmail("");
+      this.setPhone("");
+      this.setService("");
+      this.setMessage("");
     },
     resetError() {
-      this.nameError = false;
-      this.emailError = false;
-      this.serviceError = false;
-      this.commentsError = false;
+      this.setNameError(false);
+      this.setEmailError(false);
+      this.setPhoneError(false);
+      this.setServiceError(false);
+      this.setMessageError(false);
     },
     serviceHandler(serviceSelected) {
-      this.serviceError = false;
-      this.service = serviceSelected.name;
+      this.setServiceError(false);
+      this.setService(serviceSelected.name);
     },
-    sendRequest(e) {
+    async sendRequest(e) {
       e.preventDefault();
-      if (this.name.length <= 0) this.nameError = true;
-      if (this.email.length <= 0) this.emailError = true;
-      if (this.service.length <= 0) this.serviceError = true;
-      if (this.comments.length <= 0) this.commentsError = true;
+      if (this.name.length <= 0) this.setNameError(true);
+      if (this.email.length <= 0) this.setEmailError(true);
+      if (this.phone.length <= 0) this.setPhoneError(true);
+      if (this.service.length <= 0) this.setServiceError(true);
+      if (this.message.length <= 0) this.setMessageError(true);
 
       if (
         this.name.length > 0 &&
         this.email.length > 0 &&
+        this.phone.length > 0 &&
         this.service.length > 0 &&
-        this.comments.length > 0
+        this.message.length > 0
       ) {
-        console.log({
+        const response = await this.sendFeedbackForm({
           name: this.name,
           email: this.email,
+          phone: this.phone,
           service: this.service,
-          comments: this.comments,
+          message: this.message,
         });
         this.resetForm();
+        console.log(response);
+        if (response.status === 200) {
+          console.log(response.status);
+          this.isReady = true;
+        }
       }
     },
+  },
+  computed: {
+    ...mapGetters({
+      name: "feedback/name",
+      nameError: "feedback/nameError",
+      email: "feedback/email",
+      emailError: "feedback/emailError",
+      phone: "feedback/phone",
+      phoneError: "feedback/phoneError",
+      service: "feedback/service",
+      serviceError: "feedback/serviceError",
+      message: "feedback/message",
+      messageError: "feedback/messageError",
+      errorAPI: "feedback/errorAPI",
+      errorTextAPI: "feedback/errorTextAPI",
+      isLoad: "feedback/isLoad",
+    }),
   },
 };
 </script>
@@ -124,6 +185,24 @@ export default {
 
 .feedback {
   background-color: var(--color-bacground-black);
+
+  &__modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__text {
+      margin-bottom: 20px;
+    }
+  }
+
+  &__error_text {
+    position: absolute;
+    top: -30px;
+    width: 100%;
+    color: var(--color-accent);
+    text-align: center;
+  }
 }
 
 .wrapper {
@@ -159,6 +238,7 @@ export default {
       gap: 23px;
       margin-top: 60px;
       margin-bottom: 64px;
+      position: relative;
 
       .form-right {
         color: var(--color-bacground-black);
