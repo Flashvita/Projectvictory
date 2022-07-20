@@ -104,7 +104,7 @@ class PostListView(ListCreateAPIView):
 
 
     def get(self, request, *args, **kwargs,):
-        category_childrens_id = get_childrens_id()
+        #category_childrens_id = get_childrens_id()
         if request.user.is_staff:
             self.queryset = Post.objects.all()
             return self.list(request, *args, **kwargs)
