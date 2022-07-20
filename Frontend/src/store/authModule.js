@@ -153,7 +153,6 @@ export const authModule = {
             email: state.email,
             password: state.password,
           });
-          console.log(response);
           if (response.status === 201) {
             await dispatch("signIn");
             commit("setName", "");
@@ -193,6 +192,7 @@ export const authModule = {
       localStorage.removeItem("token");
       commit("setIsAuth", false);
       commit("setToken", "");
+      commit("setProfile", {});
       await router.push("/");
     },
     async getMe({ commit, dispatch }) {

@@ -17,7 +17,11 @@
             :onShowModal="onShowModal"
             :openBurgerMenu="openBurgerMenu"
           />
-          <my-button @click="onShowModal" class="article__menu_button">
+          <my-button
+            v-if="isAuth"
+            @click="onShowModal"
+            class="article__menu_button"
+          >
             + добавить категорию
           </my-button>
         </div>
