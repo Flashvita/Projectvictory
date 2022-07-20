@@ -7,7 +7,7 @@
       Услуги
     </router-link>
     <router-link class="link" to="/" v-scroll-to="'#cases'">Кейсы</router-link>
-    <router-link v-if="isAuth" class="link" to="/articles">Статьи</router-link>
+    <router-link class="link" to="/articles">Статьи</router-link>
     <router-link class="link" to="/" v-scroll-to="'#feedback'">
       Контакты
     </router-link>
