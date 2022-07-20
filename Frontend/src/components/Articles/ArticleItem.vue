@@ -6,6 +6,14 @@
         <img v-else :src="baseURL + 'media/' + article.avatar" alt="avatar" />
       </div>
       <div>{{ article.owner }}</div>
+      <div v-if="profile.is_admin" class="article__active">
+        <div>
+          {{ article.is_active ? "Опубликована!" : "Не опубликована!" }}
+        </div>
+        <div>
+          {{ article.is_private ? "Приватная!" : "Доступна для всех!" }}
+        </div>
+      </div>
     </div>
     <h2 class="article__title">{{ article.title }}</h2>
     <div class="article__body" v-html="article.content"></div>
@@ -81,6 +89,7 @@ export default {
 
     & .avatar {
       width: 30px;
+      height: 30px;
       margin-right: 10px;
       border-radius: 3px;
 
@@ -93,8 +102,15 @@ export default {
     }
   }
 
+  &__active {
+    color: var(--color-accent);
+    margin-left: auto;
+    margin-bottom: auto;
+    font-size: 11px;
+  }
+
   &__title {
-    margin-top: 20px;
+    margin-top: 30px;
   }
 
   &__body {

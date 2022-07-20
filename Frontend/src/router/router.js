@@ -21,19 +21,19 @@ const routes = [
   {
     path: "/articles",
     name: "articles",
-    meta: { layout: "LayoutArticles", requiresAuth: true },
+    meta: { layout: "LayoutArticles" }, // для приватной странички добавить requiresAuth: true
     component: ArticleList,
   },
   {
     path: "/articles/create",
     name: "articleCreate",
-    meta: { layout: "LayoutArticles", requiresAuth: true },
+    meta: { layout: "LayoutArticles" },
     component: ArticleCreate,
   },
   {
     path: "/articles/:id",
     name: "articleItemPage",
-    meta: { layout: "LayoutArticles", requiresAuth: true },
+    meta: { layout: "LayoutArticles" },
     component: ArticleItemPage,
   },
   {

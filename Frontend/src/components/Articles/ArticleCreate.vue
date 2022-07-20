@@ -12,7 +12,7 @@
               type="radio"
               id="red"
               value="red"
-              v-model="this.theme"
+              v-model="theme"
             />
             <label
               class="theme-label"
@@ -26,7 +26,7 @@
               type="radio"
               id="yellow"
               value="yellow"
-              v-model="this.theme"
+              v-model="theme"
             />
             <label
               style="background-color: #faff00"
@@ -40,7 +40,7 @@
               type="radio"
               id="grin"
               value="grin"
-              v-model="this.theme"
+              v-model="theme"
             />
             <label
               style="background-color: #0aff89"
@@ -54,7 +54,7 @@
               type="radio"
               id="white"
               value="white"
-              v-model="this.theme"
+              v-model="theme"
             />
             <label
               style="background-color: #ffffff"
@@ -70,7 +70,7 @@
           :padding="padding"
           :backgroundColor="backgroundColor"
           :model-value="title"
-          :error="false"
+          :error="titleError"
           type="text"
           @update:model-value="setTitle"
         />
@@ -78,21 +78,29 @@
       <div class="article-wrapper" :class="{ 'quill-active': activeQuill }">
         <QuillEditor :onFocused="onFocused" :ofFocused="ofFocused" />
       </div>
-      <div>
-        <MyButton @click="this.onCreateArticle">Создать статью</MyButton>
-        <div v-show="articleError">ошибка</div>
-      </div>
+      <MyButton @click="onCreateArticle">Создать статью</MyButton>
     </form>
+    <my-modal v-model:show="articleError">
+      <div class="error">
+        <div :key="textError" v-for="textError in articleErrorText">
+          {{ textError }}
+        </div>
+        <MyButton class="error__btn" @click="setArticleError(false)">
+          Закрыть
+        </MyButton>
+      </div>
+    </my-modal>
   </div>
 </template>
 
 <script>
 import { mapActions, mapMutations, mapGetters } from "vuex";
 import QuillEditor from "@/components/UI/QuillEditor/QuillEditor";
+import MyModal from "@/components/UI/MyModal";
 
 export default {
   name: "ArticleCreate",
-  components: { QuillEditor },
+  components: { QuillEditor, MyModal },
 
   data() {
     return {
@@ -115,7 +123,10 @@ export default {
     }),
     ...mapMutations({
       setTitle: "article/setTitle",
+      setTitleError: "article/setTitleError",
       setContent: "article/setContent",
+      setArticleError: "article/setArticleError",
+      setArticleErrorText: "article/setArticleErrorText",
     }),
     onFocused() {
       this.activeQuill = true;
@@ -125,6 +136,16 @@ export default {
     },
     async onCreateArticle(e) {
       e.preventDefault();
+      if (this.title === "") {
+        this.setTitleError(true);
+        return;
+      }
+      if (!this.categoryId) {
+        this.setArticleError(true);
+        this.setArticleErrorText(["Выбери категорию статьи"]);
+        return;
+      }
+      // если статья редактируется
       if (this.$route.query.id) {
         const article = await this.patchArticle({
           id: this.$route.query.id,
@@ -132,16 +153,19 @@ export default {
           title: this.title,
           content: this.content,
         });
-        await this.$router.push({ path: `/articles/${article.id}` });
+        article &&
+          (await this.$router.push({ path: `/articles/${article.id}` }));
       } else {
+        // если создается новая статья
         const article = await this.createArticle({
-          subcategory: this.$route.query.catalog,
           theme: this.theme,
           title: this.title,
           content: this.content,
           category: this.categoryId,
+          is_private: true,
         });
-        await this.$router.push({ path: `/articles/${article.id}` });
+        article &&
+          (await this.$router.push({ path: `/articles/${article.id}` }));
       }
     },
   },
@@ -149,9 +173,11 @@ export default {
   computed: {
     ...mapGetters({
       title: "article/title",
+      titleError: "article/titleError",
       content: "article/content",
       loadedArticle: "article/loadedArticle",
       articleError: "article/articleError",
+      articleErrorText: "article/articleErrorText",
       categoryId: "article/categoryId",
     }),
   },
@@ -245,6 +271,15 @@ export default {
       height: 45px;
       border-radius: 50px;
     }
+  }
+}
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__btn {
+    margin-top: 40px;
   }
 }
 </style>

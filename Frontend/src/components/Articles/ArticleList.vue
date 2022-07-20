@@ -30,7 +30,7 @@
 import ArticleItem from "@/components/Articles/ArticleItem";
 import MySpinner from "@/components/UI/Spinner";
 import MyPagination from "@/components/UI/MyPagination";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "ArticleList",
@@ -38,6 +38,9 @@ export default {
   methods: {
     ...mapActions({
       getArticlesOll: "article/getArticlesOll",
+    }),
+    ...mapMutations({
+      setCategoryId: "article/setCategoryId",
     }),
     handlerPagination({ offset }) {
       const catalog = this.$route.query;
@@ -59,7 +62,9 @@ export default {
     }),
   },
   mounted() {
-    this.getArticlesOll();
+    console.log(this.$route.query);
+    if (!this.$route.query) this.setCategoryId(null);
+    this.getArticlesOll({ category: this.$route.query.catalog });
   },
 };
 </script>
