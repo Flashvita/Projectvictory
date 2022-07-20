@@ -6,15 +6,16 @@ from django.http import JsonResponse
 from rest_framework.pagination import LimitOffsetPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from django.core.mail import send_mail
+from django.db.models import Q
 from rest_framework.generics import (
     ListCreateAPIView,
     RetrieveUpdateDestroyAPIView,
     CreateAPIView,
     GenericAPIView,
 )
-from .models import Profile, Contact, Post, Team, Category
+from .models import Profile, Contact, Post, Team, Category, Project
 from .permissions import IsOwnerProfileOrReadOnly, IsOwnerOrAdminOrReadOnly
-from .utils import category_tree
+from .utils import category_tree, get_childrens_id
 from .filters import PostFilter
 from .serializers import (
     ProfileSerializer,
@@ -27,6 +28,7 @@ from .serializers import (
     TeamsSerializer,
     CategoryCreateSerializers,
     CategoriesSerializers,
+    ProjectSerializers,
 )
 
 
@@ -101,26 +103,17 @@ class PostListView(ListCreateAPIView):
     filterset_class = PostFilter
 
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs,):
+        category_childrens_id = get_childrens_id()
         if request.user.is_staff:
             self.queryset = Post.objects.all()
             return self.list(request, *args, **kwargs)
         elif request.user.is_authenticated:
-            self.queryset = Post.objects.filter(is_active=True, is_private=True)
+            self.queryset = Post.objects.filter(Q(is_active=True, is_private=True) | Q(owner=request.user) | Q(category=category_childrens_id))
             return self.list(request, *args, **kwargs)
         else:
             self.queryset = Post.objects.filter(is_active=True, is_private=False)
             return self.list(request, *args, **kwargs)
-
-
-
-
-
-            
-
-
-
-
 
 
 class PostDetailView(RetrieveUpdateDestroyAPIView):
@@ -169,3 +162,9 @@ class ClassAPIView(APIView):
         data = category_tree()
         json_data = json.dumps(data)
         return JsonResponse(data, safe=False)
+
+
+class ProjectCreateView(CreateAPIView):
+    """Создание проекта(только админ)"""
+    serializer_class = ProjectSerializers
+    permission_classes = [IsAdminUser]

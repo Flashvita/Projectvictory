@@ -21,7 +21,8 @@ class Profile(models.Model):
     slug = models.SlugField(max_length=255, unique=False)
     phone = models.CharField(max_length=11, default='8xxxxxxxxxx', null=True, blank=True, verbose_name='номер телефона')
     avatar = models.ImageField(upload_to='images/users/%Y/%m/%d/', null=True, blank=True, verbose_name='Ваше фото')
-    created = models.DateTimeField(auto_now=True, db_index=True)
+    created = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Дата создания профиля')
+    updated = models.DateTimeField(auto_now=True, db_index=True, verbose_name='Дата последнего редактирования профиля')
     role = models.CharField(max_length=100, choices=ROLE_CHOICES, verbose_name='Роль', null=True, blank=True)
     scrum_master = models.BooleanField(default=False, verbose_name='Скрам мастер')
 
@@ -50,10 +51,6 @@ class Contact(models.Model):
         verbose_name_plural = 'Формы'
 
 
-
-
-
-
 class Category(models.Model):
     """Категория"""
 
@@ -63,7 +60,7 @@ class Category(models.Model):
                                )
     level = models.IntegerField(verbose_name='Уровень')
     slug = models.SlugField(max_length=255, unique=False)
-    road = models.URLField(max_length=500, verbose_name='Путь')
+    road = models.CharField(max_length=500, verbose_name='Путь')
 
     def __str__(self):
         return f"{self.title}"
@@ -96,7 +93,7 @@ class Post(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='post_owner')
     is_active = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now=True, db_index=True, verbose_name='Время публикации')
-    road = models.URLField(max_length=500, verbose_name='Путь')
+    road = models.CharField(max_length=700, verbose_name='Путь')
     is_private = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
@@ -118,9 +115,12 @@ class Post(models.Model):
 class Team(models.Model):
     """Команда"""
 
-    title = models.CharField(max_length=100)
-    members = models.ManyToManyField(User, verbose_name='Команда', null=True, blank=True)
+    title = models.CharField(max_length=100, verbose_name='Название комады')
+    members = models.ManyToManyField(Profile, verbose_name='Члены команды', null=True, blank=True)
     created = models.DateTimeField(auto_now=True, verbose_name='Дата создания')
+    project = models.ForeignKey('Project', on_delete=models.SET_NULL,
+                                null=True, blank=True, verbose_name='Текущий проект')
+    
 
     def __str__(self):
         return f"{self.title}"
@@ -128,4 +128,20 @@ class Team(models.Model):
     class Meta:
         verbose_name = 'Команда'
         verbose_name_plural = 'Команды'
+
+
+class Project(models.Model):
+        """Проект"""
+        title = models.CharField(max_length=500, verbose_name='Название проекта')
+        description = models.TextField(verbose_name='Описание проекта')
+
+
+        def __str__(self):
+            return f'{self.id}'
+            
+        class Meta:
+            verbose_name = 'Проект'
+            verbose_name_plural = 'Проекты'
+
+
 
