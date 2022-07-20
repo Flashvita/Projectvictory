@@ -172,8 +172,10 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:80',
-                        'http://localhost:8000']
+CSRF_TRUSTED_ORIGINS = ['https://45.8.248.219',
+                        'http://*',
+                        'https://*'
+                       ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
