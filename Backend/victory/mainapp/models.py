@@ -22,7 +22,7 @@ class Profile(models.Model):
     phone = models.CharField(max_length=11, default='8xxxxxxxxxx', null=True, blank=True, verbose_name='номер телефона')
     avatar = models.ImageField(upload_to='images/users/%Y/%m/%d/', null=True, blank=True, verbose_name='Ваше фото')
     created = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Дата создания профиля')
-    updated = models.DateTimeField(auto_now=True, db_index=True, verbose_name='Дата последнего редактирования профиля')
+    #updated = models.DateTimeField(auto_now=True, db_index=True, verbose_name='Дата последнего редактирования профиля')
     role = models.CharField(max_length=100, choices=ROLE_CHOICES, verbose_name='Роль', null=True, blank=True)
     scrum_master = models.BooleanField(default=False, verbose_name='Скрам мастер')
 
