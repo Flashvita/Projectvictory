@@ -8,7 +8,7 @@
             class="article__burger__icon"
           />
         </my-button>
-        <p>Разработка / Frontend / Разработка</p>
+        <p>{{ this.$route.query.catalog }}</p>
       </div>
       <transition name="fade">
         <div v-show="burger" class="article__menu">
@@ -23,6 +23,7 @@
         </div>
       </transition>
       <div class="article__layout">
+        <article-search></article-search>
         <router-view />
       </div>
     </div>
@@ -39,6 +40,7 @@ import MyModal from "@/components/UI/MyModal";
 import MyButton from "@/components/UI/MyButton";
 import CategoryCreate from "@/components/Articles/CategoryCreate";
 import IconsComponent from "@/assets/icons/icons-component";
+import ArticleSearch from "@/components/Articles/ArticleSearch";
 
 export default {
   computed: {
@@ -49,6 +51,7 @@ export default {
   },
   name: "LayoutArticles",
   components: {
+    ArticleSearch,
     CategoryCreate,
     MyButton,
     MyModal,
@@ -159,9 +162,14 @@ export default {
       height: 100vh;
       background-color: var(--color-bacground-grey);
       overflow-y: auto;
-      top: 70px;
-      //padding-top: 80px;
+      top: 124px;
+      left: 0;
       z-index: 2;
+      margin: 0;
+    }
+
+    @media (max-width: 768px) {
+      top: 94px;
     }
 
     &_button {

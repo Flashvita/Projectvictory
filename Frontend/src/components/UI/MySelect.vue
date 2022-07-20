@@ -148,13 +148,17 @@ export default {
   width: 100%;
   height: 46px;
   border-radius: var(--radius);
-  background-color: #a7a2b0;
+  background-color: var(--color-bacground-grey);
   padding-left: 16px;
   padding-top: 8px;
   border: 1px solid var(--color-black);
   cursor: pointer;
   font-size: 19px;
   color: var(--color-text-black);
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 }
 
 .select-textTitle-error {
@@ -180,8 +184,13 @@ export default {
   padding: 8px 16px;
   cursor: pointer;
   font-size: 19px;
+
   &:hover {
     background-color: var(--color-accent-70);
+  }
+
+  @media (max-width: 768px) {
+    font-size: 16px;
   }
 }
 
@@ -189,7 +198,7 @@ export default {
   position: absolute;
   width: 100%;
   top: 30px;
-  background-color: #a7a2b0;
+  background-color: var(--color-bacground-grey);
   border-radius: var(--radius);
   border: 1px solid var(--color-black);
   box-shadow: 0 4px 8px 3px rgba(0, 0, 0, 0.2);
@@ -229,6 +238,11 @@ export default {
   left: 14px;
   transition: all 0.3s;
   cursor: pointer;
+  font-size: 19px;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 }
 
 .select-placeholder_active {

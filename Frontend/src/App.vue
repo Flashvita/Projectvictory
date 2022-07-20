@@ -76,6 +76,10 @@ img {
   vertical-align: bottom;
 }
 
+textarea {
+  font-family: "Roboto-Regular", sans-serif;
+}
+
 :root {
   --color-white: #ffffff;
   --color-accent: #ff0a7f;
@@ -116,6 +120,10 @@ img {
   width: 100%;
   margin: 0 auto;
   padding: 0 20px;
+
+  @media (max-width: 500px) {
+    padding: 0 12px;
+  }
 }
 
 .carousel {

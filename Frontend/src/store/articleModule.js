@@ -107,6 +107,7 @@ export const articleModule = {
         limit: state.limitPagination,
         catalog: query.catalog,
         offset: query.offset,
+        search: query.search,
       };
       try {
         const response = await axios.get("server/api/v1/posts/", {

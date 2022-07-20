@@ -8,6 +8,7 @@
     >
       <div class="category-title-wrapper">
         <span
+          @click.stop="isVisibleSubCategory(category.title, category.road)"
           class="category-title-arrow"
           :class="{
             'category-title-arrow-rotate': this.changedCategory.includes(
@@ -45,7 +46,7 @@
             +
             <icons-component name="document" class="icon__folder" />
           </my-button>
-          <my-button @click="onShowModal(category.id)" class="add-btn">
+          <my-button @click="isCreateCategory(category.id)" class="add-btn">
             +
             <icons-component name="folder" class="icon__folder" />
           </my-button>
@@ -57,11 +58,16 @@
       :class="{
         'subcategory-active': this.changedCategory.includes(category.title),
       }"
+      v-if="
+        category.children &&
+        category.children.length > 0 &&
+        this.changedCategory.includes(category.title)
+      "
     >
       <menu-articles
-        v-if="category.children && category.children.length > 0"
         :list-categories="category.children"
         :onShowModal="onShowModal"
+        :openBurgerMenu="openBurgerMenu"
       />
     </div>
   </div>
@@ -80,7 +86,6 @@ export default {
 
   data() {
     return {
-      openingCategory: false,
       changedCategory: [],
     };
   },
@@ -116,14 +121,19 @@ export default {
         query: { catalog: address },
       });
     },
-    onChangeCategory(name, address) {
+    isCreateCategory(id) {
+      this.onShowModal(id);
+      this.isOpenBurgerMenu();
+    },
+    isOpenBurgerMenu() {
       if (window.innerWidth < 600) {
         this.openBurgerMenu();
       }
+    },
+    isVisibleSubCategory(name, address) {
       const path =
         this.$route.name === "ArticleCreate" ? "/articles/create" : "/articles";
       this.$router.push({ path: path, query: { catalog: address } });
-      this.getArticlesOll({ catalog: address });
       if (this.changedCategory.includes(name)) {
         const indexElement = this.changedCategory.findIndex(
           (element) => element === name
@@ -133,16 +143,11 @@ export default {
         this.changedCategory = [...this.changedCategory, name];
       }
     },
-  },
-  mounted() {
-    if (this.$route.query.catalog) {
-      const lastElement = this.$route.query.catalog.split("/").length - 1;
-      this.changedCategory = this.$route.query.catalog.split("/");
-      this.onChangeCategory(
-        this.$route.query.catalog.split("/")[lastElement],
-        this.$route.query.catalog
-      );
-    }
+    onChangeCategory(name, address) {
+      this.isOpenBurgerMenu();
+      this.isVisibleSubCategory(name, address);
+      this.getArticlesOll({ catalog: address });
+    },
   },
 };
 </script>
@@ -214,12 +219,12 @@ export default {
   justify-content: center;
   width: 20px;
   height: 16px;
-  transform: rotate(0deg);
+  transform: rotate(-90deg);
   transition: all 0.2s;
 }
 
 .category-title-arrow-rotate {
-  transform: rotate(-90deg);
+  transform: rotate(0deg);
 }
 
 .category-title-selected {
@@ -229,12 +234,13 @@ export default {
 
 .subcategory {
   overflow: hidden;
-  max-height: 1000px;
-  transition: max-height 0.3s cubic-bezier(1, 0, 1, 0);
+  max-height: 0;
+  transition: max-height 0.2s cubic-bezier(1, 0, 1, 0);
 }
 
 .subcategory-active {
-  max-height: 0;
-  transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+  overflow: visible;
+  max-height: 1000px;
+  transition: max-height 0.2s cubic-bezier(0, 1, 0, 1);
 }
 </style>

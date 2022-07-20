@@ -94,10 +94,14 @@ export default {
   height: 46px;
   padding: 8px 14px 0;
   border-radius: var(--radius);
-  border: 2px solid transparent;
-  background-color: rgba(255, 255, 255, 0.62);
+  border: 0 solid transparent;
+  background-color: var(--color-bacground-grey);
   font-size: 19px;
   color: var(--color-text-black);
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 
   &:focus-visible {
     outline: none;
@@ -107,7 +111,7 @@ export default {
 
 .my-input-error {
   animation: errors 500ms;
-  box-shadow: 0 0 0 2px var(--color-error);
+  box-shadow: 0 0 0 2px var(--color-accent);
   border-radius: var(--radius);
 }
 
@@ -118,6 +122,11 @@ export default {
   transition: all 0.3s;
   color: var(--color-text-black);
   cursor: pointer;
+  font-size: 19px;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 }
 
 .my-input-placeholder_active {
