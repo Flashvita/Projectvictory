@@ -85,7 +85,12 @@ class PostListView(ListCreateAPIView):
     filterset_class = PostFilter
 
 
+<<<<<<< HEAD
     def get(self, request, *args, **kwargs):
+=======
+    def get(self, request, *args, **kwargs,):
+        #category_childrens_id = get_childrens_id()
+>>>>>>> 2d6eb6929eede237d6fc5ac1dcdbaa320e1183c8
         if request.user.is_staff:
             self.queryset = Post.objects.all()
             return self.list(request, *args, **kwargs)

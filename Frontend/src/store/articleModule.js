@@ -3,9 +3,11 @@ import axios from "axios";
 export const articleModule = {
   state: () => ({
     title: "",
+    titleError: false,
     content: "",
     article: {},
     articleError: false,
+    articleErrorText: "",
     loadedArticle: false,
     articleList: {},
     limitPagination: 4,
@@ -18,6 +20,10 @@ export const articleModule = {
   mutations: {
     setTitle(state, title) {
       state.title = title;
+      state.titleError = false;
+    },
+    setTitleError(state, titleError) {
+      state.titleError = titleError;
     },
     setContent(state, content) {
       state.content = content;
@@ -27,6 +33,9 @@ export const articleModule = {
     },
     setArticleError(state, articleError) {
       state.articleError = articleError;
+    },
+    setArticleErrorText(state, articleErrorText) {
+      state.articleErrorText = articleErrorText;
     },
     setLoadedArticle(state, load) {
       state.loadedArticle = load;
@@ -51,6 +60,7 @@ export const articleModule = {
     },
   },
   actions: {
+    // создание статьи
     async createArticle({ commit }, article) {
       commit("setLoadedArticle", true);
       try {
@@ -60,13 +70,15 @@ export const articleModule = {
         );
         return response.data;
       } catch (e) {
-        console.log(e.message);
+        console.log(e);
         commit("setArticleError", true);
+        commit("setArticleErrorText", e.response.data.non_field_errors);
       } finally {
         commit("setLoadedArticle", false);
       }
     },
 
+    // изменение статьи
     async patchArticle({ commit }, article) {
       commit("setLoadedArticle", true);
       try {
@@ -74,6 +86,7 @@ export const articleModule = {
           `server/api/v1/posts/detail/${article.id}/`,
           article
         );
+        commit("setArticle", response.data);
         return response.data;
       } catch (e) {
         commit("setArticleError", true);
@@ -83,6 +96,7 @@ export const articleModule = {
       }
     },
 
+    // получить конкретную статью по ее id
     async getArticle({ commit }, { method, article }) {
       commit("setLoadedArticle", true);
       try {
@@ -101,11 +115,12 @@ export const articleModule = {
       }
     },
 
+    // получить все статьи
     async getArticlesOll({ commit, state }, query = {}) {
       commit("setLoadedArticle", true);
       const queryParams = {
         limit: state.limitPagination,
-        catalog: query.catalog,
+        category: state.categoryId,
         offset: query.offset,
         search: query.search,
       };
@@ -117,7 +132,8 @@ export const articleModule = {
         commit("setOffsetNext", response.data.next);
         commit("setOffsetPrevious", response.data.previous);
       } catch (e) {
-        console.log(e.message);
+        console.log(e);
+        commit("setArticleErrorText", e.message);
       } finally {
         commit("setLoadedArticle", false);
       }
@@ -167,6 +183,9 @@ export const articleModule = {
     title(state) {
       return state.title;
     },
+    titleError(state) {
+      return state.titleError;
+    },
     content(state) {
       return state.content;
     },
@@ -175,6 +194,9 @@ export const articleModule = {
     },
     articleError(state) {
       return state.articleError;
+    },
+    articleErrorText(state) {
+      return state.articleErrorText;
     },
     loadedArticle(state) {
       return state.loadedArticle;

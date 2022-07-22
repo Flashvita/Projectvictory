@@ -28,13 +28,14 @@
         </span>
         <span
           class="category-title-name"
-          @click="onChangeCategory(category.title, category.road)"
+          @click="onChangeCategory(category.title, category.road, category.id)"
         >
           {{ category.title }}
         </span>
         <span
           class="add-btn-block"
           v-if="
+            this.isAuth &&
             this.$route.query.catalog === category.road &&
             this.$route.path === '/articles'
           "
@@ -77,7 +78,7 @@
 import IconBase from "@/components/UI/IconBase";
 import ArrowIcon from "@/assets/icons/arrow-icon";
 import IconsComponent from "@/assets/icons/icons-component";
-import { mapActions, mapMutations } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import MyButton from "@/components/UI/MyButton";
 
 export default {
@@ -130,10 +131,7 @@ export default {
         this.openBurgerMenu();
       }
     },
-    isVisibleSubCategory(name, address) {
-      const path =
-        this.$route.name === "ArticleCreate" ? "/articles/create" : "/articles";
-      this.$router.push({ path: path, query: { catalog: address } });
+    isVisibleSubCategory(name) {
       if (this.changedCategory.includes(name)) {
         const indexElement = this.changedCategory.findIndex(
           (element) => element === name
@@ -143,11 +141,19 @@ export default {
         this.changedCategory = [...this.changedCategory, name];
       }
     },
-    onChangeCategory(name, address) {
+    onChangeCategory(name, address, categoryId) {
+      const path =
+        this.$route.name === "ArticleCreate" ? "/articles/create" : "/articles";
+      this.$router.push({ path, query: { catalog: address } });
+      this.setCategoryId(categoryId);
       this.isOpenBurgerMenu();
-      this.isVisibleSubCategory(name, address);
       this.getArticlesOll({ catalog: address });
     },
+  },
+  computed: {
+    ...mapGetters({
+      isAuth: "auth/isAuth",
+    }),
   },
 };
 </script>
