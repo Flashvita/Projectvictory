@@ -30,13 +30,3 @@ def category_tree(children_list = []):
     for item in Category.objects.filter(parent=None):
         children_list.append(all_childrens(item))
     return children_list
-
-def get_childrens_id(children_list):
-    """Эта функция забирает всех id всех потомков категории
-     для дальнейшего вывода статей этих категорий"""
-     
-
-
-    category_id = children_list.id
-    print(category_id)
-    return category_id

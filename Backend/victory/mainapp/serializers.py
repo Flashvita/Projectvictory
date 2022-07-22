@@ -1,4 +1,5 @@
 from email import message_from_binary_file
+from unicodedata import name
 from django.forms import EmailField, ValidationError
 from rest_framework import serializers
 from .models import Profile, Contact, Post, Team, Category, User, Project
@@ -10,6 +11,7 @@ from rest_framework.response import Response
 
 class ProfileSerializer(serializers.ModelSerializer):
     """Сериализатор для модели профиля(члена команды)"""
+
     user = serializers.StringRelatedField(read_only=True)
     scrum_master = serializers.BooleanField()
     role = serializers.CharField()
@@ -31,9 +33,14 @@ class SpecialUserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('username', 'email', 'id', 'is_admin', 'avatar',)
 
+
 class ContactSerializer(serializers.Serializer):
     """Сериалайзер для формы обратной связи на главной странице"""
+
     phone = serializers.IntegerField()
+    email = serializers.EmailField()
+    message = serializers.CharField()
+    name = serializers.CharField(max_length=50)
 
     def validate(self, data):
         phone = data.get('phone')
@@ -45,15 +52,35 @@ class ContactSerializer(serializers.Serializer):
             message = 'Номер телефона должен быть 11 цифр'
             raise serializers.ValidationError(message)
         return data
+    
+    def create(self, validated_data):
+        new_contact = Contact.objects.create(
+            phone=validated_data['phone'],
+            email=validated_data['email'],
+            message=validated_data['message'],
+            name=validated_data['name']
+        )
+        new_contact.save()
+        send_mail('Заказ обратного звонка',
+                  'Здраствуйте меня зовут {} '
+                  'Сообщение: {}'
+                  'мой номер телефона"{}"  '
+                  'мой email"{}"'.
+                  format(validated_data['name'], validated_data['message'], validated_data['phone'], validated_data['email']),
+                  'DjangoServer2022@yandex.ru', ['DjangoServer2022@yandex.ru', 'Flashvita@yandex.ru'],
+                  fail_silently=False
+                  )
+        return new_contact
 
+    
     class Meta:
         model = Contact
         fields = ('name', 'email', 'phone', 'message')
-        validators = []      
 
 
 class CategoryCreateSerializers(serializers.ModelSerializer):
     """Сериалайзер для создания категории"""
+
     parent_title = serializers.CharField(read_only=True, source='parent.title')
 
 
@@ -75,8 +102,6 @@ class PostSerializer(serializers.ModelSerializer):
 
     owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
     category_title = serializers.CharField(read_only=True, source='category.title')
-
-
 
     def validate(self, data):
        content = data.get('content')
@@ -100,22 +125,20 @@ class PostUserUpdateSerializer(serializers.ModelSerializer):
 
     owner = serializers.CharField(read_only=True, source='owner.username')
     owner_avatar = serializers.CharField(read_only=True, source='owner.profile.avatar')
-    category_title = serializers.CharField(read_only=True, source='category.title')
     is_active = serializers.BooleanField()
     is_private = serializers.BooleanField()
 
-    
 
     class Meta:
         model = Post
-        fields = ('title', 'content', 'id', 'owner', 'owner_avatar',
-                 'category', 'category_title', 'is_active', 'is_private'
+        fields = (
+                'title', 'content', 'id', 'owner', 'owner_avatar',
+                'category', 'road', 'is_active', 'is_private'
                  )
 
 
 class PostListSerializer(serializers.ModelSerializer):
     """Сериалайзер для отображения всех статей"""
-
 
     owner = serializers.CharField(read_only=True, source='owner.username')
     avatar = serializers.CharField(read_only=True, source='owner.profile.avatar')
@@ -126,7 +149,10 @@ class PostListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('title', 'category', 'category_title', 'owner', 'avatar', 'road', 'id', 'slug', 'is_active', 'is_private')
+        fields = (
+            'title', 'category', 'category_title', 'owner', 'avatar',
+             'road', 'id', 'slug', 'is_active', 'is_private'
+             )
 
 
 
@@ -148,6 +174,7 @@ class TeamCreateSerializer(serializers.ModelSerializer):
 
 class TeamsSerializer(serializers.ModelSerializer):
     """Сериалайзер для всех команд"""
+
     members = ProfileSerializer(read_only=True, many=True)
     project = ProjectSerializers()
 
