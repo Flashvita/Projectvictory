@@ -43,6 +43,7 @@ urlpatterns = [
     path('server/auth/', include('djoser.urls.jwt')),
     path('server/auth/', include('djoser.urls.authtoken')),
     path('server/api/v1/', include('mainapp.urls')),
+    path('server/customers/', include('customers.urls')),
     ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 

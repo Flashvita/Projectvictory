@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -15,7 +16,7 @@ from rest_framework.generics import (
 )
 from .models import Profile, Contact, Post, Team, Category, Project
 from .permissions import IsOwnerProfileOrReadOnly, IsOwnerOrAdminOrReadOnly
-from .utils import category_tree, get_childrens_id
+from .utils import category_tree
 from .filters import PostFilter
 from .serializers import (
     ProfileSerializer,
@@ -66,26 +67,6 @@ class ContactCreateView(CreateAPIView):
     serializer_class = ContactSerializer
     permission_classes = [AllowAny]
 
-    def post(self, request):
-        new_message = request.data
-
-        send_mail('Заказ обратного звонка',
-                  'Здраствуйте меня зовут {} '
-                  'Сообщение: {}'
-                  'мой номер телефона"{}"  '
-                  'мой email"{}"'.
-                  format(new_message['name'], new_message['message'], new_message['phone'], new_message['email']),
-                  'DjangoServer2022@yandex.ru', ['DjangoServer2022@yandex.ru', 'Flashvita@yandex.ru'],
-                  fail_silently=False
-                  )
-        Contact.objects.create(
-            message=new_message['message'],
-            phone=new_message['phone'],
-            email=new_message['email'],
-            name=new_message['name'],
-        )
-        return Response(status=200)
-
 
 class PostCreateView(CreateAPIView):
     """Создать статью(и отправить на редактирование админу)"""
@@ -94,7 +75,8 @@ class PostCreateView(CreateAPIView):
 
 
 class PostListView(ListCreateAPIView):
-    """Все статьи"""
+    """Api для всех статей  с переопределением 
+    queryset для разных типов пользователей"""
     serializer_class = PostListSerializer
     permission_classes = [AllowAny]
     pagination_class = LimitOffsetPagination
@@ -103,13 +85,12 @@ class PostListView(ListCreateAPIView):
     filterset_class = PostFilter
 
 
-    def get(self, request, *args, **kwargs,):
-        category_childrens_id = get_childrens_id()
+    def get(self, request, *args, **kwargs):
         if request.user.is_staff:
             self.queryset = Post.objects.all()
             return self.list(request, *args, **kwargs)
         elif request.user.is_authenticated:
-            self.queryset = Post.objects.filter(Q(is_active=True, is_private=True) | Q(owner=request.user) | Q(category=category_childrens_id))
+            self.queryset = Post.objects.filter(Q(is_active=True, is_private=True) | Q(owner=request.user))
             return self.list(request, *args, **kwargs)
         else:
             self.queryset = Post.objects.filter(is_active=True, is_private=False)
