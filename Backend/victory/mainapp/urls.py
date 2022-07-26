@@ -15,6 +15,8 @@ from .views import (
     CategoriesView,
     ClassAPIView,
     ProjectCreateView,
+    ProjectsListView,
+    ProjectUpdateView,
 )
 
 urlpatterns = [
@@ -22,7 +24,7 @@ urlpatterns = [
     path('post/create/', PostCreateView.as_view()),
     path('posts/', PostListView.as_view()),
     path('posts/detail/<int:pk>/', PostDetailView.as_view()),
-    path('team/create/', TeamCreateView.as_view()),
+    path('teams/create/', TeamCreateView.as_view()),
     path('category/create/', CategoryCreateView.as_view()),
     path('categories/', CategoriesView.as_view()),
     path('childrens/', ClassAPIView.as_view()),
@@ -30,5 +32,8 @@ urlpatterns = [
     path('teams/detail/<int:pk>/', TeamDetailView.as_view()),
     path('all-profiles/', ProfileListCreateView.as_view(), name="all-profiles"),
     path('profile/<int:pk>/', ProfileDetailView.as_view(), name="profile"),
-    path('project/create/', ProjectCreateView.as_view()),
+    path('projects/create/', ProjectCreateView.as_view()),
+    path('projects/list/', ProjectsListView.as_view()),
+    path('projects/detail/<int:pk>/', ProjectUpdateView.as_view()),
+
 ]

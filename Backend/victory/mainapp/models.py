@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from transliterate import slugify
 from transliterate.utils import translit
+from django.utils import timezone
 
 
 
@@ -10,7 +11,7 @@ class Profile(models.Model):
     """Профиль пользователя"""
 
     ROLE_CHOICES = (
-        ('Backcend developer', 'Backcend developer'),
+        ('Backend developer', 'Backend developer'),
         ('Frontend developer', 'Frontend developer'),
         ('Fullstack developer', 'Fullstack developer'),
         ('Designer', 'Designer'),
@@ -21,8 +22,8 @@ class Profile(models.Model):
     slug = models.SlugField(max_length=255, unique=False)
     phone = models.CharField(max_length=11, default='8xxxxxxxxxx', null=True, blank=True, verbose_name='номер телефона')
     avatar = models.ImageField(upload_to='images/users/%Y/%m/%d/', null=True, blank=True, verbose_name='Ваше фото')
-    created = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Дата создания профиля')
-    #updated = models.DateTimeField(auto_now=True, db_index=True, verbose_name='Дата последнего редактирования профиля')
+    created = models.DateTimeField(default=timezone.now, db_index=True, verbose_name='Дата создания профиля')
+    updated = models.DateTimeField(auto_now=True, db_index=True, verbose_name='Дата последнего редактирования профиля')
     role = models.CharField(max_length=100, choices=ROLE_CHOICES, verbose_name='Роль', null=True, blank=True)
     scrum_master = models.BooleanField(default=False, verbose_name='Скрам мастер')
 
@@ -37,10 +38,24 @@ class Profile(models.Model):
 class Contact(models.Model):
     """Модель формы обратной связи"""
 
+
+    TYPE_PRODUCT_CHOICES = (
+        ('Интернет магазин', 'Интернет магазин'),
+        ('Лендинг', 'Лендинг'),
+        ('Корпаративный сайт', 'Корпаративный сайт'),
+        ('Образовательная платформа', 'Образовательная платформа'),
+        ('Телеграм бот', 'Телеграм бот'),
+        ('Парсер для моего сайта', 'Парсер для моего сайта'),
+        ('Другое', 'Другое'),
+    )
+
+
+
     name = models.CharField(max_length=200, verbose_name='Имя')
     phone = models.CharField(max_length=11, verbose_name='Номер телефона', null=True, blank=True)
     message = models.TextField(max_length=500, verbose_name='Сообщение')
     email = models.EmailField(max_length=200)
+    type_product = models.CharField(max_length=255, choices=TYPE_PRODUCT_CHOICES, verbose_name='Тип продукта')
     created = models.DateTimeField(auto_now=True, db_index=True, verbose_name='Время отправления')
 
     def __str__(self):
@@ -92,7 +107,8 @@ class Post(models.Model):
     content = models.TextField(verbose_name='Содержимое')
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='post_owner')
     is_active = models.BooleanField(default=False)
-    created = models.DateTimeField(auto_now=True, db_index=True, verbose_name='Время публикации')
+    created = models.DateTimeField(default=timezone.now, db_index=True, verbose_name='Время создания')
+    update = models.DateTimeField(auto_now=True, db_index=True, verbose_name='Время последнего редактирования')
     road = models.CharField(max_length=700, verbose_name='Путь')
     is_private = models.BooleanField(default=True)
 
@@ -117,7 +133,8 @@ class Team(models.Model):
 
     title = models.CharField(max_length=100, verbose_name='Название комады')
     members = models.ManyToManyField(Profile, verbose_name='Члены команды', null=True, blank=True)
-    created = models.DateTimeField(auto_now=True, verbose_name='Дата создания')
+    created = models.DateTimeField(default=timezone.now, db_index=True, verbose_name='Время создания')
+    updated = models.DateTimeField(auto_now=True, verbose_name='Дата последних изменений')
     project = models.ForeignKey('Project', on_delete=models.SET_NULL,
                                 null=True, blank=True, verbose_name='Текущий проект')
     
@@ -131,17 +148,28 @@ class Team(models.Model):
 
 
 class Project(models.Model):
-        """Проект"""
-        title = models.CharField(max_length=500, verbose_name='Название проекта')
-        description = models.TextField(verbose_name='Описание проекта')
+    """Проект"""
+    
+    title = models.CharField(max_length=500, verbose_name='Название проекта')
+    description = models.TextField(verbose_name='Описание проекта')
+    image = models.ImageField(
+                                upload_to='images/projects/%Y/%m/%d/', null=True, blank=True,
+                                 verbose_name='Изображание связанное с проектом'
+                                 )
+    price = models.IntegerField(verbose_name='Стоимость проекта', null=True, blank=True)
+    created = models.DateTimeField(default=timezone.now, db_index=True, verbose_name='Время создания')
+    updated = models.DateTimeField(auto_now=True, verbose_name='Дата последних изменений')
 
 
-        def __str__(self):
-            return f'{self.id}'
+
+
+    def __str__(self):
+        return f'{self.title}'
             
-        class Meta:
-            verbose_name = 'Проект'
-            verbose_name_plural = 'Проекты'
+    class Meta:
+        verbose_name = 'Проект'
+        verbose_name_plural = 'Проекты'
+        
 
 
 

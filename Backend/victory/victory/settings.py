@@ -49,8 +49,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
 
-    #Applications
+    #My applications
     'mainapp',
+    'calculator',
     'customers',
 
 
@@ -162,11 +163,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # SMTP Email settings
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.yandex.ru' #'smtp.gmail.com'
-EMAIL_HOST_USER = 'DjangoServer2022' #'DjangoTestemail2022@gmail.com'
-EMAIL_HOST_PASSWORD = 'djangotestemail'#'1234dx1234dx'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_HOST_USER = 'DjangoServer2022' #Почта сервера
+EMAIL_SERVER = 'DjangoServer2022@yandex.ru'
+EMAIL_HOST_PASSWORD = 'djangotestemail'
 EMAIL_PORT = 587
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST_MANAGERS = ['DjangoServer2022@yandex.ru', 'Flashvita@yandex.ru'] #Почта менеджеров
 
 
 # Cors settings

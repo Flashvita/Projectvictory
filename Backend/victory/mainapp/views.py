@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 import json 
-from django.http import JsonResponse
+from django.http import HttpResponseBadRequest, JsonResponse, HttpResponseRedirect
 from rest_framework.pagination import LimitOffsetPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from django.core.mail import send_mail
@@ -13,6 +13,7 @@ from rest_framework.generics import (
     RetrieveUpdateDestroyAPIView,
     CreateAPIView,
     GenericAPIView,
+    ListAPIView,
 )
 from .models import Profile, Contact, Post, Team, Category, Project
 from .permissions import IsOwnerProfileOrReadOnly, IsOwnerOrAdminOrReadOnly
@@ -25,7 +26,6 @@ from .serializers import (
     PostListSerializer,
     PostUserUpdateSerializer,
     TeamCreateSerializer,
-    TeamSerializer,
     TeamsSerializer,
     CategoryCreateSerializers,
     CategoriesSerializers,
@@ -85,12 +85,7 @@ class PostListView(ListCreateAPIView):
     filterset_class = PostFilter
 
 
-<<<<<<< HEAD
     def get(self, request, *args, **kwargs):
-=======
-    def get(self, request, *args, **kwargs,):
-        #category_childrens_id = get_childrens_id()
->>>>>>> 2d6eb6929eede237d6fc5ac1dcdbaa320e1183c8
         if request.user.is_staff:
             self.queryset = Post.objects.all()
             return self.list(request, *args, **kwargs)
@@ -106,14 +101,17 @@ class PostDetailView(RetrieveUpdateDestroyAPIView):
     """Статья"""
     queryset = Post.objects.all()
     serializer_class = PostUserUpdateSerializer
-    permission_classes = [IsAuthenticated, IsOwnerOrAdminOrReadOnly]
+    permission_classes = [IsOwnerOrAdminOrReadOnly]
 
-    def get(self, request, *args, **kwargs):
-        if request.user:
+    def get(self, request, pk, *args, **kwargs):
+        if request.user.is_authenticated:
             return self.retrieve(request, *args, **kwargs)
-
+        else:
+            post = get_object_or_404(Post, pk=pk, is_active=True, is_private=False)
+            if post:
+                return self.retrieve(request, *args, **kwargs)
+            
     def put(self, request, *args, **kwargs):
-
         return self.update(request, *args, **kwargs)
 
     def patch(self, request, *args, **kwargs):
@@ -137,9 +135,9 @@ class TeamsView(ListCreateAPIView):
 
 
 class TeamDetailView(RetrieveUpdateDestroyAPIView):
-    """Комада"""
+    """Комада на редактирование участников"""
     queryset = Team.objects.all()
-    serializer_class = TeamSerializer
+    serializer_class = TeamsSerializer
     permission_classes = [IsAdminUser]
 
 
@@ -154,3 +152,17 @@ class ProjectCreateView(CreateAPIView):
     """Создание проекта(только админ)"""
     serializer_class = ProjectSerializers
     permission_classes = [IsAdminUser]
+
+class ProjectsListView(ListAPIView):
+    """Список всех проектов(только админ)"""
+    serializer_class = ProjectSerializers
+    permission_classes = [IsAdminUser]
+    queryset = Project.objects.all()
+
+
+class ProjectUpdateView(RetrieveUpdateDestroyAPIView):
+    """Редактирование проекта(только админ)"""
+    serializer_class = ProjectSerializers
+    permission_classes = [IsAdminUser]
+
+

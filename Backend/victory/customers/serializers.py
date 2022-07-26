@@ -1,5 +1,6 @@
 from customers.models import Customer
 from rest_framework import serializers
+from mainapp.serializers import ProjectSerializers
 
 
 
@@ -8,6 +9,7 @@ class CustomerCreateSirializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=50)
     phone = serializers.IntegerField()
     email = serializers.EmailField()
+    
 
     def validate(self, data):
         phone = data.get('phone')
@@ -21,13 +23,28 @@ class CustomerCreateSirializer(serializers.ModelSerializer):
         return data
     
     def create(self, validated_data):
-        new_contact = Customer.objects.create(
+        new_customer = Customer.objects.create(
             phone=validated_data['phone'],
             email=validated_data['email'],
-            name=validated_data['name']
+            name=validated_data['name'],
+            project=validated_data['project']
         )
-        new_contact.save()
+        new_customer.save()
+
+        return new_customer
 
     class Meta:
         model = Customer
-        fields = ('name', 'phone', 'email')
+        fields = ('__all__')
+
+
+class CustomersListSerializer(serializers.ModelSerializer):
+    """Сериалайзер для выода всех клиентов"""
+
+    project = ProjectSerializers()
+
+    class Meta:
+        model = Customer
+        fields = ('__all__')
+    
+    
