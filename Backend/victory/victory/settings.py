@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +22,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-orv5u-a5=ej6eh56v9_h@=v$t#wfjvb$!r(3#6(9b(8a+3h$e1'
+SECRET_KEY = config('SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
@@ -162,14 +164,15 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # SMTP Email settings
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_HOST_USER = 'DjangoServer2022' #Почта сервера
-EMAIL_SERVER = 'DjangoServer2022@yandex.ru'
-EMAIL_HOST_PASSWORD = 'djangotestemail'
-EMAIL_PORT = 587
+EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_SERVER = config('EMAIL_SERVER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = config('EMAIL_PORT')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST_MANAGERS = ['DjangoServer2022@yandex.ru', 'Flashvita@yandex.ru'] #Почта менеджеров
+EMAIL_HOST_MANAGERS = config('EMAIL_HOST_MANAGERS')
+
 
 
 # Cors settings

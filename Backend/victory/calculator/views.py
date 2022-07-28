@@ -1,3 +1,4 @@
+from turtle import reset
 from unicodedata import decimal
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -23,6 +24,6 @@ class CalculatorView(generics.CreateAPIView):
        
         res = fast_real(float(type_product))*(fast_real(float(desinger)))*(fast_real(float(cms)))*(fast_real(float(content)))
         print(res)
-        return HttpResponseRedirect('', res)
+        return HttpResponseRedirect('/server/api/v1/calculator/', res)
 
 
